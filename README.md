@@ -10,6 +10,6 @@
 
 下面是测试练习1.1.3和1.1.5的示例
 
-![InteractiveCommandLineTool](image\InteractiveCommandLineTool.png)
+![InteractiveCommandLineTool](image/InteractiveCommandLineTool.png)
 
 先切换到要测试的文件目录下，使用`kotlinc`命令就可以进入交互式命令行工具，如果没有将`kotlinc`加入环境变量中，需要输入完整路径，使用`:load <filename>`命令可以将`.kt`文件加载到运行环境中，类似于`js`或`python`等脚本语言，省去了编译命令，非常方便，当然，如果文件中有语法错误也会导致编译失败，提示相应错误信息，然后就可以直接调用定义的顶层函数了，使用不同的参数多次调用，可以很方便的测试各种边界条件。
