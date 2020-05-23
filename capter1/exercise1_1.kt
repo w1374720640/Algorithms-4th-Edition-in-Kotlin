@@ -1,5 +1,5 @@
 //判断数组中的所有值是否相同
-fun exercise1_1_3(args: Array<String>) {
+fun ex3(args: Array<String>) {
     fun compare(): Boolean {
         if (args.size == 0) return false
         var start = args[0]
@@ -16,7 +16,7 @@ fun exercise1_1_3(args: Array<String>) {
 }
 
 //判断两个数是否都在0和1之间
-fun exercise1_1_5(x: Double, y: Double) {
+fun ex5(x: Double, y: Double) {
     fun between0And1(num: Double): Boolean = num > 0 && num < 1
     if (between0And1(x) && between0And1(y)) {
         println("true")
@@ -26,7 +26,7 @@ fun exercise1_1_5(x: Double, y: Double) {
 }
 
 //求打印结果，个人感觉毫无意义
-fun exercise1_1_7a() {
+fun ex7a() {
     var t = 9.0f
     while (java.lang.Math.abs(t - 9.0f / t) > 0.001f) {
         t = (9.0f / t + t) / 2.0f
@@ -34,7 +34,7 @@ fun exercise1_1_7a() {
     println(t)
 }
 
-fun exercise1_1_7b() {
+fun ex7b() {
     var sum = 0
     for (i in 1 until 1000) {
         for (j in 0 until i) {
@@ -44,7 +44,7 @@ fun exercise1_1_7b() {
     println(sum)
 }
 
-fun exercise1_1_7c() {
+fun ex7c() {
     var sum = 0
     var i = 1
     while (i < 1000) {
@@ -57,7 +57,7 @@ fun exercise1_1_7c() {
 }
 
 //将整数（所有值，无论正负）的二进制用String表示
-fun exercise1_1_9(num: Int) {
+fun ex9(num: Int) {
     //将正整数的二进制用String表示
     fun getPositiveIntegerBinaryString(positiveNum: Int): String {
         require(positiveNum >= 0)
@@ -82,7 +82,7 @@ fun exercise1_1_9(num: Int) {
 }
 
 //交换二维数组的行列
-fun exercise1_1_13(array: Array<Array<Int>>) {
+fun ex13(array: Array<Array<Int>>) {
     array.forEach {
         it.forEach {
             print(it)
@@ -113,7 +113,7 @@ fun exercise1_1_13(array: Array<Array<Int>>) {
 }
 
 //接收整形参数N，返回不大于log2 N 的最大整数
-fun exercise1_1_14(N: Int) {
+fun ex14(N: Int) {
     require(N > 0)
     fun power(count: Int): Int {
         require(count >= 0)
@@ -143,14 +143,14 @@ fun exercise1_1_14(N: Int) {
 }
 
 //返回一个大小为M的数组，第i个元素的值为参数数组source中i出现的次数，原理类似于Java中的BitSet
-fun exercise1_1_15(M: Int, source: Array<Int>): Array<Int> {
+fun ex15(M: Int, source: Array<Int>): Array<Int> {
     val result = Array<Int>(M) { 0 }
     for (i in source) {
         if (i >= M) {
             println("The value in the source array should not be greater than $M")
             continue
         }
-        result[i] = result[i] + 1
+        result[i]++
     }
     println("source=${source.joinToString { it.toString() }}")
     println("result=${result.joinToString { it.toString() }}")
@@ -158,8 +158,8 @@ fun exercise1_1_15(M: Int, source: Array<Int>): Array<Int> {
     return result
 }
 
-//求exercise1_1_16(6)运行结果
-fun exercise1_1_16(n: Int): String {
+//求ex16(6)运行结果
+fun ex16(n: Int): String {
     if (n <= 0) return ""
-    return exercise1_1_16(n - 3) + n + exercise1_1_16(n - 2) + n
+    return ex16(n - 3) + n + ex16(n - 2) + n
 }
