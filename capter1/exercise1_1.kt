@@ -300,3 +300,88 @@ fun ex24(a: Int, b: Int) {
     require(a > 0 && b > 0)
     println("The greatest common divisor of ${a} and ${b} is ${euclid(a, b)}")
 }
+
+//估算binomial(100, 50, 0.25)产生的递归调用次数
+//TODO 暂时不想优化了，递归真烦
+fun ex27(N: Int, k: Int, p: Double) {
+    var count = 0
+    fun binomial(N: Int, k: Int, p: Double): Double {
+        count++
+        if (N == 0 && k == 0) return 1.0
+        if (N < 0 || k < 0) return 0.0
+        return (1.0 - p) * binomial(N - 1, k, p) + p * binomial(N - 1, k - 1, p)
+    }
+    binomial(N, k, p)
+    println("count=${count}")
+}
+
+//删除排序后的重复元素，因为数组是有序的，所以删除重复元素比较简单
+fun ex28(array: Array<Int>) {
+    if (array.size <= 1) return
+    array.sort()
+    println("sort array=${array.joinToString()}")
+    val result = mutableListOf<Int>()
+    var startIndex = 0
+    var endIndex = 1
+    do {
+        /* 这里的删除重复元素是指元素重复三次，删除两个保留一个
+        如果需要把重复元素全部删除，将下面代码中的result.add(array[startIndex])替换为
+        if (endIndex - startIndex == 1) {
+            result.add(array[startIndex])
+        }
+        */
+        if (endIndex >= array.size) {
+            result.add(array[startIndex])
+            break
+        }
+        if (array[startIndex] == array[endIndex]) {
+            endIndex++
+        } else {
+            result.add(array[startIndex])
+            startIndex = endIndex
+            endIndex++
+        }
+    } while (true)
+    println("result=${result.joinToString()}")
+}
+
+//在一个有序数组中分别查找大于、小于、等于key值的数量
+//因为是有序数组，所以二分法是最快的（在数据量比较大的情况下）
+//查找小于key的值时，即使已经找到等于key的值，继续在左侧查找，直到找到左侧第一个不等于key的值
+//也可以在找到等于key的值时，向左右两侧遍历数组，但是可能会很慢
+fun ex29(key: Int, array: Array<Int>) {
+    array.sort()
+    fun numberLessThanKey(key: Int, array: Array<Int>): Int {
+        var startIndex = 0
+        var endIndex = array.size - 1
+        do {
+            //如果数组中不存在要查找的键，则左半边是小于键的值
+            if (startIndex > endIndex) return endIndex + 1
+            val midIndex = (startIndex + endIndex) / 2
+            when {
+                //和正常的二分法区别是，当key=array[midIndex]时，执行key<array[midIndex]相同的逻辑
+                key <= array[midIndex] -> endIndex = midIndex - 1
+                key > array[midIndex] -> startIndex = midIndex + 1
+            }
+        } while (true)
+    }
+
+    fun numberGreaterThanKey(key: Int, array: Array<Int>): Int {
+        var startIndex = 0
+        var endIndex = array.size - 1
+        do {
+            //如果数组中不存在要查找的键，则右半边是大于键的值
+            if (startIndex > endIndex) return array.size - (endIndex + 1)
+            val midIndex = (startIndex + endIndex) / 2
+            when {
+                //和正常的二分法区别是，当key=array[midIndex]时，执行key>array[midIndex]相同的逻辑
+                key < array[midIndex] -> endIndex = midIndex - 1
+                key >= array[midIndex] -> startIndex = midIndex + 1
+            }
+        } while (true)
+    }
+    println("key=${key} array=${array.joinToString()}")
+    val lessNumber = numberLessThanKey(key, array)
+    val greaterNumber = numberGreaterThanKey(key, array)
+    println("array.size=${array.size} lessNumber=${lessNumber} equalNumber=${array.size - lessNumber - greaterNumber} greaterNumber=${greaterNumber}")
+}
