@@ -1,3 +1,5 @@
+package capter1.exercise1_1
+
 import java.lang.Exception
 import java.math.BigDecimal
 
