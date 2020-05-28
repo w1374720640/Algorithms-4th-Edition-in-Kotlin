@@ -385,3 +385,43 @@ fun ex29(key: Int, array: Array<Int>) {
     val greaterNumber = numberGreaterThanKey(key, array)
     println("array.size=${array.size} lessNumber=${lessNumber} equalNumber=${array.size - lessNumber - greaterNumber} greaterNumber=${greaterNumber}")
 }
+
+//创建一个N*N的数组，当i和j互质时，a[i][j]为true，否则为false
+//两个或多个整数的公因数只有1的非零自然数叫做互质数
+fun ex30(N: Int) {
+    val array: Array<Array<Boolean>> = Array(N) { Array(N) { false } }
+    //以[i,i]为分割线，先判断右侧值，再对称赋值左侧值
+    //互质数为非0自然数，所以0和任何数都不互质
+    for (i in 0 until N) {
+        array[0][i] = false
+    }
+    //1和任何非零自然数数都互质
+    for (i in 1 until N) {
+        array[1][i] = true
+    }
+    //求差判断法：如果两个数的差与较小值互质，则这两个数互质
+    for (i in 2 until N) {
+        for (j in i until N) {
+            val diff = j - i
+            val small = if (diff > i) i else diff
+            val large = if (diff > i) diff else i
+            array[i][j] = array[small][large]
+        }
+    }
+    //将右半边的值复制到左半边
+    for (i in 1 until N) {
+        for (j in 0 until i) {
+            array[i][j] = array[j][i]
+        }
+    }
+    //打印数组
+    for (i in 0 until N) {
+        println(array[i].joinToString {
+            if (it) "1" else "0"
+        })
+    }
+}
+
+
+
+
