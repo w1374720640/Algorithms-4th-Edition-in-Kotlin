@@ -548,5 +548,66 @@ fun ex35(N: Int) {
     println("maximumError=${BigDecimal(maximumError).setScale(5, BigDecimal.ROUND_HALF_UP)}")
 }
 
+//使用kotlin重新实现表1.1.10中的代码
+//根据给定概率返回对应的索引
+//array[i]的值在0~1之间，总和为1，根据array[i]对应的概率返回i的值
+//例如array[2]的值为0.5，则每次调用函数，有50%概率返回2
+fun ex36_a(array: Array<Double>, N: Int) {
+    //根据给定概率返回索引
+    fun discrete(array: Array<Double>): Int {
+        val random = Random.Default.nextDouble()
+        var sum = 0.0
+        for (i in array.indices) {
+            sum += array[i]
+            if (sum >= random) return i
+        }
+        return -1
+    }
 
+    fun checkParam(): Boolean {
+        var sum = 0.0
+        array.forEach {
+            if (it < 0.0 || it > 1.0) return false
+            sum += it
+        }
+        return sum == 1.0
+    }
+    require(checkParam()) { "参数错误，数组内每个值必须在[0,1]中，且总和为1" }
+    println("array =${array.joinToString { BigDecimal(it).setScale(3, BigDecimal.ROUND_HALF_UP).toString() }}")
+    val result = Array(array.size) { 0.0 }
+    repeat(N) {
+        result[discrete(array)] += 1.0
+    }
+    for (i in result.indices) {
+        result[i] /= N.toDouble()
+    }
+    println("result=${result.joinToString { BigDecimal(it).setScale(3, BigDecimal.ROUND_HALF_UP).toString() }}")
+}
 
+//随机打乱数组，且在其他位置的概率相等（也可能位置不变）
+fun ex36_b(array: Array<Int>): Array<Int> {
+    for (i in 0 until array.size - 1) {
+        val j = i + Random.Default.nextInt(array.size - i)
+        val temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
+    }
+    return array
+}
+
+fun ex36_c(M: Int, N: Int) {
+    val result = Array(M) { Array(M) { 0 } }
+    val array = Array(M) { 0 }
+    repeat(N) {
+        for (i in array.indices) {
+            array[i] = i
+        }
+        ex36_b(array).forEachIndexed { index, value ->
+            result[value][index]++
+        }
+    }
+    println("N/M=${BigDecimal(N.toDouble() / M).setScale(2, BigDecimal.ROUND_HALF_UP)}")
+    result.forEach {
+        println(it.joinToString())
+    }
+}
