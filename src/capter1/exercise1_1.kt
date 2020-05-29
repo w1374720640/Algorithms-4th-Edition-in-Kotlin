@@ -1,5 +1,3 @@
-package capter1.exercise1_1
-
 import java.lang.Exception
 import java.math.BigDecimal
 
@@ -424,6 +422,86 @@ fun ex30(N: Int) {
     }
 }
 
+/*
+ex31 ex32需要用到绘图API，无论是用java swing 还是用Android的绘图都很麻烦，
+而且无法像之前一样通过交互式命令行很方便的编译、测试，
+所以暂时放弃涉及到绘图的练习
+ */
 
+//向量点乘
+//向量的点乘,也叫向量的内积、数量积，对两个向量执行点乘运算，就是对这两个向量对应位一一相乘之后求和的操作，点乘的结果是一个标量。
+//对于向量a和向量b  a=[a1,a2,...an]   b=[b1,b2,...bn]  a和b的点积公式为 a·b=a1*b1+a2*b2+...+an*bn
+fun ex33_a(x: Array<Int>, y: Array<Int>) {
+    require(x.size == y.size) { "向量点乘要求两个向量的行列数相同，x.size=${x.size} y.size=${y.size}" }
+    require(x.isNotEmpty())
+    println("x=${x.joinToString()}")
+    println("y=${y.joinToString()}")
+    var result = 0
+    for (i in x.indices) {
+        result += x[i] * y[i]
+    }
+    println("result=${result}")
+}
 
+//矩阵和矩阵之积
+//若A为m行n列的矩阵，B为n行p列的矩阵，则A和B的乘积（A·B）是一个m行n列的矩阵
+//A·B第i行j列的值为A的第i行分别和B的第j列乘积的和
+//A·B的行数与A相同，列数与B相同
+fun ex33_b(a: Array<Array<Int>>, b: Array<Array<Int>>) {
+    require(a.isNotEmpty() && a[0].isNotEmpty())
+    require(a[0].size == b.size) { "A的列数必须等于B的行数才可以相乘，a[0].size=${a[0].size} b.size=${b.size}" }
+    a.forEach {
+        println(it.joinToString())
+    }
+    println()
+    b.forEach {
+        println(it.joinToString())
+    }
+    println()
+    val result = Array(a.size) { Array(b[0].size) { 0 } }
+    for (i in result.indices) {
+        for (j in result[0].indices) {
+            for (k in a[0].indices) {
+                result[i][j] += a[i][k] * b[k][j]
+            }
+        }
+    }
+    result.forEach {
+        println(it.joinToString())
+    }
+}
 
+//转置矩阵
+//把m行n列的矩阵转换为n行m列的矩阵，行和列互换（相当于二维数组交换行列）
+fun ex33_c(a: Array<Array<Int>>) {
+    require(a.isNotEmpty() && a[0].isNotEmpty())
+    a.forEach { println(it.joinToString()) }
+    println()
+    val b = Array(a[0].size) { Array(a.size) { 0 } }
+    for (i in a.indices) {
+        for (j in a[0].indices) {
+            b[j][i] = a[i][j]
+        }
+    }
+    b.forEach { println(it.joinToString()) }
+}
+
+//矩阵和向量之积
+//长度为n的向量可以表示为n行1列的矩阵
+fun ex33_d(a: Array<Array<Int>>, x: Array<Int>) {
+    val matrix = Array(x.size) { arrayOf(0) }
+    for (i in x.indices) {
+        matrix[i][0] = x[i]
+    }
+    ex33_b(a, matrix)
+}
+
+//向量和矩阵之积
+//长度为n的向量可以表示为n行1列的矩阵
+fun ex33_e(y: Array<Int>, a: Array<Array<Int>>) {
+    val matrix = Array(y.size) { arrayOf(0) }
+    for (i in y.indices) {
+        matrix[i][0] = y[i]
+    }
+    ex33_b(matrix, a)
+}
