@@ -1,4 +1,6 @@
-import java.lang.Exception
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.Reader
 import java.math.BigDecimal
 import kotlin.math.abs
 import kotlin.random.Random
@@ -259,6 +261,21 @@ fun ex21() {
     list.forEach {
         println("${it.name} ${it.score} ${it.total} ${it.radio}")
     }
+}
+
+//课本中的二分查找原版
+fun binarySearch(key: Int, array: Array<Int>): Int {
+    var low = 0
+    var high = array.size - 1
+    while (low <= high) {
+        val mid = (low + high) / 2
+        when {
+            key < array[mid] -> high = mid - 1
+            key > array[mid] -> low = mid + 1
+            else -> return mid
+        }
+    }
+    return -1
 }
 
 //使用递归实现二分查找，并按照递归深度缩进
@@ -588,6 +605,8 @@ fun ex36_a(array: Array<Double>, N: Int) {
 fun ex36_b(array: Array<Int>): Array<Int> {
     for (i in 0 until array.size - 1) {
         val j = i + Random.Default.nextInt(array.size - i)
+        //练习1.1.37修改成以下代码
+        //val j = Random.Default.nextInt(array.size)
         val temp = array[i]
         array[i] = array[j]
         array[j] = temp
@@ -595,6 +614,8 @@ fun ex36_b(array: Array<Int>): Array<Int> {
     return array
 }
 
+//使用ex36_b函数将大小为M的数组打乱N次，每次打乱前将数组初始化为a[i]=i，
+//打印M*M的表格，i行j列表示i在打乱后落到j位置的次数
 fun ex36_c(M: Int, N: Int) {
     val result = Array(M) { Array(M) { 0 } }
     val array = Array(M) { 0 }
@@ -611,3 +632,88 @@ fun ex36_c(M: Int, N: Int) {
         println(it.joinToString())
     }
 }
+
+//从文件中读取Int数组
+fun readIntArrayFromFile(path: String): Array<Int> {
+    val list = mutableListOf<Int>()
+    var reader: Reader? = null
+    try {
+        reader = BufferedReader(FileReader(path))
+        do {
+            val text = reader.readLine() ?: break
+            list.add(text.trim().toInt())
+        } while (true)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    } finally {
+        reader?.close()
+    }
+    return list.toTypedArray()
+}
+
+//从largeT.txt中读取数据，分别用暴力查找和二分查找来查找数据
+//为了方便比较，可选择同一个key的查找次数
+fun ex38(key: Int, times: Int = 1) {
+    val array = readIntArrayFromFile("../../data/largeT.txt")
+    var hasFound = false
+    var startTime = 0L
+    var endTime = 0L
+    //暴力查找
+    startTime = System.currentTimeMillis()
+    repeat(times) {
+        for (i in array.indices) {
+            if (array[i] == key) {
+                hasFound = true
+                break
+            }
+        }
+    }
+    endTime = System.currentTimeMillis()
+    println("brute force search ${if (hasFound) "has found" else "not found"} ${key}, spend time ${endTime - startTime}ms")
+
+    //排序
+    startTime = System.currentTimeMillis()
+    array.sort()
+    endTime = System.currentTimeMillis()
+    println("sort time=${endTime - startTime}ms")
+
+    //二分查找
+    startTime = System.currentTimeMillis()
+    repeat(times) {
+        hasFound = binarySearch(key, array) != -1
+    }
+    endTime = System.currentTimeMillis()
+    println("binary search ${if (hasFound) "has found" else "not found"} ${key}, spend time ${endTime - startTime}ms")
+}
+
+//分别在N=1000,1_0000,10_0000,100_0000时，将以下实验运行T遍：
+//生成两个大小为N的数组，数组值为随机6位正整数，使用二分查找找出同时存在与两个数组中的整数的数量
+//打印出在不同的N中，T次实验该数量的平均值
+fun ex39(T: Int) {
+    fun setArrayToRandomValue(array: Array<Int>) {
+        for (i in array.indices) {
+            array[i] = Random.Default.nextInt(100_0000)
+        }
+    }
+
+    var N = 10 * 10
+    for (i in 1..4) {
+        N *= 10
+        var total = 0
+        repeat(T) {
+            val array1 = Array(N) { 0 }
+            val array2 = Array(N) { 0 }
+            setArrayToRandomValue(array1)
+            setArrayToRandomValue(array2)
+            array1.sort()
+            array2.sort()
+            array1.forEach {
+                if (binarySearch(it, array2) != -1) total++
+            }
+        }
+        println("N=${N} T=${T} average=${total / T}")
+    }
+}
+
+
+
