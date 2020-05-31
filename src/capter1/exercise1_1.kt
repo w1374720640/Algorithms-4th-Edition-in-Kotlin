@@ -63,27 +63,27 @@ fun ex7c() {
     println(sum)
 }
 
-//将整数（所有值，无论正负）的二进制用String表示
+//将整数的二进制用String表示
 fun ex9(num: Int) {
-    //将正整数的二进制用String表示
-    fun getPositiveIntegerBinaryString(positiveNum: Int): String {
-        require(positiveNum >= 0)
-        var s = ""
-        var temp = positiveNum
-        do {
-            s = (temp % 2).toString() + s
-            temp = temp / 2
-        } while (temp > 0)
-        return s
-    }
-
     var result = ""
-    if (num >= 0) {
-        result = getPositiveIntegerBinaryString(num)
+    if (num == 0) {
+        result = "0"
     } else {
-        //先记录最后一位，再无符号右移一位，获取正整数二进制，拼接成最终值
-        var last = if (num % 2 == 0) "0" else "1"
-        result = getPositiveIntegerBinaryString(num ushr 1) + last
+        //不能用CharArray，1.toChar()不等于'1'，无法打印
+        val array = IntArray(32)
+        var index = array.size
+        var value = num
+        do {
+            --index
+            //与1按位与
+            array[index] = value and 1
+            //无符号右移一位
+            value = value ushr 1
+            //省略二进制前面的0
+        } while (value != 0)
+        for (i in index until array.size) {
+            result += array[i]
+        }
     }
     println(result)
 }
@@ -103,8 +103,9 @@ fun ex13(array: Array<Array<Int>>) {
     array.forEach {
         require(column == it.size)
     }
-    val newArray = Array<Array<Int>>(column) {
-        Array<Int>(row) { 0 }
+    //上面都是检查输入条件
+    val newArray = Array(column) {
+        Array(row) { 0 }
     }
     newArray.forEachIndexed { outerIndex, outerArray ->
         for (i in outerArray.indices) {
@@ -120,44 +121,26 @@ fun ex13(array: Array<Array<Int>>) {
 }
 
 //接收整形参数N，返回不大于log2 N 的最大整数
-fun ex14(N: Int) {
+fun ex14(N: Int): Int {
     require(N > 0)
-    fun power(count: Int): Int {
-        require(count >= 0)
-        if (count == 0) return 1
-        var initValue = 1
-        for (i in 1..count) {
-            initValue *= 2
-        }
-        return initValue
-    }
-
-    var result = 0//N等于1时值为0
-    if (N > 1) {
-        while (power(result + 1) <= N) {
-            result++
-        }
-    }
-    /* 如果N为float类型，取值在0~1范围内，使用下面代码可以获取结果
-    if (N > 0 && N < 1) {
-        while (1.0f / power(result + 1) > N) {
-            result++
-        }
-        result = -result - 1
-    }
-    */
-    println("result=$result")
+    var shrCount = 0
+    //kotlin参数默认不能重新赋值，中转一下
+    var result = N
+    do {
+        //右移一位
+        result = result shr 1
+        shrCount++
+    } while (result != 0)
+    return shrCount - 1
 }
 
 //返回一个大小为M的数组，第i个元素的值为参数数组source中i出现的次数，原理类似于Java中的BitSet
 fun ex15(M: Int, source: Array<Int>): Array<Int> {
-    val result = Array<Int>(M) { 0 }
+    val result = Array(M) { 0 }
     for (i in source) {
-        if (i >= M) {
-            println("The value in the source array should not be greater than $M")
-            continue
+        if (i in 0 until M) {
+            result[i]++
         }
-        result[i]++
     }
     println("source=${source.joinToString { it.toString() }}")
     println("result=${result.joinToString { it.toString() }}")
@@ -321,8 +304,7 @@ fun ex24(a: Int, b: Int) {
 }
 
 //估算binomial(100, 50, 0.25)产生的递归调用次数
-//TODO 暂时不想优化了，递归真烦
-fun ex27(N: Int, k: Int, p: Double) {
+fun ex27a(N: Int, k: Int, p: Double) {
     var count = 0
     fun binomial(N: Int, k: Int, p: Double): Double {
         count++
@@ -331,6 +313,26 @@ fun ex27(N: Int, k: Int, p: Double) {
         return (1.0 - p) * binomial(N - 1, k, p) + p * binomial(N - 1, k - 1, p)
     }
     binomial(N, k, p)
+    println("count=${count}")
+}
+
+//练习1.1.27优化后的函数
+//这是练习1.1中我觉得最难理解的一题了
+fun ex27b(N: Int, k: Int, p: Double) {
+    val array = Array(N + 1) { Array(k + 1) { -1.0 } }
+    var count = 0
+    fun bin(N: Int, k: Int, p: Double): Double {
+        count++
+        when {
+            N == 0 && k == 0 -> return 1.0
+            N < 0 || k < 0 -> return 0.0
+            else -> if (array[N][k] == -1.0) {
+                array[N][k] = (1.0 - p) * bin(N - 1, k, p) + p * bin(N - 1, k - 1, p)
+            }
+        }
+        return array[N][k]
+    }
+    bin(N, k, p)
     println("count=${count}")
 }
 
@@ -367,7 +369,7 @@ fun ex28(array: Array<Int>) {
 //在一个有序数组中分别查找大于、小于、等于key值的数量
 //因为是有序数组，所以二分法是最快的（在数据量比较大的情况下）
 //查找小于key的值时，即使已经找到等于key的值，继续在左侧查找，直到找到左侧第一个不等于key的值
-//也可以在找到等于key的值时，向左右两侧遍历数组，但是可能会很慢
+//也可以在找到等于key的值时，向左右两侧遍历数组，但是当一个值重复多次时可能会很慢
 fun ex29(key: Int, array: Array<Int>) {
     array.sort()
     fun numberLessThanKey(key: Int, array: Array<Int>): Int {
@@ -406,13 +408,15 @@ fun ex29(key: Int, array: Array<Int>) {
 }
 
 //创建一个N*N的数组，当i和j互质时，a[i][j]为true，否则为false
-//两个或多个整数的公因数只有1的非零自然数叫做互质数
+//两个或两个以上的整数的最大公约数是1，则称它们为互质
+//如果数域是正整数，那么1与所有正整数互质
+//如果数域是整数，那么1和-1与所有整数互质，而且它们是唯一与0互质的整数
 fun ex30(N: Int) {
     val array: Array<Array<Boolean>> = Array(N) { Array(N) { false } }
     //以[i,i]为分割线，先判断右侧值，再对称赋值左侧值
     //互质数为非0自然数，所以0和任何数都不互质
     for (i in 0 until N) {
-        array[0][i] = false
+        array[0][i] = i == 1
     }
     //1和任何非零自然数数都互质
     for (i in 1 until N) {
@@ -450,7 +454,7 @@ ex31 ex32需要用到绘图API，无论是用java swing 还是用Android的绘�
 //向量点乘
 //向量的点乘,也叫向量的内积、数量积，对两个向量执行点乘运算，就是对这两个向量对应位一一相乘之后求和的操作，点乘的结果是一个标量。
 //对于向量a和向量b  a=[a1,a2,...an]   b=[b1,b2,...bn]  a和b的点积公式为 a·b=a1*b1+a2*b2+...+an*bn
-fun ex33_a(x: Array<Int>, y: Array<Int>) {
+fun ex33a(x: Array<Int>, y: Array<Int>) {
     require(x.size == y.size) { "向量点乘要求两个向量的行列数相同，x.size=${x.size} y.size=${y.size}" }
     require(x.isNotEmpty())
     println("x=${x.joinToString()}")
@@ -463,10 +467,10 @@ fun ex33_a(x: Array<Int>, y: Array<Int>) {
 }
 
 //矩阵和矩阵之积
-//若A为m行n列的矩阵，B为n行p列的矩阵，则A和B的乘积（A·B）是一个m行n列的矩阵
+//若A为m行n列的矩阵，B为n行p列的矩阵，则A和B的乘积（A·B）是一个m行p列的矩阵
 //A·B第i行j列的值为A的第i行分别和B的第j列乘积的和
 //A·B的行数与A相同，列数与B相同
-fun ex33_b(a: Array<Array<Int>>, b: Array<Array<Int>>) {
+fun ex33b(a: Array<Array<Int>>, b: Array<Array<Int>>) {
     require(a.isNotEmpty() && a[0].isNotEmpty())
     require(a[0].size == b.size) { "A的列数必须等于B的行数才可以相乘，a[0].size=${a[0].size} b.size=${b.size}" }
     a.forEach {
@@ -492,7 +496,7 @@ fun ex33_b(a: Array<Array<Int>>, b: Array<Array<Int>>) {
 
 //转置矩阵
 //把m行n列的矩阵转换为n行m列的矩阵，行和列互换（相当于二维数组交换行列）
-fun ex33_c(a: Array<Array<Int>>) {
+fun ex33c(a: Array<Array<Int>>) {
     require(a.isNotEmpty() && a[0].isNotEmpty())
     a.forEach { println(it.joinToString()) }
     println()
@@ -507,12 +511,12 @@ fun ex33_c(a: Array<Array<Int>>) {
 
 //矩阵和向量之积
 //长度为n的向量可以表示为n行1列的矩阵
-fun ex33_d(a: Array<Array<Int>>, x: Array<Int>) {
+fun ex33d(a: Array<Array<Int>>, x: Array<Int>) {
     val matrix = Array(x.size) { arrayOf(0) }
     for (i in x.indices) {
         matrix[i][0] = x[i]
     }
-    ex33_b(a, matrix)
+    ex33b(a, matrix)
 }
 
 //向量和矩阵之积
@@ -522,7 +526,7 @@ fun ex33_e(y: Array<Int>, a: Array<Array<Int>>) {
     for (i in y.indices) {
         matrix[i][0] = y[i]
     }
-    ex33_b(matrix, a)
+    ex33b(matrix, a)
 }
 
 //计算掷骰子时，两个骰子之和理论上的概率分布
@@ -569,7 +573,7 @@ fun ex35(N: Int) {
 //根据给定概率返回对应的索引
 //array[i]的值在0~1之间，总和为1，根据array[i]对应的概率返回i的值
 //例如array[2]的值为0.5，则每次调用函数，有50%概率返回2
-fun ex36_a(array: Array<Double>, N: Int) {
+fun ex36a(array: Array<Double>, N: Int) {
     //根据给定概率返回索引
     fun discrete(array: Array<Double>): Int {
         val random = Random.Default.nextDouble()
@@ -602,11 +606,12 @@ fun ex36_a(array: Array<Double>, N: Int) {
 }
 
 //随机打乱数组，且在其他位置的概率相等（也可能位置不变）
-fun ex36_b(array: Array<Int>): Array<Int> {
+fun ex36b(array: Array<Int>): Array<Int> {
     for (i in 0 until array.size - 1) {
-        val j = i + Random.Default.nextInt(array.size - i)
         //练习1.1.37修改成以下代码
         //val j = Random.Default.nextInt(array.size)
+        //从[i,array.size)中随机选择一个值作为索引，和i位置交换
+        val j = i + Random.Default.nextInt(array.size - i)
         val temp = array[i]
         array[i] = array[j]
         array[j] = temp
@@ -616,14 +621,14 @@ fun ex36_b(array: Array<Int>): Array<Int> {
 
 //使用ex36_b函数将大小为M的数组打乱N次，每次打乱前将数组初始化为a[i]=i，
 //打印M*M的表格，i行j列表示i在打乱后落到j位置的次数
-fun ex36_c(M: Int, N: Int) {
+fun ex36c(M: Int, N: Int) {
     val result = Array(M) { Array(M) { 0 } }
     val array = Array(M) { 0 }
     repeat(N) {
         for (i in array.indices) {
             array[i] = i
         }
-        ex36_b(array).forEachIndexed { index, value ->
+        ex36b(array).forEachIndexed { index, value ->
             result[value][index]++
         }
     }
