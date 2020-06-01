@@ -23,13 +23,14 @@ fun formatLong(value: Long, length: Int) = format("%${length}d", value)
 fun formatStringLength(value: String, length: Int) = format("%${length}s", value)
 
 /**
- * 当需要从键盘输入参数时，建议先调用这个方法打印提示
+ * 当需要从键盘输入参数时，建议先调用这个方法打印提示信息
  */
 fun inputPrompt() {
     println("Please enter parameters:")
     println("(<Enter> key to confirm, <Ctrl-d> or <Ctrl-z> ends the input)")
 }
 
+//从标准输入设备（键盘）读取数据
 //kotlin中有自带的readLine函数
 //fun readLine() = StdIn.readLine()
 fun readChar() = StdIn.readChar()
@@ -59,6 +60,8 @@ fun random(n: Int) = StdRandom.uniform(n)//[0,n)范围内的Int值
 fun random(n: Long) = StdRandom.uniform(n)
 fun random(a: Int, b: Int) = StdRandom.uniform(a, b)//[a,b)范围内的Int值
 fun random(a: Double, b: Double) = StdRandom.uniform(a, b)
+fun randomBoolean() = StdRandom.bernoulli()//以相等概率返回true或false
+fun randomBoolean(p: Double) = StdRandom.bernoulli(p)//以指定概率（true的概率）返回true或false
 
 fun main() {
 }
