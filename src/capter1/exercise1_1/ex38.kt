@@ -3,7 +3,6 @@ package capter1.exercise1_1
 import edu.princeton.cs.algs4.In
 import extensions.inputPrompt
 import extensions.readInt
-import java.io.File
 
 //从largeT.txt中读取数据，分别用暴力查找和二分查找来查找数据
 //为了让效果更明显，可设置同一个key的查找次数
@@ -43,6 +42,6 @@ fun main() {
     inputPrompt()
     val key = readInt()
     val times = readInt()
-    val array = In(File("./data/largeT.txt")).readAllInts()
+    val array = In("./data/largeT.txt").readAllInts()
     ex38(array, key, times)
 }
