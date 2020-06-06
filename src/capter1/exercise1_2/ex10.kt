@@ -18,11 +18,14 @@ class VisualCounter(private val N: Int, private val max: Int) {
     var value = 0
 
     init {
+        //对坐标进行伸缩
+        StdDraw.setXscale(0.0, N.toDouble())
+        StdDraw.setYscale(-max.toDouble(), max.toDouble())
         //画背景
         StdDraw.setPenColor(Color.lightGray)
-        StdDraw.line(0.0, 0.5, 1.0, 0.5)
-        StdDraw.textLeft(0.0, 0.5, "(0,0)")
-        StdDraw.textRight(1.0, 0.5, "(${N},0)")
+        StdDraw.line(0.0, 0.0, N.toDouble(), 0.0)
+        StdDraw.textLeft(0.0, 0.0, "(0,0)")
+        StdDraw.textRight(N.toDouble(), 0.0, "(${N},0)")
         StdDraw.setPenColor(Color.BLACK)
         //设置点的半径
         StdDraw.setPenRadius(0.01)
@@ -58,10 +61,10 @@ class VisualCounter(private val N: Int, private val max: Int) {
 
     private fun draw() {
         //count范围为(1,N]，value范围为[-max,max]，绘图时需要在[0,1]范围内
-        StdDraw.point(count.toDouble() / N,
-                1.0 / (2 * max) * value + 0.5)
+        StdDraw.point(count.toDouble(), value.toDouble())
     }
 
+    //当达到最大值或最大操作次数时直接退出程序
     //为了让程序结束时仍然能看到绘制的图形，使用一个读取的阻塞操作让进程延时退出
     private fun end() {
         print("Press <Enter> to exit ")

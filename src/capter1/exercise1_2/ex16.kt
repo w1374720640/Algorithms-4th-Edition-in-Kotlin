@@ -4,9 +4,10 @@ import kotlin.math.abs
 
 //使用欧几里得算法计算最大公约数
 //因为需要支持所有理数，所以添加负数支持
-//正常情况下只讨论自然数的最大公约数，这里最大公约数一直为正
+//正常情况下只讨论自然数的最大公约数，这里可以支持负数，但最大公约数一直为正
 //参考练习1.1.24
 fun commonDivisor(a: Long, b: Long): Long {
+    if (a == 0L || b == 0L) return 1L
     val absA = abs(a)
     val absB = abs(b)
     //两个整数的最大公约数等于其中较小的那个数和两数相除余数的最大公约数
@@ -18,20 +19,20 @@ fun commonDivisor(a: Long, b: Long): Long {
     return commonDivisor(small, remainder)
 }
 
-
 /**
  * 实现一个有理数
  */
 class Rational {
-    //分子（为防止溢出，用Long表示）
+    //分子
     val numerator: Long
 
-    //分母（为防止溢出，用Long表示）
+    //分母
     val denominator: Long
 
     constructor(numerator: Int, denominator: Int) : this(numerator.toLong(), denominator.toLong())
 
     private constructor(numerator: Long, denominator: Long) {
+        require(denominator != 0L) { "Divide by zero" }
         val commonDivisor = commonDivisor(numerator, denominator)
         if (commonDivisor == 1L) {
             this.numerator = numerator
@@ -77,10 +78,12 @@ class Rational {
         return this.numerator == other.numerator && this.denominator == other.denominator
     }
 
+    override fun hashCode(): Int {
+        return toString().hashCode()
+    }
 
     override fun toString(): String = "[numerator=${numerator} denominator=${denominator}]"
 
-    private fun sameSign(a: Long, b: Long) =  (a >= 0L && b >= 0L) || (a <= 0L && b <= 0L)
 }
 
 fun main() {
@@ -92,7 +95,8 @@ fun main() {
     println(Rational(2, 3).divides(Rational(2, 1)))
     println(Rational(100, 300) == Rational(1, 3))
 
-    //负数测试
+    //零、负数测试
+    println(Rational(0, 333))
     println(Rational(-84, -196))
     println(Rational(-2, 3).times(Rational(3, 2)))
 
@@ -101,5 +105,5 @@ fun main() {
     println(a)
     println(a.times(a).times(a))
 
-    //TODO 1.2.17 使用断言来防止溢出
+    //TODO 1.2.17 使用断言来防止溢出 太复杂，网上也没找到合适的处理方式
 }

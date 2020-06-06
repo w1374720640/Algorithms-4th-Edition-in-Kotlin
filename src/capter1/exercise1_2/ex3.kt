@@ -15,6 +15,8 @@ fun main() {
     val n = readInt()
     val min = readDouble()
     val max = readDouble()
+    require(min < max)
+    //题目中说min和max在单位正方形中
     require(min in 0.0..1.0 && max in 0.0..1.0) { "The values of min and max should be between [0,1]" }
 
     val intervalList = mutableListOf<Interval2D>()
@@ -25,6 +27,9 @@ fun main() {
     val leftTopPointList = mutableListOf<Point2D>()
     val rightBottomPointList = mutableListOf<Point2D>()
     repeat(n) {
+        //题目要求宽和高均匀的分布在min和max之间，不能先获取left再获取width
+        //关于概率均匀分布的问题可以参考练习1.1.36、1.1.37
+        //实际上我也无法在数学上证明练习1.1.37的概率为什么不均匀分布，但事实如此
         val width = random(min, max)
         val height = random(min, max)
         val left = random(0.0, 1.0 - width)
