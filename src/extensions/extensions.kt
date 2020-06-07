@@ -17,7 +17,7 @@ fun format(format: String, vararg args: Any) = String.format(format, *args)
 fun format(local: Locale, format: String, vararg args: Any) = String.format(local, format, *args)
 
 fun formatDouble(value: Double, decimal: Int) = format("%.${decimal}f", value)
-fun formatFloat(value: Double, decimal: Int) = format("%.${decimal}f", value)
+fun formatFloat(value: Float, decimal: Int) = format("%.${decimal}f", value)
 fun formatInt(value: Int, length: Int) = format("%${length}d", value)
 fun formatLong(value: Long, length: Int) = format("%${length}d", value)
 fun formatStringLength(value: String, length: Int) = format("%${length}s", value)
