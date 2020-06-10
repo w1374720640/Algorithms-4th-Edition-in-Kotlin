@@ -11,27 +11,6 @@ import java.util.regex.Pattern
  * 和中序转后序大体相同，不同的地方在于拼接两个值和操作符时，操作符放在前面
  */
 fun ex10b(array: Array<String>): String {
-//预定义的操作符优先级
-    val operatorPrecedence = mapOf("+" to 1, "-" to 1, "*" to 2, "/" to 2)
-
-    //是否是操作符
-    fun String.isOperator() = "+" == this || "-" == this || "*" == this || "/" == this
-
-    //是否是左括号
-    fun String.isLeftBracket() = "(" == this
-
-    //是否是右括号
-    fun String.isRightBracket() = ")" == this
-
-    //是否是数值
-    fun String.isNum() = Pattern.matches("^-?[1-9]\\d*\$", this)
-
-    //比较两个操作符的优先级
-    fun String.largePrecedence(topOperator: String): Boolean {
-        require(isOperator() && topOperator.isOperator()) { "This method only accepts operators as parameters" }
-        return operatorPrecedence[this]!! > operatorPrecedence[topOperator]!!
-    }
-
     //检查是否有未知字符，主要因为没有正确用空格分隔表达式
     array.forEach {
         require(it.isNum() || it.isOperator() || it.isLeftBracket() || it.isRightBracket()) {

@@ -13,19 +13,6 @@ import extensions.readAllStrings
 fun ex11a(array: Array<String>): String {
     fun String.isOperator() = "+" == this || "-" == this || "*" == this || "/" == this
 
-    //求每个最小表达式的值
-    fun calculate(operator: String, first: String, second: String): String {
-        val firstInt = first.toInt()
-        val secondInt = second.toInt()
-        return when(operator) {
-            "+" -> (firstInt + secondInt).toString()
-            "-" -> (firstInt - secondInt).toString()
-            "*" -> (firstInt * secondInt).toString()
-            "/" -> (firstInt / secondInt).toString()
-            else -> ""
-        }
-    }
-
     val valueStack = Stack<String>()
     array.forEach {
         if (it.isOperator()) {

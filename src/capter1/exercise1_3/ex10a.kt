@@ -5,6 +5,43 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 import java.util.regex.Pattern
 
+//预定义的操作符优先级
+val operatorPrecedence = mapOf("+" to 1, "-" to 1, "*" to 2, "/" to 2)
+
+//是否是操作符
+fun String.isOperator() = when (this) {
+    "+", "-", "*", "/" -> true
+    else -> false
+}
+
+//是否是左括号
+fun String.isLeftBracket() = "(" == this
+
+//是否是右括号
+fun String.isRightBracket() = ")" == this
+
+//是否是数值
+fun String.isNum() = Pattern.matches("^-?[1-9]\\d*\$", this)
+
+//比较两个操作符的优先级
+fun String.largePrecedence(topOperator: String): Boolean {
+    require(isOperator() && topOperator.isOperator()) { "This method only accepts operators as parameters" }
+    return operatorPrecedence[this]!! > operatorPrecedence[topOperator]!!
+}
+
+//求每个最小表达式的值
+fun calculate(operator: String, first: String, second: String): String {
+    val firstInt = first.toInt()
+    val secondInt = second.toInt()
+    return when (operator) {
+        "+" -> (firstInt + secondInt).toString()
+        "-" -> (firstInt - secondInt).toString()
+        "*" -> (firstInt * secondInt).toString()
+        "/" -> (firstInt / secondInt).toString()
+        else -> ""
+    }
+}
+
 /**
  * 将算术表达式由中序表达式转为后序表达式
  * 如：中序 2 * 3 / ( 2 - 1 ) + 3 * ( 4 - 1 ) 对应后序 2 3 * 2 1 - / 3 4 1 - * +
@@ -22,40 +59,6 @@ import java.util.regex.Pattern
  * 4、遍历结束后如果操作符栈为空，直接返回值栈顶部值，否则从值栈中取出两个值，和栈顶操作符拼接后返回最终值
  */
 fun ex10a(array: Array<String>): String {
-
-    //预定义的操作符优先级
-    val operatorPrecedence = mapOf("+" to 1, "-" to 1, "*" to 2, "/" to 2)
-
-    //是否是操作符
-    fun String.isOperator() = "+" == this || "-" == this || "*" == this || "/" == this
-
-    //是否是左括号
-    fun String.isLeftBracket() = "(" == this
-
-    //是否是右括号
-    fun String.isRightBracket() = ")" == this
-
-    //是否是数值
-    fun String.isNum() = Pattern.matches("^-?[1-9]\\d*\$", this)
-
-    //比较两个操作符的优先级
-    fun String.largePrecedence(topOperator: String): Boolean {
-        require(isOperator() && topOperator.isOperator()) { "This method only accepts operators as parameters" }
-        return operatorPrecedence[this]!! > operatorPrecedence[topOperator]!!
-    }
-
-    //求每个最小表达式的值
-    fun calculate(operator: String, first: String, second: String): String {
-        val firstInt = first.toInt()
-        val secondInt = second.toInt()
-        return when(operator) {
-            "+" -> (firstInt + secondInt).toString()
-            "-" -> (firstInt - secondInt).toString()
-            "*" -> (firstInt * secondInt).toString()
-            "/" -> (firstInt / secondInt).toString()
-            else -> ""
-        }
-    }
 
     //检查是否有未知字符，主要因为没有正确用空格分隔表达式
     array.forEach {
