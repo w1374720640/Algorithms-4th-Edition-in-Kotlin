@@ -63,5 +63,20 @@ fun random(a: Double, b: Double) = StdRandom.uniform(a, b)
 fun randomBoolean() = StdRandom.bernoulli()//以相等概率返回true或false
 fun randomBoolean(p: Double) = StdRandom.bernoulli(p)//以指定概率（true的概率）返回true或false
 
+/**
+ * 对可能抛出异常的代码用try{}catch(){}包裹
+ */
+inline fun safeCall(catchAction: (e: Exception) -> Unit = { println(it.message) },
+                    finallyAction: () -> Unit = {},
+                    action: () -> Unit) {
+    try {
+        action()
+    } catch (e: Exception) {
+        catchAction(e)
+    } finally {
+        finallyAction()
+    }
+}
+
 fun main() {
 }
