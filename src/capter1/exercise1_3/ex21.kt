@@ -4,13 +4,15 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 import extensions.readString
 
-fun <T> SinglyLinkedList<T>.find(key: T): Boolean {
+fun <T> SinglyLinkedList<T>.find(key: T): Int {
+    var index = 0
     forEach {
         if (key == it) {
-            return true
+            return index
         }
+        index++
     }
-    return false
+    return -1
 }
 
 fun main() {
@@ -21,5 +23,5 @@ fun main() {
     list.addAll(array.iterator())
     println("key = ${key}")
     println("list = ${list.joinToSting()}")
-    println("find result = ${list.find(key)}")
+    println("find index = ${list.find(key)}")
 }

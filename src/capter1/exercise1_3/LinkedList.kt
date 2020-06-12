@@ -20,6 +20,7 @@ class SinglyLinkedList<T> {
 
 /**
  * 双向链表
+ * 在练习1.3.31中有完整的实现（通过扩展方法实现）
  */
 class DoublyLinkedList<T> {
     var first: DoubleNode<T>? = null
