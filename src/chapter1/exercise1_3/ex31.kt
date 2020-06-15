@@ -26,8 +26,9 @@ fun <T> DoublyLinkedList<T>.addTail(value: T) {
     }
 }
 
-fun <T> DoublyLinkedList<T>.deleteHeader() {
+fun <T> DoublyLinkedList<T>.deleteHeader(): T {
     if (first == null) throw NoSuchElementException("List is empty")
+    val value = first!!.item
     val node = first!!.next
     if (node == null) {
         first = null
@@ -36,10 +37,12 @@ fun <T> DoublyLinkedList<T>.deleteHeader() {
         node.previous = null
         first = node
     }
+    return value
 }
 
-fun <T> DoublyLinkedList<T>.deleteTail() {
+fun <T> DoublyLinkedList<T>.deleteTail(): T {
     if (last == null) throw NoSuchElementException("List is empty")
+    val value = last!!.item
     val node = last!!.previous
     if (node == null) {
         first = null
@@ -48,6 +51,7 @@ fun <T> DoublyLinkedList<T>.deleteTail() {
         node.next = null
         last = node
     }
+    return value
 }
 
 fun <T> DoublyLinkedList<T>.addBefore(index: Int, value: T) {
@@ -91,7 +95,7 @@ fun <T> DoublyLinkedList<T>.addAfter(index: Int, value: T) {
     throw NoSuchElementException("No such element with index: $index")
 }
 
-fun <T> DoublyLinkedList<T>.delete(index: Int) {
+fun <T> DoublyLinkedList<T>.delete(index: Int): T {
     var i = 0
     var node = first
     var previousNode: DoubleNode<T>? = null
@@ -111,7 +115,7 @@ fun <T> DoublyLinkedList<T>.delete(index: Int) {
                 previousNode.next = nextNode
                 nextNode.previous = previousNode
             }
-            return
+            return node.item
         }
         previousNode = node
         node = nextNode
