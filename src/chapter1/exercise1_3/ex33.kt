@@ -42,6 +42,7 @@ class DoublyLinkedDeque<T> : Deque<T> {
  * 从头部添加时，向左递增，越界后从最右侧添加，从尾部添加时，向右侧递增，越界后从最左侧添加，
  * 头部添加时索引先自减再添加，尾部添加时先添加索引再自增，弹出时上述操作相反，
  * 索引与2的n次方减1按位与，可以得到实际的索引（小于0或大于size-1时会自动跳转末尾或开头）
+ * 实现方式参考 java.util.ArrayDeque
  */
 class ResizingArrayDeque<T> : Deque<T> {
     private var head = 0

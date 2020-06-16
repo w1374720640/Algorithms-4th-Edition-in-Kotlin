@@ -31,13 +31,13 @@ class DoublyDequeStack<T> {
     }
 
     fun popLeft(): T {
-        require(leftSize > 0) {"Left stack is empty"}
+        require(leftSize > 0) { "Left stack is empty" }
         leftSize--
         return deque.popLeft()
     }
 
     fun popRight(): T {
-        require(rightSize > 0) {"Right stack is empty"}
+        require(rightSize > 0) { "Right stack is empty" }
         rightSize--
         return deque.popRight()
     }
