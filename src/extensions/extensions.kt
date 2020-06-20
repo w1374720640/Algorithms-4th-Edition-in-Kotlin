@@ -78,5 +78,15 @@ inline fun safeCall(catchAction: (e: Exception) -> Unit = { println(it.message) 
     }
 }
 
+/**
+ * 统计代码运行时间
+ */
+inline fun spendTimeMillis(action: () -> Unit): Long {
+    val startTime = System.currentTimeMillis()
+    action()
+    val endTime = System.currentTimeMillis()
+    return endTime - startTime
+}
+
 fun main() {
 }
