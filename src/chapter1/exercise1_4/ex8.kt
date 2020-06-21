@@ -1,8 +1,5 @@
 package chapter1.exercise1_4
 
-import edu.princeton.cs.algs4.In
-import extensions.*
-
 //暴力计算数组中相等的整数对数量
 fun ex8a(array: IntArray): Long {
     var count = 0L
@@ -50,18 +47,8 @@ fun ex8b(array: IntArray): Long {
 }
 
 fun main() {
-    inputPrompt()
-    //可以从largeT.txt中截取一段数据用于测试，完整的largeT.txt慢方法耗时太长
-    val path = readString()
-    val array = In(path).readAllInts()
-    val fastSpendTime = spendTimeMillis {
-        val count = ex8b(array)
-        println("fast method count = $count")
-    }
-    println("fast method spend $fastSpendTime ms")
-    val slowSpendTime = spendTimeMillis {
-        val count = ex8a(array)
-        println("slow method count = $count")
-    }
-    println("slow method spend $slowSpendTime ms")
+    println("fast method:")
+    timeRatio(path = "./data/largeT.txt") { ex8b(it) }
+    println("slow method:")
+    timeRatio(path = "./data/largeT.txt") { ex8a(it) }
 }
