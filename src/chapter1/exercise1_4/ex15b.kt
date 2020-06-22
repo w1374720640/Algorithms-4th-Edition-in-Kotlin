@@ -2,14 +2,14 @@ package chapter1.exercise1_4
 
 /**
  * 求三个数相加和为0的组合数量，要求使用平方级算法，参考ex15a
- * FIXME 不知道哪里有错误，结果约为实际值的一半
  */
 fun ex15b(array: IntArray): Long {
     array.sort()
     var count = 0L
     for (i in array.indices) {
         if (array[i] > 0) break
-        val pair = findLeftAndRight(-array[i], array)
+        //若两个数相加等于A，那这两个值一定在二分之A的两侧
+        val pair = findLeftAndRight(-array[i] / 2, array)
         var left = pair.first
         var right = pair.second
         while (left > i && right < array.size) {
