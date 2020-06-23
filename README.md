@@ -2,11 +2,11 @@
 
 **申明：所有代码未经过严谨的测试，自测通过，不保证Bug Free，而且对部分练习进行了微调或扩展，仅供参考。**
 
-> 发现了两个比较完整的仓库，每节做完后会和他们的实现方式对比、优化
+> 发现了两个质量较高的仓库，每节做完后会和他们的实现方式对比、优化
 >
-> [国内作品，内容较完整](https://github.com/jimmysuncpt/Algorithms)
+> [Java版本，已完成](https://github.com/jimmysuncpt/Algorithms)
 >
-> [国外早期作品，只有部分题目](https://github.com/aistrate/AlgorithmsSedgewick)
+> [C#版本，部分完成，解答更详细](https://github.com/ikesnowy/Algorithms-4th-Edition-in-Csharp)
 
 因为我是一位`Android`开发，擅长`java`和`kotlin`，其他语言也会一些，但是不熟练，所以就在这两门语言中选一种；又因为`java`语法太啰嗦，写起来太麻烦，所以整个项目使用`kotlin`编写。
 
