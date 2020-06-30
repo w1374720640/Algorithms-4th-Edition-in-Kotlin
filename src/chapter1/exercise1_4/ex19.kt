@@ -8,7 +8,7 @@ import extensions.random
  * 边界上的点只需要和存在的点比较，所以肯定有局部最小元素
  */
 /**
- * 这个方法简单，大多数情况下效率较高，但是在最坏不与N成正比，属于不稳定算法
+ * 这个方法简单，数据随机的情况下效率较高，但是在最坏情况下不与N成正比，属于不稳定算法
  * 从左上角开始，依次与周围的点对比，值最小的点为下一个判断点，直到该点比周围所有点都小
  */
 fun ex19a(array: Array<Array<Int>>): Triple<Int, Int, Int> {
@@ -62,6 +62,7 @@ fun ex19b(array: Array<Array<Int>>): Triple<Int, Int, Int> {
 
     var count = 0
 
+    //找到一行中最小值的索引
     fun findMinInRow(row: Int): Int {
         var minIndex = startX
         for (i in startX + 1..endX) {
@@ -73,6 +74,7 @@ fun ex19b(array: Array<Array<Int>>): Triple<Int, Int, Int> {
         return minIndex
     }
 
+    //找到一列中最小值的索引
     fun findMinInColumn(column: Int): Int {
         var minIndex = startY
         for (i in startY + 1..endY) {
@@ -84,14 +86,18 @@ fun ex19b(array: Array<Array<Int>>): Triple<Int, Int, Int> {
         return minIndex
     }
 
+    //判断行是否在有效范围内
     fun isRowValid(row: Int) = row in startY..endY
 
+    //判断列是否在有效范围内
     fun isColumnValid(column: Int) = column in startX..endX
 
+    //找到局部最小值
     fun findLocalMinimum(): Pair<Int, Int> {
         val row = (startY + endY) / 2
         val rowMinColumn = findMinInRow(row)
         when {
+            //值在边界时只需要和存在的值对比
             !isRowValid(row - 1) && !isRowValid(row + 1) -> return row to rowMinColumn
             !isRowValid(row - 1) -> {
                 if (array[row][rowMinColumn] < array[row + 1][rowMinColumn]) {
@@ -141,6 +147,7 @@ fun ex19b(array: Array<Array<Int>>): Triple<Int, Int, Int> {
                 }
             }
         }
+        //在原范围的四分之一范围内继续查找
         return findLocalMinimum()
     }
 
@@ -149,20 +156,24 @@ fun ex19b(array: Array<Array<Int>>): Triple<Int, Int, Int> {
 }
 
 fun main() {
+    //ex19a方法的最坏情况
     val array1 = arrayOf(
             arrayOf(100, 99, 82, 81, 80),
             arrayOf(98, 97, 84, 83, 79),
             arrayOf(96, 95, 86, 85, 78),
             arrayOf(94, 93, 88, 87, 74),
             arrayOf(92, 91, 90, 89, 73))
+    //ex19b方法的最坏情况（之一）
     val array2 = arrayOf(
-            arrayOf(119, 118, 117, 116, 115),
-            arrayOf(114, 113, 104, 112, 111),
-            arrayOf(100, 99, 98, 101, 102),
-            arrayOf(110, 106, 97, 95, 107),
-            arrayOf(109, 108, 105, 94, 93)
+            arrayOf(114, 113, 112, 111, 110),
+            arrayOf(109, 108, 107, 106, 101),
+            arrayOf(100, 99, 98, 97, 96),
+            arrayOf(105, 103, 94, 102, 95),
+            arrayOf(104, 92, 93, 91, 90)
     )
+    //随机生成的5*5数组
     val array3 = Array(5) { Array(5) { random(100) } }
+    //切换不同数据源
     val array = array1
     val tripleA = ex19a(array)
     val tripleB = ex19b(array)
