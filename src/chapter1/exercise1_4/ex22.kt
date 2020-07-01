@@ -1,7 +1,6 @@
 package chapter1.exercise1_4
 
 import extensions.inputPrompt
-import extensions.random
 import extensions.readAllInts
 import extensions.readInt
 
@@ -11,10 +10,11 @@ import extensions.readInt
  *
  * 解：使用斐波那契数列替代2的幂（二分法）进行查找
  * 斐波那契数列初始值为0和1，后一个值为前面两个值的和，0 1 1 2 3 5 8 13 21 43 55 89 144 233 ...
- * 原理：数列中倒数第一个数约为倒数第三个数的两倍，
+ * 原理：数列中倒数第一个数约为倒数第三个数的两倍
  * 从0开始累加，找到第一个比数组长度大的数列值，最后一位值为last1，倒数第二值为last2，倒数第三个值为last3...，
  * 记录最后两位数last1和last2，其余值可以通过减法获得
  * 设查找范围为[start, end]，中值为mid，区间长度（比点的数量少1）为last1
+ * 区间可以分为左右两侧，左侧长度为last3，右侧长度为last2，总和last3+last2=last1
  * 所以end=start+last1 mid=start+last3 无需记录end和mid的值，每个循环中重新计算即可
  * 第一次查找时start=0,end=last1,mid=last3，比较中值和给定key的大小
  * 若key小于中值，则起始位置不变，区间长度等于中值左半侧的长度，start不变，last1=last3, last2=last2-last3
