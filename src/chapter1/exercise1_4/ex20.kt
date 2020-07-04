@@ -49,7 +49,7 @@ fun ex20(array: IntArray, value: Int): Boolean {
                 result = 1
             }
             array[index - 1] > array[index] && array[index + 1] < array[index] -> {
-                //左高右低，说明在双调点右侧，需要在
+                //左高右低，说明在双调点右侧，需要在左侧查找双调点
                 result = -1
             }
             else -> {
