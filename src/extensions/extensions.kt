@@ -30,26 +30,36 @@ fun inputPrompt() {
     println("(<Enter> key to confirm, <Ctrl-d> or <Ctrl-z> ends the input)")
 }
 
+/**
+ * 从标准输入中读取数据时，可以添加提示文案
+ */
+private inline fun <T> read(message: String, readAction: () -> T): T {
+    if (message.isNotEmpty()) {
+        print(message)
+    }
+    return readAction()
+}
+
 //从标准输入设备（键盘）读取数据
 //kotlin中有自带的readLine函数
-//fun readLine() = StdIn.readLine()
-fun readChar() = StdIn.readChar()
-fun readAll() = StdIn.readAll()
-fun readString() = StdIn.readString()
-fun readInt() = StdIn.readInt()
-fun readDouble() = StdIn.readDouble()
-fun readFloat() = StdIn.readFloat()
-fun readLong() = StdIn.readLong()
-fun readShort() = StdIn.readShort()
-fun readByte() = StdIn.readByte()
-fun readBoolean() = StdIn.readBoolean()
+fun readLine(message: String = "") = read(message) { StdIn.readLine() }
+fun readChar(message: String = "") = read(message) { StdIn.readChar() }
+fun readString(message: String = "") = read(message) { StdIn.readString() }
+fun readInt(message: String = "") = read(message) { StdIn.readInt() }
+fun readDouble(message: String = "") = read(message) { StdIn.readDouble() }
+fun readFloat(message: String = "") = read(message) { StdIn.readFloat() }
+fun readLong(message: String = "") = read(message) { StdIn.readLong() }
+fun readShort(message: String = "") = read(message) { StdIn.readShort() }
+fun readByte(message: String = "") = read(message) { StdIn.readByte() }
+fun readBoolean(message: String = "") = read(message) { StdIn.readBoolean() }
 
 //使用下面的方法获取输入数组时，根据平台不同需要用<Ctrl-d> 或 <Ctrl-z>结束输入
-fun readAllStrings() = StdIn.readAllStrings()
-fun readAllLines() = StdIn.readAllLines()
-fun readAllInts() = StdIn.readAllInts()
-fun readAllLongs() = StdIn.readAllLongs()
-fun readAllDoubles() = StdIn.readAllDoubles()
+fun readAll(message: String = "") = read(message) { StdIn.readAll() }
+fun readAllStrings(message: String = "") = read(message) { StdIn.readAllStrings() }
+fun readAllLines(message: String = "") = read(message) { StdIn.readAllLines() }
+fun readAllInts(message: String = "") = read(message) { StdIn.readAllInts() }
+fun readAllLongs(message: String = "") = read(message) { StdIn.readAllLongs() }
+fun readAllDoubles(message: String = "") = read(message) { StdIn.readAllDoubles() }
 
 
 //随机数简洁写法
