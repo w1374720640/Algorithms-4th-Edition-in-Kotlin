@@ -34,7 +34,8 @@ fun ex24a(array: IntArray, start: Int = 0, end: Int = array.size - 1, count: Int
  * 条件与上面相同，把成本减低到~2lgF
  * 先从第二层开始扔，如果没碎，依次从4、8、16 ... 2^n层楼扔，直到鸡蛋碎了，成本为常数1
  * 然后在[2^(n-1), F)范围内二分查找，因为确定范围时总是乘2，所以二分查找的范围小于等于F/2
- * 所以，总成本为1+1/2*lg(F/2)=1+1/2*(lgF-lg2)=1+1/2*lgF-1/2*1=(1+lgF)/2
+ * 所以，总成本（平均值）为1+1/2*lg(F/2)=1+1/2*(lgF-lg2)=1+1/2*lgF-1/2*1=(1+lgF)/2
+ * 和题目要求不匹配，且受数据源影响较大，不稳定
  */
 fun ex24b(array: IntArray): Pair<Int, Int> {
     require(array.isNotEmpty())
@@ -77,6 +78,5 @@ fun main() {
 
     val pair2 = ex24b(array)
     println("ex24b total=$total floor=$floor result=${pair2.first} count=${pair2.second}")
-    //实际值和期望值有出入
     println("ex24b (1+lgF)/2=${formatDouble((1 + log2(floor.toDouble())) / 2, 2)}")
 }
