@@ -75,11 +75,10 @@ fun main() {
     }
     while (true) {
         safeCall {
-            when (readInt()) {
+            when (readInt("command: ")) {
                 0 -> return
                 1 -> {
-                    print("enqueue value: ")
-                    queue.enqueue(readString())
+                    queue.enqueue(readString("enqueue value: "))
                     iterate()
                 }
                 2 -> {

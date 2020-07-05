@@ -147,18 +147,16 @@ fun main() {
     println("0: exit, 1: push left, 2: push right, 3: pop left, 4: pop right, 5: size, 6: isEmpty")
     while (true) {
         safeCall {
-            when (readInt()) {
+            when (readInt("command: ")) {
                 0 -> return
                 1 -> {
-                    print("push left value: ")
-                    val value = readString()
+                    val value = readString("push left value: ")
                     linkedDeque.pushLeft(value)
                     arrayDeque.pushLeft(value)
                     iterate()
                 }
                 2 -> {
-                    print("push right: ")
-                    val value = readString()
+                    val value = readString("push right: ")
                     linkedDeque.pushRight(value)
                     arrayDeque.pushRight(value)
                     iterate()

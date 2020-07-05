@@ -50,12 +50,11 @@ fun main() {
     val buffer = Buffer()
     while (true) {
         safeCall {
-            val command = readInt()
+            val command = readInt("command: ")
             when (command) {
                 0 -> return
                 1 -> {
-                    print("insert value: ")
-                    val value = readString()
+                    val value = readString("insert value: ")
                     if (value.length > 1) {
                         println("Please enter a character")
                     } else {
@@ -67,12 +66,10 @@ fun main() {
                     println("has delete")
                 }
                 3 -> {
-                    print("left value: ")
-                    buffer.left(readInt())
+                    buffer.left(readInt("left value: "))
                 }
                 4 -> {
-                    print("right value: ")
-                    buffer.right(readInt())
+                    buffer.right(readInt("right value: "))
                 }
                 5 -> {
                     println("buffer.size = ${buffer.size()}")

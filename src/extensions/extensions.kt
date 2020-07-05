@@ -76,7 +76,7 @@ fun randomBoolean(p: Double) = StdRandom.bernoulli(p)//以指定概率（true的
 /**
  * 对可能抛出异常的代码用try{}catch(){}包裹
  */
-inline fun safeCall(catchAction: (e: Exception) -> Unit = { println(it.message) },
+inline fun safeCall(catchAction: (e: Exception) -> Unit = { println("Throw an exception, message = ${it.message}") },
                     finallyAction: () -> Unit = {},
                     action: () -> Unit) {
     try {

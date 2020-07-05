@@ -203,16 +203,14 @@ fun main() {
     println("0: exit, 1: add header, 2: add tail, 3: delete header, 4: delete tail")
     println("5: add before, 6: add after, 7: delete index, 8: get index, 9: get size")
     while (true) {
-        when (readInt()) {
+        when (readInt("command: ")) {
             0 -> return
             1 -> {
-                print("add header: ")
-                list.addHeader(readString())
+                list.addHeader(readString("add header: "))
                 list.println()
             }
             2 -> {
-                print("add tail: ")
-                list.addTail(readString())
+                list.addTail(readString("add tail: "))
                 list.println()
             }
             3 -> {
@@ -226,29 +224,23 @@ fun main() {
                 list.println()
             }
             5 -> {
-                print("add before index: ")
-                val index = readInt()
-                print("value: ")
-                val value = readString()
+                val index = readInt("add before index: ")
+                val value = readString("value: ")
                 safeCall { list.addBefore(index, value) }
                 list.println()
             }
             6 -> {
-                print("add after index: ")
-                val index = readInt()
-                print("value: ")
-                val value = readString()
+                val index = readInt("add after index: ")
+                val value = readString("value: ")
                 safeCall { list.addAfter(index, value) }
                 list.println()
             }
             7 -> {
-                print("delete index: ")
-                safeCall { list.delete(readInt()) }
+                safeCall { list.delete(readInt("delete index: ")) }
                 list.println()
             }
             8 -> {
-                print("get index: ")
-                safeCall { println(list.get(readInt())) }
+                safeCall { println(list.get(readInt("get index: "))) }
             }
             9 -> {
                 println("list.size = ${list.size()}")

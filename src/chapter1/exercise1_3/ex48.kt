@@ -85,16 +85,14 @@ fun main() {
     println("0: exit, 1: push left, 2: push right, 3: pop left, 4: pop right, 5: stack size, 6, is empty")
     while (true) {
         safeCall {
-            when (readInt()) {
+            when (readInt("command: ")) {
                 0 -> return
                 1 -> {
-                    print("push left value: ")
-                    stack.pushLeft(readString())
+                    stack.pushLeft(readString("push left value: "))
                     iterate()
                 }
                 2 -> {
-                    print("push right: ")
-                    stack.pushRight(readString())
+                    stack.pushRight(readString("push right: "))
                     iterate()
                 }
                 3 -> {
