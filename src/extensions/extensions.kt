@@ -1,5 +1,6 @@
 package extensions
 
+import edu.princeton.cs.algs4.In
 import edu.princeton.cs.algs4.StdIn
 import edu.princeton.cs.algs4.StdOut
 import edu.princeton.cs.algs4.StdRandom
@@ -96,6 +97,14 @@ inline fun spendTimeMillis(action: () -> Unit): Long {
     action()
     val endTime = System.currentTimeMillis()
     return endTime - startTime
+}
+
+/**
+ * 快速创建指定大小的整数数组
+ */
+fun getIntArrayFromFile(size: Int, path: String = "./data/1Mints.txt"): IntArray {
+    val originArray = In(path).readAllInts()
+    return if (size < originArray.size) originArray.copyOf(size) else originArray
 }
 
 fun main() {

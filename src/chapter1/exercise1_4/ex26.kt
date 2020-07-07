@@ -1,5 +1,8 @@
 package chapter1.exercise1_4
 
+import extensions.getIntArrayFromFile
+import kotlin.math.pow
+
 /**
  * 假设有一个算法，接受平面上的N个点，并能够返回在同一条直线上的三个点的组数
  * 证明你能够用这个算法解决3-sum问题
@@ -18,17 +21,63 @@ package chapter1.exercise1_4
  * 根据给定的算法，求出同一条直线上的三个点组数，结果等于3-sum问题的解
  * （要求输入数据中不包含重复元素）
  */
-fun ex26() {
+fun ex26(array: IntArray): Long {
 
     /**
-     * 计算平面上N个点中，能连成一条直线的三个点的组数
+     * 判断三个点是否在同一条直线上
      * 设三个点分别为(x1,y1),(x2,y2),(x3,y3)
      * 三个点在一条直线上，说明每两个点组成的直线斜率相同或都不存在（垂直与y轴）
      * 由斜率相等得 (y1-y2)/(x1-x2)=(y2-y3)/(x2-x3)
-     * 变形得 (y1-y2)*(x2-x3)=(y2-y3)*(x1-x2)
+     * 变形得 (y1-y2)*(x2-x3)-(y2-y3)*(x1-x2)=0
      * 所有满足上述变形公式的三个点都在一条直线上，即使斜率不存在
      */
-    fun numOfThreePointsOnSameLine() {
-
+    fun pointsOnSameLine(point1: Pair<Long, Long>, point2: Pair<Long, Long>, point3: Pair<Long, Long>): Boolean {
+        return (point1.second - point2.second) * (point2.first - point3.first) == (point2.second - point3.second) * (point1.first - point2.first)
     }
+
+    /**
+     * 使用三点一直线的方法判断3-sum问题时，要求数据源中数据不重复
+     * 相同的两个点在实际上无法连成一条线，在公式中和任何一个点都满足条件
+     */
+    fun checkPointIsRepeated(point1: Pair<Long, Long>, point2: Pair<Long, Long>, point3: Pair<Long, Long>): Boolean {
+        return point1 == point2 || point1 == point3 || point2 == point3
+    }
+
+    /**
+     * 计算平面上N个点中，能连成一条直线的三个点的组数
+     */
+    fun numOfThreePointsOnSameLine(array: Array<Pair<Long, Long>>): Long {
+        var count = 0L
+        for (i in 0..array.size - 3) {
+            for (j in i + 1..array.size - 2) {
+                for (k in j + 1 until array.size) {
+                    //排除重复的点
+                    if (checkPointIsRepeated(array[i], array[j], array[k])) continue
+                    if (pointsOnSameLine(array[i], array[j], array[k])) {
+                        count++
+                    }
+                }
+            }
+        }
+        return count
+    }
+    //为防止数据溢出，使用Long来保存点的坐标
+    //也可以使用BigInteger来保存任意长度的整数，但是效率比原始类型低几十倍
+    val longArray = Array(array.size) {
+        val x = array[it].toLong()
+        x to x.toDouble().pow(3).toLong()
+    }
+    return numOfThreePointsOnSameLine(longArray)
+}
+
+fun main() {
+    val array = intArrayOf(-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+    println("threeSum: ${threeSum(array)}")
+    println("ex26: ${ex26(array)}")
+
+
+    //下面的数据源会导致部分数据溢出，使用BigInteger替代ex26中的Long可以防止溢出，但是效率比Long低几十倍
+//    val mayOverflowArray = getIntArrayFromFile(1000)
+//    println("threeSum: ${threeSum(mayOverflowArray)}")
+//    println("ex26: ${ex26(mayOverflowArray)}")
 }
