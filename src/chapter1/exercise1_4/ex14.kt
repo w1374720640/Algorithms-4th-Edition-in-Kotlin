@@ -11,6 +11,7 @@ fun ex14(array: IntArray): Long {
     for (i in array.indices) {
         for (j in i + 1 until array.size) {
             for (k in j + 1 until array.size) {
+                //需要注意这里二分查找的结果必须大于k才代表找到
                 if (binarySearch(-array[i] - array[j] - array[k], array) > k) {
                     count++
                 }

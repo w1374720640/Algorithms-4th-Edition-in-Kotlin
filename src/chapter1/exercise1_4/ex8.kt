@@ -13,22 +13,12 @@ fun ex8a(array: IntArray): Long {
     return count
 }
 
-//优化后的方法
-//先排序，再统计每个数字的重复次数，再用组合公式计算组合数
+/**
+ * 优化后的方法
+ * 先排序，再统计每个数字的重复次数，再用组合公式计算组合数
+ * array.sort()排序算法复杂度为NlgN，遍历所有元素复杂度为N，用组合公式计算组合数复杂度为常数，所以总复杂度为NlgN
+ */
 fun ex8b(array: IntArray): Long {
-    //计算从total数量数据中取select个数据的组合数
-    fun numOfCombinations(total: Int, select: Int): Long {
-        require(total >= select)
-        //分母
-        var denominator = 1L
-        //分子
-        var molecule = 1L
-        repeat(select) {
-            denominator *= total - it
-            molecule *= it + 1
-        }
-        return denominator / molecule
-    }
     array.sort()
     var count = 0L
     var index = 0
@@ -39,7 +29,7 @@ fun ex8b(array: IntArray): Long {
             equalNum++
         }
         if (equalNum > 1) {
-            count += numOfCombinations(equalNum, 2)
+            count += combination(equalNum, 2)
         }
         index += equalNum
     }

@@ -8,12 +8,15 @@ fun ex12(array1: IntArray, array2: IntArray) {
     var index2 = 0
     while (index1 < array1.size && index2 < array2.size) {
         val value = array1[index1++]
+        //让数组1的索引前进到第一个不等于value的位置
         while (index1 < array1.size && array1[index1] == value) {
             index1++
         }
+        //让数组2的索引前进到第一个大于value的位置
         while (index2 < array2.size && array2[index2] <= value) {
             index2++
         }
+        //数组1和数组2当前索引减一的位置值是否相同，相同则为公共元素
         if (index2 > 0 && array1[index1 - 1] == array2[index2 - 1]) {
             print("${array1[index1 - 1]} ")
         }
