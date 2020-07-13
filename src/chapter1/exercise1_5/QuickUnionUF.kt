@@ -31,9 +31,6 @@ open class QuickUnionUF(N: Int) : UF {
 }
 
 fun main() {
-    val action: (Int) -> UF = { QuickUnionUF(it) }
-    unionFindTest(1, action)
-    unionFindTest(2, action)
-    //同样需要等很久很久很久...
-    unionFindTest(3, action)
+    //unionNum=512000之前只有较少的连接操作，速度很快，后面有大量连接操作，耗时急剧上升
+    unionFindTest{ QuickUnionUF(it) }
 }

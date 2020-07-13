@@ -1,6 +1,7 @@
 package chapter1.exercise1_5
 
 import edu.princeton.cs.algs4.In
+import extensions.formatDouble
 import extensions.spendTimeMillis
 
 /**
@@ -33,14 +34,20 @@ fun getNAndPairArrayFromFile(scale: Int): Pair<Int, Array<Pair<Int, Int>>> {
     return N to pairArray
 }
 
-inline fun unionFindTest(scale: Int, action: (Int) -> UF) {
-    val data = getNAndPairArrayFromFile(scale)
-    val uf = action(data.first)
-    val result = unionFind(uf, data.second)
-    val scaleText = when (scale) {
-        2 -> "medium"
-        3 -> "large"
-        else -> "tiny"
+inline fun unionFindTest(create: (Int) -> UF) {
+    var size = 1000
+    var preTime = 0L
+    val pair = getNAndPairArrayFromFile(3)
+    while (true) {
+        val uf = create(pair.first)
+        val result = unionFind(uf, pair.second.copyOfRange(0, minOf(size, pair.second.size)))
+        val ratio = if (preTime == 0L) "/" else formatDouble(result.second.toDouble() / preTime, 2)
+        println("unionNum=${minOf(size, pair.second.size)} remainingAmount=${result.first} spendTime=${result.second}ms ratio=${ratio}")
+        preTime = result.second
+        if (size >= pair.second.size) {
+            break
+        } else {
+            size *= 2
+        }
     }
-    println("$scaleText count=${result.first} time=${result.second}ms")
 }

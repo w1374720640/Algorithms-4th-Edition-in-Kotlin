@@ -31,9 +31,5 @@ class QuickFindUF(N: Int) : UF {
 }
 
 fun main() {
-    val action: (Int) -> UF = { QuickFindUF(it) }
-    unionFindTest(1, action)
-    unionFindTest(2, action)
-    //需要等很久很久很久...
-    unionFindTest(3, action)
+    unionFindTest{ QuickFindUF(it) }
 }

@@ -20,8 +20,5 @@ open class WeightedQuickUnionUF(N: Int) : QuickUnionUF(N) {
 }
 
 fun main() {
-    val action: (Int) -> UF = { WeightedQuickUnionUF(it) }
-    unionFindTest(1, action)
-    unionFindTest(2, action)
-    unionFindTest(3, action)
+    unionFindTest{ WeightedQuickUnionUF(it) }
 }

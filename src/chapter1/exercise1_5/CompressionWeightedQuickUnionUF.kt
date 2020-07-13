@@ -7,16 +7,15 @@ class CompressionWeightedQuickUnionUF(N: Int) : WeightedQuickUnionUF(N) {
         while (pId != ids[pId]) {
             pId = ids[pId]
         }
-        if (ids[p] != pId) {
-            ids[p] = pId
+        var toBeCompressedId = p
+        while (ids[toBeCompressedId] != pId) {
+            toBeCompressedId = ids[toBeCompressedId]
+            ids[toBeCompressedId] = pId
         }
         return pId
     }
 }
 
 fun main() {
-    val action: (Int) -> UF = { CompressionWeightedQuickUnionUF(it) }
-    unionFindTest(1, action)
-    unionFindTest(2, action)
-    unionFindTest(3, action)
+    unionFindTest{ CompressionWeightedQuickUnionUF(it) }
 }
