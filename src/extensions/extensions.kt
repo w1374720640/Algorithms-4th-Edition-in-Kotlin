@@ -5,6 +5,7 @@ import edu.princeton.cs.algs4.StdIn
 import edu.princeton.cs.algs4.StdOut
 import edu.princeton.cs.algs4.StdRandom
 import java.util.*
+import kotlin.system.exitProcess
 
 /**
  * 这个文件对常用的函数进行了封装，让代码更简洁
@@ -29,6 +30,16 @@ fun formatStringLength(value: String, length: Int) = format("%${length}s", value
 fun inputPrompt() {
     println("Please enter parameters:")
     println("(<Enter> key to confirm, <Ctrl-d> or <Ctrl-z> ends the input)")
+}
+
+/**
+ * 按回车键结束进程
+ * 在调用绘图API时，绘图结束后调用这个方法让绘图窗口不立即关闭
+ */
+fun delayExit() {
+    print("Press <Enter> to exit...")
+    kotlin.io.readLine()
+    exitProcess(0)
 }
 
 /**

@@ -1,13 +1,9 @@
 package chapter1.exercise1_2
 
 import edu.princeton.cs.algs4.StdDraw
-import extensions.inputPrompt
-import extensions.randomBoolean
-import extensions.readDouble
-import extensions.readInt
+import extensions.*
 import java.awt.Color
 import kotlin.math.abs
-import kotlin.system.exitProcess
 
 /**
  * 支持加一和减一的操作，最大操作次数为N，计数器绝对值最大值为max
@@ -35,41 +31,33 @@ class VisualCounter(private val N: Int, private val max: Int) {
     fun increment() {
         //预先判断操作完成后计数器的绝对值，如果大于max，直接结束程序
         if (abs(value + 1) > max) {
-            end()
+            delayExit()
         }
         value++
         count++
         draw()
         //操作结束后如果达到最大操作次数，直接结束程序
         if (count >= N) {
-            end()
+            delayExit()
         }
     }
 
     //减一
     fun decrease() {
         if (abs(value - 1) > max) {
-            end()
+            delayExit()
         }
         value--
         count++
         draw()
         if (count >= N) {
-            end()
+            delayExit()
         }
     }
 
     private fun draw() {
         //count范围为(1,N]，value范围为[-max,max]，绘图时需要在[0,1]范围内
         StdDraw.point(count.toDouble(), value.toDouble())
-    }
-
-    //当达到最大值或最大操作次数时直接退出程序
-    //为了让程序结束时仍然能看到绘制的图形，使用一个读取的阻塞操作让进程延时退出
-    private fun end() {
-        print("Press <Enter> to exit ")
-        readLine()
-        exitProcess(0)
     }
 }
 
