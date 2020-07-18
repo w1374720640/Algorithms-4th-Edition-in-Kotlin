@@ -40,19 +40,6 @@ fun <T : Comparable<T>> Array<T>.swap(i: Int, j: Int) {
 fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int) = this[i] < this[j]
 
 /**
- * 用随机数据测试排序方法性能
- */
-fun timeRandomInput(sortFun: (Array<Double>) -> Unit, size: Int, times: Int = 1): Long {
-    var time = 0L
-    repeat(times) {
-        val array = Array(size) { random() }
-        val spendTime = spendTimeMillis { sortFun(array) }
-        time += spendTime
-    }
-    return time
-}
-
-/**
  * 使用绘图API直观显示数组的排序过程
  * 只能用于显示数据交换的过程，不代表实际执行时间，例如选择排序的交换次数最少，但对比次数最多，耗时仍然很长
  * 因为是使用直方图显示数据，所以数组大小最好不要超过100，不然会显得很拥挤，看不清
@@ -63,6 +50,7 @@ fun timeRandomInput(sortFun: (Array<Double>) -> Unit, size: Int, times: Int = 1)
  * @return 返回交换的次数
  */
 fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, delay: Long): Int {
+    require(array.size > 1)
     var min = Double.MAX_VALUE
     var max = Double.MIN_VALUE
     array.forEach {
@@ -171,11 +159,11 @@ fun getDoubleArray(size: Int, initialState: ArrayInitialState): Array<Double> {
 }
 
 fun sortMethodsCompare(sortFunctions: Array<Pair<String, (Array<Double>) -> Unit>>,
-                       size: Int, times: Int, mode: ArrayInitialState) {
+                       size: Int, times: Int, state: ArrayInitialState) {
     sortFunctions.forEach { sortFunPair ->
         var time = 0L
         repeat(times) {
-            val array = getDoubleArray(size, mode)
+            val array = getDoubleArray(size, state)
             time += spendTimeMillis {
                 sortFunPair.second(array)
             }
@@ -188,11 +176,13 @@ fun main() {
     inputPrompt()
     val size = readInt("size: ")
     val times = readInt("repeat times: ")
+    //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
+    val state = readInt("array initial state(0~4): ")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
             "Select Sort" to ::selectSort,
             "Bubble Sort" to ::bubbleSort,
             "Insert Sort" to ::insertSort,
             "Shell Sort" to ::shellSort
     )
-    sortMethodsCompare(sortMethods, size, times, ArrayInitialState.NEARLY_DESC)
+    sortMethodsCompare(sortMethods, size, times, ArrayInitialState.getEnumByState(state))
 }
