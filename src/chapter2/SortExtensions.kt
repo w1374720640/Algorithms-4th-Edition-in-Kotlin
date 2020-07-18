@@ -1,8 +1,11 @@
 package chapter2
 
+import chapter2.exericise1_1.bubbleSort
+import chapter2.exericise1_1.insertSort
+import chapter2.exericise1_1.selectSort
+import chapter2.exericise1_1.shellSort
 import edu.princeton.cs.algs4.StdDraw
-import extensions.random
-import extensions.spendTimeMillis
+import extensions.*
 import java.awt.Color
 
 /**
@@ -34,6 +37,8 @@ fun <T : Comparable<T>> Array<T>.swap(i: Int, j: Int) {
     }
 }
 
+fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int) = this[i] < this[j]
+
 /**
  * 用随机数据测试排序方法性能
  */
@@ -49,6 +54,7 @@ fun timeRandomInput(sortFun: (Array<Double>) -> Unit, size: Int, times: Int = 1)
 
 /**
  * 使用绘图API直观显示数组的排序过程
+ * 只能用于显示数据交换的过程，不代表实际执行时间，例如选择排序的交换次数最少，但对比次数最多，耗时仍然很长
  * 因为是使用直方图显示数据，所以数组大小最好不要超过100，不然会显得很拥挤，看不清
  *
  * @param array 待排序的数组
@@ -117,4 +123,76 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
     sortFun(array)
     swapListenerList.remove(listener)
     return swapTimes
+}
+
+/**
+ * 数组的初始化状态，
+ */
+enum class ArrayInitialState(val state: Int) {
+    RANDOM(0), //完全随机
+    ASC(1), //完全升序
+    DESC(2), //完全降序
+    NEARLY_ASC(3), //接近升序
+    NEARLY_DESC(4) //接近降序
+    ;
+
+    companion object {
+        fun getEnumByState(state: Int): ArrayInitialState {
+            values().forEach {
+                if (it.state == state) return it
+            }
+            return RANDOM
+        }
+    }
+}
+
+/**
+ * 根据给定顺序，返回指定大小的Double类型数组
+ */
+fun getDoubleArray(size: Int, initialState: ArrayInitialState): Array<Double> {
+    return when (initialState) {
+        ArrayInitialState.RANDOM -> {
+            Array(size) { random() }
+        }
+        ArrayInitialState.ASC -> {
+            Array(size) { it.toDouble() }
+        }
+        ArrayInitialState.DESC -> {
+            Array(size) { it * -1.0 }
+        }
+        ArrayInitialState.NEARLY_ASC -> {
+            //90%概率按升序排列，10%概率在[0~size)范围内取随机Double值
+            Array(size) { if (randomBoolean(0.9)) it.toDouble() else random(0.0, size.toDouble()) }
+        }
+        ArrayInitialState.NEARLY_DESC -> {
+            Array(size) { if (randomBoolean(0.9)) it * -1.0 else random(size * -1.0, -0.0) }
+        }
+    }
+}
+
+fun sortMethodsCompare(sortFunctions: Array<Pair<String, (Array<Double>) -> Unit>>,
+                       size: Int, times: Int, mode: ArrayInitialState) {
+    sortFunctions.forEach { sortFunPair ->
+        var time = 0L
+        repeat(times) {
+            val array = getDoubleArray(size, mode)
+            time += spendTimeMillis {
+                sortFunPair.second(array)
+            }
+        }
+        println("${sortFunPair.first} average spend ${time / times} ms")
+    }
+}
+
+fun main() {
+    inputPrompt()
+    val size = readInt("size: ")
+    val times = readInt("repeat times: ")
+    val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
+            "Select Sort" to ::selectSort,
+            "Bubble Sort" to ::bubbleSort,
+            "Insert Sort" to ::insertSort,
+            "Shell Sort" to ::shellSort
+    )
+    sortMethodsCompare(sortMethods, size, times, ArrayInitialState.NEARLY_DESC)
 }

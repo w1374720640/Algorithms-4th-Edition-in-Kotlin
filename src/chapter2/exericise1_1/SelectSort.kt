@@ -1,8 +1,10 @@
 package chapter2.exericise1_1
 
-import chapter2.showSortingProcess
-import chapter2.swap
-import extensions.*
+import chapter2.*
+import extensions.delayExit
+import extensions.inputPrompt
+import extensions.readInt
+import extensions.readLong
 
 /**
  * 选择排序
@@ -11,23 +13,28 @@ fun <T : Comparable<T>> selectSort(array: Array<T>) {
     for (i in array.indices) {
         var minIndex = i
         for (j in i + 1 until array.size) {
-            if (array[j] < array[minIndex]) minIndex = j
+            if (array.less(j, minIndex)) minIndex = j
         }
         if (minIndex != i) array.swap(i, minIndex)
     }
 }
 
-fun main() {
+/**
+ * 通用的排序方法主函数模板，用于显示数组中数据的交换过程
+ */
+fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit) {
     inputPrompt()
     val size = readInt("size: ")
+    //两次绘制的间隔
     val delay = readLong("delay time millis: ")
-    //随机数组
-    val array = Array(size) { random() }
-    //逆序数组
-//    val array = Array(size) { (size - it).toDouble() }
-    //顺序数组
-//    val array = Array(size) { it.toDouble() }
-    val swapTimes = showSortingProcess(array, ::selectSort, delay)
-    println("Swap $swapTimes times")
+    //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
+    val state = readInt("array initial state(0~4): ")
+    val array = getDoubleArray(size, ArrayInitialState.getEnumByState(state))
+    val swapTimes = showSortingProcess(array, sortFun, delay)
+    println("$name swap $swapTimes times")
     delayExit()
+}
+
+fun main() {
+    sortingMethodMainFunTemplate("Select sort", ::selectSort)
 }
