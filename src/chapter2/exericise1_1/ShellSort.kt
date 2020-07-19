@@ -7,6 +7,7 @@ import chapter2.swap
  * 希尔排序
  */
 fun <T: Comparable<T>> shellSort(array: Array<T>) {
+    //h的取值和书中的不同，但是效率差不多
     var h = if (array.size < 3) 1 else array.size / 3
     while (h >= 1) {
         for (i in h until array.size) {
