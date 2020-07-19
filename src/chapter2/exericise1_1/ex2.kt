@@ -1,7 +1,7 @@
 package chapter2.exericise1_1
 
-import chapter2.SwapListener
-import chapter2.swapListenerList
+import chapter2.SwapCallback
+import chapter2.swapCallbackList
 import extensions.inputPrompt
 import extensions.random
 import extensions.readInt
@@ -13,7 +13,7 @@ import extensions.readInt
 fun ex2a(size: Int): Int {
     val array = Array(size) { if (it == 0) size.toDouble() else it.toDouble() }
     var count = 0
-    val listener = object : SwapListener {
+    val callback = object : SwapCallback {
         override fun before(tag: Any, i: Int, j: Int) {
             if (tag !== array) return
             if (array[i] == size.toDouble() || array[j] == size.toDouble()) count++
@@ -22,9 +22,9 @@ fun ex2a(size: Int): Int {
         override fun after(tag: Any, i: Int, j: Int) {
         }
     }
-    swapListenerList.add(listener)
+    swapCallbackList.add(callback)
     selectSort(array)
-    swapListenerList.remove(listener)
+    swapCallbackList.remove(callback)
     return count
 }
 
@@ -35,7 +35,7 @@ fun ex2a(size: Int): Int {
 fun ex2b(size: Int): Double {
     val map = mutableMapOf<Double, Int>()
     val array = Array(size) { random() }
-    val listener = object : SwapListener {
+    val callback = object : SwapCallback {
         override fun before(tag: Any, i: Int, j: Int) {
             if (tag !== array) return
             map[array[i]] = map.getOrDefault(array[i], 0) + 1
@@ -45,9 +45,9 @@ fun ex2b(size: Int): Double {
         override fun after(tag: Any, i: Int, j: Int) {
         }
     }
-    swapListenerList.add(listener)
+    swapCallbackList.add(callback)
     selectSort(array)
-    swapListenerList.remove(listener)
+    swapCallbackList.remove(callback)
     var total = 0.0
     map.forEach {
         total += it.value

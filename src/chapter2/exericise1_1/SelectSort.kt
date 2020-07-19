@@ -22,7 +22,7 @@ fun <T : Comparable<T>> selectSort(array: Array<T>) {
 /**
  * 通用的排序方法主函数模板，用于显示数组中数据的交换过程
  */
-fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit) {
+fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit, showComparisonProcess: Boolean = true) {
     inputPrompt()
     val size = readInt("size: ")
     //两次绘制的间隔
@@ -30,7 +30,7 @@ fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit)
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
     val state = readInt("array initial state(0~4): ")
     val array = getDoubleArray(size, ArrayInitialState.getEnumByState(state))
-    val swapTimes = showSortingProcess(array, sortFun, delay)
+    val swapTimes = showSortingProcess(array, sortFun, delay, showComparisonProcess)
     println("$name swap $swapTimes times")
     delayExit()
 }

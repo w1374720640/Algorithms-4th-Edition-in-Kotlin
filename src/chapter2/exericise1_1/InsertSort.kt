@@ -16,5 +16,5 @@ fun <T : Comparable<T>> insertSort(array: Array<T>) {
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Insert Sort", ::insertSort)
+    sortingMethodMainFunTemplate("Insert Sort", ::insertSort, false)
 }

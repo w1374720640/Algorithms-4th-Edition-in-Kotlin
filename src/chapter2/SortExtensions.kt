@@ -12,7 +12,7 @@ import java.awt.Color
  * 对数组排序时，每次交换数组的值会回调这个接口
  * 每个方法接收一个数组作为tag参数，用于标识排序的是哪个数组
  */
-interface SwapListener {
+interface SwapCallback {
     fun before(tag: Any, i: Int, j: Int)
     fun after(tag: Any, i: Int, j: Int)
 }
@@ -20,36 +20,51 @@ interface SwapListener {
 /**
  * 数据交换回调列表
  */
-val swapListenerList = mutableListOf<SwapListener>()
+val swapCallbackList = mutableListOf<SwapCallback>()
 
 /**
  * 所有排序函数都应该使用这个扩展函数交换数据
  */
 fun <T : Comparable<T>> Array<T>.swap(i: Int, j: Int) {
-    swapListenerList.forEach { listener ->
-        listener.before(this, i, j)
+    swapCallbackList.forEach { callback ->
+        callback.before(this, i, j)
     }
     val temp = this[i]
     this[i] = this[j]
     this[j] = temp
-    swapListenerList.forEach { listener ->
-        listener.after(this, i, j)
+    swapCallbackList.forEach { callback ->
+        callback.after(this, i, j)
     }
 }
 
-fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int) = this[i] < this[j]
+/**
+ * 数据对比回调列表
+ */
+val comparisonCallbackList = mutableListOf<(Any, Int, Int) -> Unit>()
+
+/**
+ * 所有排序函数都应该使用这个方法对比大小
+ */
+fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int): Boolean {
+    comparisonCallbackList.forEach { callback ->
+        callback(this, i, j)
+    }
+    return this[i] < this[j]
+}
 
 /**
  * 使用绘图API直观显示数组的排序过程
- * 只能用于显示数据交换的过程，不代表实际执行时间，例如选择排序的交换次数最少，但对比次数最多，耗时仍然很长
+ * 可用通过showComparisonProcess参数控制只显示交换过程还是同时显示对比和交换过程
+ * 默认为亮灰色，对比时显示灰色，交换时显示黑色
  * 因为是使用直方图显示数据，所以数组大小最好不要超过100，不然会显得很拥挤，看不清
  *
  * @param array 待排序的数组
  * @param sortFun 用来排序数组的函数，函数内必须用这个文件中的Array<T>.swap(Int,Int)方法交换数据才可以正常工作
  * @param delay 每次绘图的间隔时间，单位毫秒
+ * @param showComparisonProcess 是否显示每次对比的过程，如果为false则只显示交换过程，为true同时显示对比和交换的过程
  * @return 返回交换的次数
  */
-fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, delay: Long): Int {
+fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, delay: Long, showComparisonProcess: Boolean): Int {
     require(array.size > 1)
     var min = Double.MAX_VALUE
     var max = Double.MIN_VALUE
@@ -81,6 +96,12 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
         drawItem(j)
     }
 
+    fun drawComparisonItem(i: Int, j: Int, isSelected: Boolean) {
+        StdDraw.setPenColor(if (isSelected) Color.GRAY else Color.LIGHT_GRAY)
+        drawItem(i)
+        drawItem(j)
+    }
+
     fun clearSwapItem(i: Int, j: Int) {
         StdDraw.setPenColor(Color.WHITE)
         StdDraw.filledRectangle(i + 0.5, (max + min) / 2, 0.5, (max - min) / 2 + space)
@@ -88,7 +109,7 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
     }
 
     var swapTimes = 0
-    val listener = object : SwapListener {
+    val swapCallback = object : SwapCallback {
         override fun before(tag: Any, i: Int, j: Int) {
             if (tag !== array) return
             drawSwapItem(i, j, true)
@@ -105,11 +126,20 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
         }
 
     }
-    swapListenerList.add(listener)
+    val comparisonCallback = { tag: Any, i: Int, j: Int ->
+        if (tag === array) {
+            drawComparisonItem(i, j, true)
+            Thread.sleep(delay)
+            drawComparisonItem(i, j, false)
+        }
+    }
+    swapCallbackList.add(swapCallback)
+    if (showComparisonProcess) comparisonCallbackList.add(comparisonCallback)
     drawArray()
     Thread.sleep(delay)
     sortFun(array)
-    swapListenerList.remove(listener)
+    swapCallbackList.remove(swapCallback)
+    if (showComparisonProcess) comparisonCallbackList.remove(comparisonCallback)
     return swapTimes
 }
 
