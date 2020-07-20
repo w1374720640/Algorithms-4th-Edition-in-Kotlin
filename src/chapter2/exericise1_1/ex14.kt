@@ -1,7 +1,6 @@
 package chapter2.exericise1_1
 
 import chapter1.exercise1_3.*
-import extensions.random
 
 /**
  * 对扑克可操作的行为进行封装
@@ -9,15 +8,14 @@ import extensions.random
 class Poker {
     val SIZE = 54
     private val list = DoublyLinkedList<Int>()
+
     //获取一副随机打乱的扑克牌
     init {
-        val initList = DoublyLinkedList<Int>()
-        repeat(SIZE) {
-            initList.addTail(it)
-        }
-        while (!initList.isEmpty()) {
-            val pick = random(0, initList.size())
-            list.addTail(initList.delete(pick))
+        val array = IntArray(54) { it }
+        //这里使用第一章中的一个乱序算法打乱数组
+        chapter1.exercise1_1.ex36b(array)
+        array.forEach {
+            list.addTail(it)
         }
     }
 

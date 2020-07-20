@@ -13,7 +13,8 @@ import extensions.formatDouble
 fun ex12(array: Array<Double>) {
     fun <T : Comparable<T>> shellSort(array: Array<T>): List<Pair<Int, Double>> {
         val list = mutableListOf<Pair<Int, Double>>()
-        var h = if (array.size < 3) 1 else array.size / 3
+        var h = 1
+        while (h < array.size / 3) h = 3 * h + 1
         while (h >= 1) {
             var count = 0.0
             for (i in h until array.size) {
@@ -24,7 +25,7 @@ fun ex12(array: Array<Double>) {
                 }
             }
             list.add(h to count / array.size)
-            h = if (h == 2) 1 else h / 3
+            h /= 3
         }
         return list
     }
