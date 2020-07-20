@@ -1,4 +1,4 @@
-package chapter2.exericise1_1
+package chapter2.exericise2_1
 
 import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
