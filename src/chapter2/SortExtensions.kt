@@ -192,11 +192,16 @@ fun getDoubleArray(size: Int, initialState: ArrayInitialState): Array<Double> {
  * 对比不同排序方法的耗时
  */
 fun sortMethodsCompare(sortFunctions: Array<Pair<String, (Array<Double>) -> Unit>>,
-                       size: Int, times: Int, state: ArrayInitialState) {
+                       times: Int, size: Int, state: ArrayInitialState) {
+    sortMethodsCompare(sortFunctions, times) { getDoubleArray(size, state) }
+}
+
+inline fun <T : Comparable<T>> sortMethodsCompare(sortFunctions: Array<Pair<String, (Array<T>) -> Unit>>,
+                                                  times: Int, create: () -> Array<T>) {
     sortFunctions.forEach { sortFunPair ->
         var time = 0L
         repeat(times) {
-            val array = getDoubleArray(size, state)
+            val array = create()
             time += spendTimeMillis {
                 sortFunPair.second(array)
             }
@@ -207,8 +212,8 @@ fun sortMethodsCompare(sortFunctions: Array<Pair<String, (Array<Double>) -> Unit
 
 fun main() {
     inputPrompt()
-    val size = readInt("size: ")
     val times = readInt("repeat times: ")
+    val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
     val state = readInt("array initial state(0~4): ")
     val enumState = ArrayInitialState.getEnumByState(state)
@@ -219,5 +224,5 @@ fun main() {
             "Insert Sort" to ::insertSort,
             "Shell Sort" to ::shellSort
     )
-    sortMethodsCompare(sortMethods, size, times, enumState)
+    sortMethodsCompare(sortMethods, times, size, enumState)
 }

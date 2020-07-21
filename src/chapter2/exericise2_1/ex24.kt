@@ -24,17 +24,16 @@ fun <T : Comparable<T>> ex24(array: Array<T>) {
     for (i in 1 until array.size) {
         //这里不用判断左边界，因为数组中最左边的值最小，会自动跳出内循环
         for (j in i downTo Int.MIN_VALUE) {
-            if (array.less(j, j - 1)) {
-                array.swap(j, j - 1)
-            } else break
+            if (!array.less(j, j - 1)) break
+            array.swap(j, j - 1)
         }
     }
 }
 
 fun main() {
     inputPrompt()
-    val size = readInt("size: ")
     val times = readInt("repeat times: ")
+    val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
     val state = readInt("array initial state(0~4): ")
     val enumState = ArrayInitialState.getEnumByState(state)
@@ -43,5 +42,5 @@ fun main() {
             "Insert Sort" to ::insertSort,
             "ex24" to ::ex24
     )
-    sortMethodsCompare(sortMethods, size, times, enumState)
+    sortMethodsCompare(sortMethods, times, size, enumState)
 }

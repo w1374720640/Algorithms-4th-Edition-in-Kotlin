@@ -19,7 +19,7 @@ fun ex12(array: Array<Double>) {
             var count = 0.0
             for (i in h until array.size) {
                 for (j in i downTo h step h) {
-                    if (array.less(j - h, j)) break
+                    if (!array.less(j, j - h)) break
                     array.swap(j, j - h)
                     count++
                 }
