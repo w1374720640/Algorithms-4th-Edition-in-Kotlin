@@ -1,9 +1,9 @@
 package chapter2
 
-import chapter2.exericise2_1.bubbleSort
-import chapter2.exericise2_1.insertSort
-import chapter2.exericise2_1.selectSort
-import chapter2.exericise2_1.shellSort
+import chapter2.section1.bubbleSort
+import chapter2.section1.insertSort
+import chapter2.section1.selectSort
+import chapter2.section1.shellSort
 import edu.princeton.cs.algs4.StdDraw
 import extensions.*
 import java.awt.Color
