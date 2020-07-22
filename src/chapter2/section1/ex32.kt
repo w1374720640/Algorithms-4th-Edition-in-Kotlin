@@ -7,6 +7,7 @@ import extensions.delayExit
 import extensions.spendTimeMillis
 
 /**
+ * 运行时间曲线图
  * 使用StdDraw在不同规模的随机输入下将算法的平均运行时间绘制成一张曲线图
  */
 fun runningTimeGraph(maxSize: Int, sortMethod: (Array<Double>) -> Unit, repeatTimes: Int = 10) {
@@ -20,7 +21,7 @@ fun runningTimeGraph(maxSize: Int, sortMethod: (Array<Double>) -> Unit, repeatTi
         //重置画板
         StdDraw.clear()
         StdDraw.setXscale(0.0, lastPoint.x() * 1.1)
-        StdDraw.setYscale(0.0, lastPoint.y() * 1.1 + 1)//加一是为了防止运行时间为0ms导致的异常
+        StdDraw.setYscale(0.0, lastPoint.y() * 1.1 + 0.1)//加0.1是为了防止运行时间为0ms导致的异常
         StdDraw.setPenRadius()
         //绘制x,y轴
         StdDraw.line(lastPoint.x() * 0.05, lastPoint.y() * 0.05, lastPoint.x() * 1.05, lastPoint.y() * 0.05)
