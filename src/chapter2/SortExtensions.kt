@@ -167,7 +167,7 @@ enum class ArrayInitialState(val state: Int) {
 /**
  * 根据给定顺序，返回指定大小的Double类型数组
  */
-fun getDoubleArray(size: Int, initialState: ArrayInitialState): Array<Double> {
+fun getDoubleArray(size: Int, initialState: ArrayInitialState = ArrayInitialState.RANDOM): Array<Double> {
     return when (initialState) {
         ArrayInitialState.RANDOM -> {
             Array(size) { random() }

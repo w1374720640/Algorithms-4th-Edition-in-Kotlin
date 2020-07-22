@@ -34,7 +34,7 @@ fun <T : Comparable<T>> ex16(array: Array<T>, sortFun: (Array<T>) -> Unit): Bool
 }
 
 fun main() {
-    val array = getDoubleArray(1000, ArrayInitialState.RANDOM)
+    val array = getDoubleArray(1000)
     val result = ex16(array) { Arrays.sort(it) }
     println("Check result = $result")
     println(array.joinToString(limit = 100) { formatDouble(it, 4) })

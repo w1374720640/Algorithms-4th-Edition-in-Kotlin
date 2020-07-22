@@ -41,7 +41,7 @@ fun main() {
     var size = 10
     repeat(5) {
         size *= 10
-        val array = getDoubleArray(size, ArrayInitialState.RANDOM)
+        val array = getDoubleArray(size)
         ex12(array)
     }
 }
