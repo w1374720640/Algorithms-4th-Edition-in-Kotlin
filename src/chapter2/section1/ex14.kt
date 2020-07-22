@@ -1,6 +1,7 @@
 package chapter2.section1
 
 import chapter1.section3.*
+import edu.princeton.cs.algs4.StdRandom
 
 /**
  * 对扑克可操作的行为进行封装
@@ -11,9 +12,9 @@ class Poker {
 
     //获取一副随机打乱的扑克牌
     init {
-        val array = IntArray(54) { it }
+        val array = Array(54) { it }
         //这里使用第一章中的一个乱序算法打乱数组
-        chapter1.section1.ex36b(array)
+        StdRandom.shuffle(array)
         array.forEach {
             list.addTail(it)
         }
