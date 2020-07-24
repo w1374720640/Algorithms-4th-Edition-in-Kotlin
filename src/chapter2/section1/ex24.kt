@@ -39,7 +39,7 @@ fun main() {
     val enumState = ArrayInitialState.getEnumByState(state)
     println("Array initial state: ${enumState.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-            "Insert Sort" to ::insertSort,
+            "Insertion Sort" to ::insertionSort,
             "ex24" to ::ex24
     )
     sortMethodsCompare(sortMethods, times, size, enumState)

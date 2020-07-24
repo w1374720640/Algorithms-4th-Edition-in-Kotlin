@@ -23,7 +23,7 @@ fun ex2a(size: Int): Int {
         }
     }
     swapCallbackList.add(callback)
-    selectSort(array)
+    selectionSort(array)
     swapCallbackList.remove(callback)
     return count
 }
@@ -46,7 +46,7 @@ fun ex2b(size: Int): Double {
         }
     }
     swapCallbackList.add(callback)
-    selectSort(array)
+    selectionSort(array)
     swapCallbackList.remove(callback)
     var total = 0.0
     map.forEach {

@@ -9,8 +9,8 @@ import chapter2.sortMethodsCompare
  */
 fun main() {
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-            "Select Sort" to ::selectSort,
-            "Insert Sort" to ::insertSort,
+            "Selection Sort" to ::selectionSort,
+            "Insertion Sort" to ::insertionSort,
             "Shell Sort" to ::shellSort
     )
     var size = 128

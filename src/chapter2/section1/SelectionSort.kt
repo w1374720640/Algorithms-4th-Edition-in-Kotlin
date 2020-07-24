@@ -9,7 +9,7 @@ import extensions.readLong
 /**
  * 选择排序
  */
-fun <T : Comparable<T>> selectSort(array: Array<T>) {
+fun <T : Comparable<T>> selectionSort(array: Array<T>) {
     for (i in array.indices) {
         var minIndex = i
         for (j in i + 1 until array.size) {
@@ -38,5 +38,5 @@ fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit,
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Select sort", ::selectSort)
+    sortingMethodMainFunTemplate("Selection sort", ::selectionSort)
 }

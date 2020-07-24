@@ -30,5 +30,5 @@ fun main() {
     //检查排序方法是否正确
 //    val result = ex16(getDoubleArray(size, ArrayInitialState.RANDOM), ::ex25)
 //    println("Check result = $result")
-    sortMethodsCompare(arrayOf("Insert Sort" to ::insertSort, "ex25" to ::ex25), 1, size, ArrayInitialState.RANDOM)
+    sortMethodsCompare(arrayOf("Insertion Sort" to ::insertionSort, "ex25" to ::ex25), 1, size, ArrayInitialState.RANDOM)
 }

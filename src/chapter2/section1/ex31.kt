@@ -1,6 +1,5 @@
 package chapter2.section1
 
-import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
 import extensions.formatDouble
 import extensions.formatInt
@@ -35,10 +34,10 @@ fun doubleGrowthTest(maxSize: Int, sortMethod: (Array<Double>) -> Unit, O: (N: I
 }
 
 fun main() {
-    println("selectSort:")
-    doubleGrowthTest(10_0000, ::selectSort) { N -> N.toDouble().pow(2) }
-    println("insertSort:")
-    doubleGrowthTest(10_0000, ::insertSort) { N -> N.toDouble().pow(2) }
+    println("selectionSort:")
+    doubleGrowthTest(10_0000, ::selectionSort) { N -> N.toDouble().pow(2) }
+    println("insertionSort:")
+    doubleGrowthTest(10_0000, ::insertionSort) { N -> N.toDouble().pow(2) }
 
     //希尔排序不同增长序列有不同的性能，参考 https://blog.csdn.net/Foliciatarier/article/details/53891144
     println("shellSort:")

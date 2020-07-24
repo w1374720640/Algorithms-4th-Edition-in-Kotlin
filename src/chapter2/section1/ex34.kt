@@ -56,7 +56,7 @@ fun <T : Comparable<T>> Array<T>.checkDescOrder(): Boolean {
 }
 
 fun main() {
-    val sortMethodList = listOf<(Array<Double>) -> Unit>(::selectSort, ::bubbleSort, ::insertSort, ::shellSort)
+    val sortMethodList = listOf<(Array<Double>) -> Unit>(::selectionSort, ::bubbleSort, ::insertionSort, ::shellSort)
     sortMethodList.forEach {
         cornerCases(it)
     }

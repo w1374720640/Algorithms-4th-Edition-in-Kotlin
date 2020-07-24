@@ -1,6 +1,5 @@
 package chapter2.section1
 
-import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
 import chapter2.less
 import chapter2.swap

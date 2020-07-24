@@ -8,8 +8,8 @@ import extensions.randomBoolean
  */
 fun main() {
     val sortMethods: Array<Pair<String, (Array<Int>) -> Unit>> = arrayOf(
-            "Select Sort" to ::selectSort,
-            "Insert Sort" to ::insertSort
+            "Selection Sort" to ::selectionSort,
+            "Insertion Sort" to ::insertionSort
     )
     var size = 128
     repeat(9) {

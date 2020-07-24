@@ -35,6 +35,12 @@ fun runningTimeGraph(maxSize: Int, sortMethod: (Array<Double>) -> Unit, repeatTi
         pointList.forEach {
             StdDraw.point(it.x() + lastPoint.x() * 0.05, it.y() + lastPoint.y() * 0.05)
         }
+        //连点成线
+        StdDraw.setPenRadius()
+        for (i in 0..pointList.size - 2) {
+            StdDraw.line(pointList[i].x() + lastPoint.x() * 0.05, pointList[i].y() + lastPoint.y() * 0.05,
+                    pointList[i + 1].x() + lastPoint.x() * 0.05, pointList[i + 1].y() + lastPoint.y() * 0.05)
+        }
     }
 
     var size = 100

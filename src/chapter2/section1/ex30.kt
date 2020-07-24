@@ -1,6 +1,5 @@
 package chapter2.section1
 
-import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
 import chapter2.less
 import chapter2.swap
@@ -11,6 +10,7 @@ import extensions.spendTimeMillis
  * 通过实验，找到一个t，使得对于大小为10⁶的任意数组，
  * 使用递增序列1、t、t²、t³、t⁴、t⁵...的希尔排序运行时间最短。
  * 给出你能找到的三个最佳t值以及相应的递增序列
+ * 因为题目中使用了向下取整符号，所以可以认为参数t可能为小数
  */
 fun ex30(t: Double): Long {
     require(t > 1)
@@ -33,8 +33,8 @@ fun ex30(t: Double): Long {
 }
 
 /**
- * 通过逐步缩小范围，提高精度，修改重复次数后得到的结果
- * 找到一个值 t=6.301
+ * 通过逐步缩小范围、提高精度、多次实验取平均值后得到的结果
+ * 找到一个值 t=6.301 (最佳就应该只有一个，而不是三个）
  * 递增序列为 1 6 39 250 1576 9932 62583 394335 2484710
  */
 fun main() {
@@ -42,6 +42,7 @@ fun main() {
     val repeat = 1
     var t = 1.1
     var fastestTime = Long.MAX_VALUE
+    //t的判断范围为[1.1,10)，步长为0.1，可以逐步缩小范围和增加精度
     while (t < 10) {
         var time = 0L
         repeat(repeat) {
@@ -51,6 +52,12 @@ fun main() {
         if (time < fastestTime) {
             fastestTime = time
             println("fastest=${formatDouble(t, 3)}  fastestTime=$fastestTime")
+            var H = 1.0
+            do {
+                print("${H.toInt()} ")
+                H *= t
+            } while (H < 100_0000 / 2)
+            println()
         }
         t += 0.1
     }

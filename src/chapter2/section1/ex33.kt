@@ -53,5 +53,5 @@ fun distribution(size: Int, sortMethod: (Array<Double>) -> Unit) {
 fun main() {
     inputPrompt()
     val size = readInt("size: ")
-    distribution(size, ::selectSort)
+    distribution(size, ::shellSort)
 }

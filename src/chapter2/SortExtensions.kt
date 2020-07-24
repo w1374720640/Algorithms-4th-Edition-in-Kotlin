@@ -1,12 +1,13 @@
 package chapter2
 
 import chapter2.section1.bubbleSort
-import chapter2.section1.insertSort
-import chapter2.section1.selectSort
+import chapter2.section1.insertionSort
+import chapter2.section1.selectionSort
 import chapter2.section1.shellSort
 import edu.princeton.cs.algs4.StdDraw
 import extensions.*
 import java.awt.Color
+import kotlin.reflect.KClass
 
 /**
  * 对数组排序时，每次交换数组的值会回调这个接口
@@ -165,6 +166,16 @@ enum class ArrayInitialState(val state: Int) {
 }
 
 /**
+ * 对枚举类进行扩展，可以通过序数直接获取枚举对象
+ */
+fun <E : Enum<E>> KClass<E>.getEnumByOrdinal(ordinal: Int): E {
+    val enumList = this.java.enumConstants
+    require(enumList.isNotEmpty()) { "Enum objects should not be empty" }
+    require(ordinal >= 0 && ordinal < enumList.size) { "The specified ordinal does not exist in the Enum Class" }
+    return enumList[ordinal]
+}
+
+/**
  * 根据给定顺序，返回指定大小的Double类型数组
  */
 fun getDoubleArray(size: Int, initialState: ArrayInitialState = ArrayInitialState.RANDOM): Array<Double> {
@@ -219,9 +230,9 @@ fun main() {
     val enumState = ArrayInitialState.getEnumByState(state)
     println("Array initial state: ${enumState.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-            "Select Sort" to ::selectSort,
+            "Selection Sort" to ::selectionSort,
             "Bubble Sort" to ::bubbleSort,
-            "Insert Sort" to ::insertSort,
+            "Insertion Sort" to ::insertionSort,
             "Shell Sort" to ::shellSort
     )
     sortMethodsCompare(sortMethods, times, size, enumState)
