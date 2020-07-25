@@ -1,9 +1,6 @@
 package chapter2.section1
 
-import chapter2.ArrayInitialState
-import chapter2.less
-import chapter2.sortMethodsCompare
-import chapter2.swap
+import chapter2.*
 import extensions.inputPrompt
 import extensions.readInt
 
@@ -35,12 +32,12 @@ fun main() {
     val times = readInt("repeat times: ")
     val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
-    val state = readInt("array initial state(0~4): ")
-    val enumState = ArrayInitialState.getEnumByState(state)
-    println("Array initial state: ${enumState.name}")
+    val ordinal = readInt("array initial state(0~4): ")
+    val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
+    println("Array initial state: ${state.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
             "Insertion Sort" to ::insertionSort,
             "ex24" to ::ex24
     )
-    sortMethodsCompare(sortMethods, times, size, enumState)
+    sortMethodsCompare(sortMethods, times, size, state)
 }

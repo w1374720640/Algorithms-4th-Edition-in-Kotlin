@@ -147,22 +147,12 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
 /**
  * 数组的初始化状态，
  */
-enum class ArrayInitialState(val state: Int) {
-    RANDOM(0), //完全随机
-    ASC(1), //完全升序
-    DESC(2), //完全降序
-    NEARLY_ASC(3), //接近升序
-    NEARLY_DESC(4) //接近降序
-    ;
-
-    companion object {
-        fun getEnumByState(state: Int): ArrayInitialState {
-            values().forEach {
-                if (it.state == state) return it
-            }
-            return RANDOM
-        }
-    }
+enum class ArrayInitialState {
+    RANDOM, //完全随机
+    ASC, //完全升序
+    DESC, //完全降序
+    NEARLY_ASC, //接近升序
+    NEARLY_DESC //接近降序
 }
 
 /**
@@ -226,14 +216,14 @@ fun main() {
     val times = readInt("repeat times: ")
     val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
-    val state = readInt("array initial state(0~4): ")
-    val enumState = ArrayInitialState.getEnumByState(state)
-    println("Array initial state: ${enumState.name}")
+    val ordinal = readInt("array initial state(0~4): ")
+    val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
+    println("Array initial state: ${state.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
             "Selection Sort" to ::selectionSort,
             "Bubble Sort" to ::bubbleSort,
             "Insertion Sort" to ::insertionSort,
             "Shell Sort" to ::shellSort
     )
-    sortMethodsCompare(sortMethods, times, size, enumState)
+    sortMethodsCompare(sortMethods, times, size, state)
 }

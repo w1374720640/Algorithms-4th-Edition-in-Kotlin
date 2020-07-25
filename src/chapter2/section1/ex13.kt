@@ -45,7 +45,6 @@ class Poker(val points: Int, val suit: Suit) : Comparable<Poker> {
         HEART, //红桃
         CLUB, //梅花
         DIAMOND //方片
-        ;
     }
 
     override fun compareTo(other: Poker): Int {

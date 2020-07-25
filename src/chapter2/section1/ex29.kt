@@ -1,9 +1,6 @@
 package chapter2.section1
 
-import chapter2.ArrayInitialState
-import chapter2.less
-import chapter2.sortMethodsCompare
-import chapter2.swap
+import chapter2.*
 import extensions.inputPrompt
 import extensions.readInt
 
@@ -31,10 +28,10 @@ fun <T : Comparable<T>> ex29(array: Array<T>) {
 fun main() {
     inputPrompt()
     val size = readInt("size: ")
-    val state = readInt("array initial state(0~4): ")
-    val enumState = ArrayInitialState.getEnumByState(state)
+    val ordinal = readInt("array initial state(0~4): ")
+    val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
     //检查排序方法是否正确
 //    val result = ex16(getDoubleArray(size, ArrayInitialState.RANDOM), ::ex29)
 //    println("Check result = $result")
-    sortMethodsCompare(arrayOf("Shell Sort" to ::shellSort, "ex29" to ::ex29), 10, size, enumState)
+    sortMethodsCompare(arrayOf("Shell Sort" to ::shellSort, "ex29" to ::ex29), 10, size, state)
 }

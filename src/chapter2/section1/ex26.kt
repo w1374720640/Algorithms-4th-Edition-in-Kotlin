@@ -5,6 +5,9 @@ import extensions.random
 import extensions.readInt
 import extensions.spendTimeMillis
 
+/**
+ * 比较使用原始类型Int数组的插入排序和自动装箱、拆箱的Integer版本的性能差距
+ */
 fun ex26(array: IntArray) {
     for (i in 1 until array.size) {
         for (j in i downTo 1) {

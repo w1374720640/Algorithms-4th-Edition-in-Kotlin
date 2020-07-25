@@ -28,10 +28,10 @@ fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit,
     //两次绘制的间隔
     val delay = readLong("delay time millis: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
-    val state = readInt("array initial state(0~4): ")
-    val enumState = ArrayInitialState.getEnumByState(state)
-    println("Array initial state: ${enumState.name}")
-    val array = getDoubleArray(size, enumState)
+    val ordinal = readInt("array initial state(0~4): ")
+    val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
+    println("Array initial state: ${state.name}")
+    val array = getDoubleArray(size, state)
     val swapTimes = showSortingProcess(array, sortFun, delay, showComparisonProcess)
     println("$name swap $swapTimes times")
     delayExit()
