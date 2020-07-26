@@ -3,10 +3,10 @@ package chapter2.section2
 import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
 import chapter2.getEnumByOrdinal
-import chapter2.section1.checkAscOrder
+import extensions.delayExit
 import extensions.inputPrompt
 import extensions.readInt
-import extensions.spendTimeMillis
+import extensions.readLong
 import kotlin.math.min
 
 /**
@@ -33,12 +33,10 @@ inline fun <reified T : Comparable<T>> mergeSortButtonToTop(originalArray: Array
 fun main() {
     inputPrompt()
     val size = readInt("size: ")
+    val delay = readLong("delay time millis: ")
     val ordinal = readInt("array initial state(0~4): ")
     val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
     val array = getDoubleArray(size, state)
-    val time = spendTimeMillis {
-        mergeSortButtonToTop(array)
-    }
-    val succeed = array.checkAscOrder()
-    println("Merge sort ${if (succeed) "succeed" else "failed"}, spend $time ms")
+    showMergeSortProcess(array, ::mergeSortButtonToTop, delay)
+    delayExit()
 }

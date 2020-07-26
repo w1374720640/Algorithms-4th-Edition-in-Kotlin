@@ -54,6 +54,19 @@ fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int): Boolean {
 }
 
 /**
+ * 暂停程序一段时间
+ */
+fun sleep(timeMillis: Long) {
+    Thread.sleep(timeMillis)
+}
+
+/**
+ * 设置画笔颜色
+ */
+fun setPenColor(color: Color) {
+    StdDraw.setPenColor(color)
+}
+/**
  * 使用绘图API直观显示数组的排序过程
  * 可用通过showComparisonProcess参数控制只显示交换过程还是同时显示对比和交换过程
  * 默认为亮灰色，对比时显示灰色，交换时显示黑色
@@ -85,26 +98,26 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
     }
 
     fun drawArray() {
-        StdDraw.setPenColor(Color.LIGHT_GRAY)
+        setPenColor(Color.LIGHT_GRAY)
         for (i in array.indices) {
             drawItem(i)
         }
     }
 
     fun drawSwapItem(i: Int, j: Int, isSelected: Boolean) {
-        StdDraw.setPenColor(if (isSelected) Color.BLACK else Color.LIGHT_GRAY)
+        setPenColor(if (isSelected) Color.BLACK else Color.LIGHT_GRAY)
         drawItem(i)
         drawItem(j)
     }
 
     fun drawComparisonItem(i: Int, j: Int, isSelected: Boolean) {
-        StdDraw.setPenColor(if (isSelected) Color.GRAY else Color.LIGHT_GRAY)
+        setPenColor(if (isSelected) Color.GRAY else Color.LIGHT_GRAY)
         drawItem(i)
         drawItem(j)
     }
 
     fun clearSwapItem(i: Int, j: Int) {
-        StdDraw.setPenColor(Color.WHITE)
+        setPenColor(Color.WHITE)
         StdDraw.filledRectangle(i + 0.5, (max + min) / 2, 0.5, (max - min) / 2 + space)
         StdDraw.filledRectangle(j + 0.5, (max + min) / 2, 0.5, (max - min) / 2 + space)
     }
@@ -114,7 +127,7 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
         override fun before(tag: Any, i: Int, j: Int) {
             if (tag !== array) return
             drawSwapItem(i, j, true)
-            Thread.sleep(delay)
+            sleep(delay)
             swapTimes++
         }
 
@@ -122,7 +135,7 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
             if (tag !== array) return
             clearSwapItem(i, j)
             drawSwapItem(i, j, true)
-            Thread.sleep(delay)
+            sleep(delay)
             drawSwapItem(i, j, false)
         }
 
@@ -130,14 +143,14 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
     val comparisonCallback = { tag: Any, i: Int, j: Int ->
         if (tag === array) {
             drawComparisonItem(i, j, true)
-            Thread.sleep(delay)
+            sleep(delay)
             drawComparisonItem(i, j, false)
         }
     }
     swapCallbackList.add(swapCallback)
     if (showComparisonProcess) comparisonCallbackList.add(comparisonCallback)
     drawArray()
-    Thread.sleep(delay)
+    sleep(delay)
     sortFun(array)
     swapCallbackList.remove(swapCallback)
     if (showComparisonProcess) comparisonCallbackList.remove(comparisonCallback)
