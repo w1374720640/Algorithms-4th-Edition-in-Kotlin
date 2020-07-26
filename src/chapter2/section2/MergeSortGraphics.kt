@@ -112,7 +112,6 @@ fun showMergeSortProcess(array: Array<Double>, sortMethod: (Array<Double>) -> Un
 
             setPenColor(Color.LIGHT_GRAY)
             drawItem(ArrayType.ORIGINAL, originalIndex)
-            sleep(delay)
         }
     }
     mergeSortCallbackList.add(callback)

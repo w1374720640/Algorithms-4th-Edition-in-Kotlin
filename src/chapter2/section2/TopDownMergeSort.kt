@@ -16,17 +16,17 @@ import kotlin.math.log2
 /**
  * 归并排序（自顶向下）
  */
-inline fun <reified T : Comparable<T>> mergeSort(originalArray: Array<T>) {
+inline fun <reified T : Comparable<T>> topDownMergeSort(originalArray: Array<T>) {
     if (originalArray.size <= 1) return
     val extraArray = arrayOfNulls<T>(originalArray.size)
-    mergeSort(originalArray, extraArray, 0, originalArray.size - 1)
+    topDownMergeSort(originalArray, extraArray, 0, originalArray.size - 1)
 }
 
-fun <T : Comparable<T>> mergeSort(originalArray: Array<T>, extraArray: Array<T?>, start: Int, end: Int) {
+fun <T : Comparable<T>> topDownMergeSort(originalArray: Array<T>, extraArray: Array<T?>, start: Int, end: Int) {
     if (start >= end) return
     val mid = (start + end) / 2
-    mergeSort(originalArray, extraArray, start, mid)
-    mergeSort(originalArray, extraArray, mid + 1, end)
+    topDownMergeSort(originalArray, extraArray, start, mid)
+    topDownMergeSort(originalArray, extraArray, mid + 1, end)
     merge(originalArray, extraArray, start, mid, end)
 }
 
@@ -69,20 +69,20 @@ fun main() {
     val ordinal = readInt("array initial state(0~4): ")
     val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
     val array = getDoubleArray(size, state)
-    showMergeSortProcess(array, ::mergeSort, delay)
+    showMergeSortProcess(array, ::topDownMergeSort, delay)
     delayExit()
 
     //运行时间曲线图
-//    runningTimeGraph(500_0000, ::shellSort)
+//    runningTimeGraph(500_0000, ::topDownMergeSort)
 //    delayExit()
 
     //双倍增长测试
-//    doubleGrowthTest(1000_0000, ::mergeSort) { N -> N * log2(N.toDouble()) }
+//    doubleGrowthTest(1000_0000, ::topDownMergeSort) { N -> N * log2(N.toDouble()) }
 
     //和希尔排序性能对比
 //    val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
 //            "ShellSort" to ::shellSort,
-//            "MergeSort" to ::mergeSort
+//            "MergeSort" to ::topDownMergeSort
 //    )
 //    sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.RANDOM)
 }

@@ -12,7 +12,7 @@ import kotlin.math.min
 /**
  * 归并排序（自底向上）
  */
-inline fun <reified T : Comparable<T>> mergeSortButtonToTop(originalArray: Array<T>) {
+inline fun <reified T : Comparable<T>> buttonUpMergeSort(originalArray: Array<T>) {
     if (originalArray.size <= 1) return
     val extraArray = arrayOfNulls<T>(originalArray.size)
     var step = 1 //1 2 4 8 16...
@@ -22,7 +22,7 @@ inline fun <reified T : Comparable<T>> mergeSortButtonToTop(originalArray: Array
         for (start in 0..originalArray.size - step step 2 * step) {
             merge(originalArray, extraArray, start, start + step - 1, min(start + 2 * step - 1, originalArray.size - 1))
         }
-        if (step >= originalArray.size) {
+        if (step * 2 >= originalArray.size) {
             break
         } else {
             step *= 2
@@ -37,6 +37,6 @@ fun main() {
     val ordinal = readInt("array initial state(0~4): ")
     val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
     val array = getDoubleArray(size, state)
-    showMergeSortProcess(array, ::mergeSortButtonToTop, delay)
+    showMergeSortProcess(array, ::buttonUpMergeSort, delay)
     delayExit()
 }
