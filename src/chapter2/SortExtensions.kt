@@ -172,7 +172,7 @@ enum class ArrayInitialState {
 /**
  * 对枚举类进行扩展，可以通过序数直接获取枚举对象
  */
-inline fun <reified T : Enum<T>> getEnumByOrdinal(ordinal: Int): T {
+inline fun <reified T : Enum<T>> enumValueOf(ordinal: Int): T {
     val enumList = enumValues<T>()
     require(enumList.isNotEmpty()) { "Enum objects should not be empty" }
     require(ordinal >= 0 && ordinal < enumList.size) { "The specified ordinal does not exist in the Enum Class" }
@@ -231,7 +231,7 @@ fun main() {
     val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
     val ordinal = readInt("array initial state(0~4): ")
-    val state = getEnumByOrdinal<ArrayInitialState>(ordinal)
+    val state = enumValueOf<ArrayInitialState>(ordinal)
     println("Array initial state: ${state.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
             "Selection Sort" to ::selectionSort,

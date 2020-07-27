@@ -1,6 +1,6 @@
 package chapter2.section1
 
-import chapter2.getEnumByOrdinal
+import chapter2.enumValueOf
 import edu.princeton.cs.algs4.StdRandom
 
 /**
@@ -59,7 +59,7 @@ class Poker(val points: Int, val suit: Suit) : Comparable<Poker> {
 fun main() {
     //一副扑克排除大小王共52张
     val pokerList = Array(52) {
-        Poker(it / 4, getEnumByOrdinal(it % 4))
+        Poker(it / 4, enumValueOf(it % 4))
     }
     //打乱扑克
     StdRandom.shuffle(pokerList)

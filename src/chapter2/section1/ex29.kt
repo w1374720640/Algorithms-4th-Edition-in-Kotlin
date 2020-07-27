@@ -29,7 +29,7 @@ fun main() {
     inputPrompt()
     val size = readInt("size: ")
     val ordinal = readInt("array initial state(0~4): ")
-    val state = getEnumByOrdinal<ArrayInitialState>(ordinal)
+    val state = enumValueOf<ArrayInitialState>(ordinal)
     //检查排序方法是否正确
 //    val result = ex16(getDoubleArray(size, ArrayInitialState.RANDOM), ::ex29)
 //    println("Check result = $result")

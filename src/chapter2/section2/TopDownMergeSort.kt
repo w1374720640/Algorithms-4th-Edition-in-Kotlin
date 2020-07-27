@@ -2,16 +2,11 @@ package chapter2.section2
 
 import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
-import chapter2.getEnumByOrdinal
-import chapter2.section1.doubleGrowthTest
-import chapter2.section1.runningTimeGraph
-import chapter2.section1.shellSort
-import chapter2.sortMethodsCompare
+import chapter2.enumValueOf
 import extensions.delayExit
 import extensions.inputPrompt
 import extensions.readInt
 import extensions.readLong
-import kotlin.math.log2
 
 /**
  * 归并排序（自顶向下）
@@ -67,7 +62,7 @@ fun main() {
     val size = readInt("size: ")
     val delay = readLong("delay time millis: ")
     val ordinal = readInt("array initial state(0~4): ")
-    val state = getEnumByOrdinal<ArrayInitialState>(ordinal)
+    val state = enumValueOf<ArrayInitialState>(ordinal)
     val array = getDoubleArray(size, state)
     showMergeSortProcess(array, ::topDownMergeSort, delay)
     delayExit()

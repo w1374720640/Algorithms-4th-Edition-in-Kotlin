@@ -2,7 +2,7 @@ package chapter2.section2
 
 import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
-import chapter2.getEnumByOrdinal
+import chapter2.enumValueOf
 import extensions.delayExit
 import extensions.inputPrompt
 import extensions.readInt
@@ -35,7 +35,7 @@ fun main() {
     val size = readInt("size: ")
     val delay = readLong("delay time millis: ")
     val ordinal = readInt("array initial state(0~4): ")
-    val state = getEnumByOrdinal<ArrayInitialState>(ordinal)
+    val state = enumValueOf<ArrayInitialState>(ordinal)
     val array = getDoubleArray(size, state)
     showMergeSortProcess(array, ::buttonUpMergeSort, delay)
     delayExit()
