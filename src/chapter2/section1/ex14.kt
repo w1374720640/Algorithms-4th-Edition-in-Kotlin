@@ -39,7 +39,7 @@ class PokerWrapper {
 
     //获取一副随机打乱的扑克牌
     init {
-        val array = Array(SIZE) { Poker(it / 4, Poker.Suit::class.getEnumByOrdinal(it % 4)) }
+        val array = Array(SIZE) { Poker(it / 4, getEnumByOrdinal(it % 4)) }
         //使用乱序算法打乱数组
         StdRandom.shuffle(array)
         array.forEach {

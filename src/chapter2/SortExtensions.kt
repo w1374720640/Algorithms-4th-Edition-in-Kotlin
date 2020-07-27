@@ -4,10 +4,11 @@ import chapter2.section1.bubbleSort
 import chapter2.section1.insertionSort
 import chapter2.section1.selectionSort
 import chapter2.section1.shellSort
+import chapter2.section2.buttonUpMergeSort
+import chapter2.section2.topDownMergeSort
 import edu.princeton.cs.algs4.StdDraw
 import extensions.*
 import java.awt.Color
-import kotlin.reflect.KClass
 
 /**
  * 对数组排序时，每次交换数组的值会回调这个接口
@@ -171,8 +172,8 @@ enum class ArrayInitialState {
 /**
  * 对枚举类进行扩展，可以通过序数直接获取枚举对象
  */
-fun <E : Enum<E>> KClass<E>.getEnumByOrdinal(ordinal: Int): E {
-    val enumList = this.java.enumConstants
+inline fun <reified T : Enum<T>> getEnumByOrdinal(ordinal: Int): T {
+    val enumList = enumValues<T>()
     require(enumList.isNotEmpty()) { "Enum objects should not be empty" }
     require(ordinal >= 0 && ordinal < enumList.size) { "The specified ordinal does not exist in the Enum Class" }
     return enumList[ordinal]
@@ -230,13 +231,15 @@ fun main() {
     val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
     val ordinal = readInt("array initial state(0~4): ")
-    val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
+    val state = getEnumByOrdinal<ArrayInitialState>(ordinal)
     println("Array initial state: ${state.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
             "Selection Sort" to ::selectionSort,
             "Bubble Sort" to ::bubbleSort,
             "Insertion Sort" to ::insertionSort,
-            "Shell Sort" to ::shellSort
+            "Shell Sort" to ::shellSort,
+            "Top Down Merge Sort" to ::topDownMergeSort,
+            "Button Up Merge Sort" to ::buttonUpMergeSort
     )
     sortMethodsCompare(sortMethods, times, size, state)
 }

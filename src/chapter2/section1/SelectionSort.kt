@@ -29,7 +29,7 @@ fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit,
     val delay = readLong("delay time millis: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
     val ordinal = readInt("array initial state(0~4): ")
-    val state = ArrayInitialState::class.getEnumByOrdinal(ordinal)
+    val state = getEnumByOrdinal<ArrayInitialState>(ordinal)
     println("Array initial state: ${state.name}")
     val array = getDoubleArray(size, state)
     val swapTimes = showSortingProcess(array, sortFun, delay, showComparisonProcess)
