@@ -55,30 +55,31 @@ fun ex6(array: Array<Double>, sortMethod: (Array<Double>) -> Unit): Int {
 fun main() {
     val maxSize = 512
     val expectPointList = mutableListOf<Point2D>()
-    val mergePointList = mutableListOf<Point2D>()
-    val mergeButtonPointList = mutableListOf<Point2D>()
+    val topDownMergePointList = mutableListOf<Point2D>()
+    val buttonUpMergePointList = mutableListOf<Point2D>()
 
     fun drawPoint(index: Int) {
         if (index == 0) {
             StdDraw.setXscale(0.0, maxSize + 1.0)
-            StdDraw.setYscale(0.0, max(expectPointList[index].y(), mergePointList[index].y()) + 1)
+            StdDraw.setYscale(0.0, max(expectPointList[index].y(), topDownMergePointList[index].y()) + 1)
         }
         //期望值6NlgN为红色
         setPenColor(Color.RED)
         expectPointList[index].draw()
         //由顶向下的实际访问次数为黑色
         setPenColor(Color.BLACK)
-        mergePointList[index].draw()
+        topDownMergePointList[index].draw()
         //由底向上的实际访问次数为蓝色
         setPenColor(Color.BLUE)
-        mergeButtonPointList[index].draw()
+        buttonUpMergePointList[index].draw()
     }
 
     for (i in 0 until maxSize) {
+        //从大到小绘制，确定坐标范围
         val size = maxSize - i
         expectPointList.add(Point2D(size.toDouble(), 6 * size * log2(size.toDouble())))
-        mergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::topDownMergeSort).toDouble()))
-        mergeButtonPointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::buttonUpMergeSort).toDouble()))
+        topDownMergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::topDownMergeSort).toDouble()))
+        buttonUpMergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::buttonUpMergeSort).toDouble()))
         drawPoint(i)
     }
     delayExit()
