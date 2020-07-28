@@ -76,8 +76,8 @@ fun main() {
 
     //和希尔排序性能对比
 //    val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-//            "ShellSort" to ::shellSort,
-//            "MergeSort" to ::topDownMergeSort
+//            "Shell Sort" to ::shellSort,
+//            "Top Down Merge Sort" to ::topDownMergeSort
 //    )
 //    sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.RANDOM)
 }

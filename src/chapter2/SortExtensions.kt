@@ -4,7 +4,7 @@ import chapter2.section1.bubbleSort
 import chapter2.section1.insertionSort
 import chapter2.section1.selectionSort
 import chapter2.section1.shellSort
-import chapter2.section2.buttonUpMergeSort
+import chapter2.section2.bottomUpMergeSort
 import chapter2.section2.topDownMergeSort
 import edu.princeton.cs.algs4.StdDraw
 import extensions.*
@@ -213,6 +213,7 @@ fun sortMethodsCompare(sortFunctions: Array<Pair<String, (Array<Double>) -> Unit
 
 inline fun <T : Comparable<T>> sortMethodsCompare(sortFunctions: Array<Pair<String, (Array<T>) -> Unit>>,
                                                   times: Int, create: () -> Array<T>) {
+    require(times > 0)
     sortFunctions.forEach { sortFunPair ->
         var time = 0L
         repeat(times) {
@@ -239,7 +240,7 @@ fun main() {
             "Insertion Sort" to ::insertionSort,
             "Shell Sort" to ::shellSort,
             "Top Down Merge Sort" to ::topDownMergeSort,
-            "Button Up Merge Sort" to ::buttonUpMergeSort
+            "Bottom Up Merge Sort" to ::bottomUpMergeSort
     )
     sortMethodsCompare(sortMethods, times, size, state)
 }

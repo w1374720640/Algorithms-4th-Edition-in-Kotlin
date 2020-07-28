@@ -147,6 +147,11 @@ fun <T> DoublyLinkedList<T>.size(): Int {
 
 fun <T> DoublyLinkedList<T>.isEmpty() = first == null && last == null
 
+fun <T> DoublyLinkedList<T>.clear() {
+    first = null
+    last = null
+}
+
 /**
  * 正向迭代器
  */

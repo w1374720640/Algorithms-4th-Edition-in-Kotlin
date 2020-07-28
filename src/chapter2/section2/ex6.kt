@@ -56,7 +56,7 @@ fun main() {
     val maxSize = 512
     val expectPointList = mutableListOf<Point2D>()
     val topDownMergePointList = mutableListOf<Point2D>()
-    val buttonUpMergePointList = mutableListOf<Point2D>()
+    val bottomUpMergePointList = mutableListOf<Point2D>()
 
     fun drawPoint(index: Int) {
         if (index == 0) {
@@ -71,7 +71,7 @@ fun main() {
         topDownMergePointList[index].draw()
         //由底向上的实际访问次数为蓝色
         setPenColor(Color.BLUE)
-        buttonUpMergePointList[index].draw()
+        bottomUpMergePointList[index].draw()
     }
 
     for (i in 0 until maxSize) {
@@ -79,7 +79,7 @@ fun main() {
         val size = maxSize - i
         expectPointList.add(Point2D(size.toDouble(), 6 * size * log2(size.toDouble())))
         topDownMergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::topDownMergeSort).toDouble()))
-        buttonUpMergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::buttonUpMergeSort).toDouble()))
+        bottomUpMergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::bottomUpMergeSort).toDouble()))
         drawPoint(i)
     }
     delayExit()

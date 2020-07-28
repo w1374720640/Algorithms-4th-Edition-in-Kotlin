@@ -4,7 +4,7 @@ import extensions.delayExit
 
 fun ex3(array: Array<Char>, delay: Long) {
     val doubleArray = Array(array.size) { array[it].toDouble() }
-    showMergeSortProcess(doubleArray, ::buttonUpMergeSort, delay)
+    showMergeSortProcess(doubleArray, ::bottomUpMergeSort, delay)
     delayExit()
 }
 
