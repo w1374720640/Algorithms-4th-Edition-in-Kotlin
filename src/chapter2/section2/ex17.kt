@@ -13,6 +13,7 @@ import extensions.spendTimeMillis
  *
  * 解：将完整的链表分为四部分，已经归并过的为第一部分，正在归并的为第二和第三部分，等待归并的为第四部分
  * 第二部分和第三部分归并过程中依次拼接到第一部分后面，归并完成后再从第四部分中拆出两块用于归并
+ * （很奇怪的是这里如果用扩展函数效率会比将List作为参数传递效率要高，可能是因为原有的链表操作都是通过扩展函数实现的）
  */
 fun <T : Comparable<T>> DoublyLinkedList<T>.linkedListBottomUpMergeSort() {
     val size = this.size()
