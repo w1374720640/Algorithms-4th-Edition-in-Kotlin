@@ -13,12 +13,13 @@ import chapter2.swapCallbackList
  * 如果第二个数组中的j元素比第一个数组中的i元素小，则总倒置数量需要加上 M-i
  */
 fun <T : Comparable<T>> ex19(array: Array<T>): Long {
+    if (array.size <= 1) return 0L
     val extraArray = array.copyOf()
     return ex19(array, extraArray, 0, array.size - 1)
 }
 
 fun <T : Comparable<T>> ex19(array: Array<T>, extraArray: Array<T>, start: Int, end: Int): Long {
-    if (start >= end) return 0
+    if (start >= end) return 0L
     val mid = (start + end) / 2
     val leftCount = ex19(array, extraArray, start, mid)
     val rightCount = ex19(array, extraArray, mid + 1, end)
@@ -34,7 +35,7 @@ fun <T : Comparable<T>> ex19Merge(array: Array<T>, extraArray: Array<T>, start: 
     var j = mid + 1
     var k = start
     var count = 0L
-    while (i <= mid || j <= end) {
+    while (k <= end) {
         when {
             i > mid -> array[k++] = extraArray[j++]
             j > end -> array[k++] = extraArray[i++]
@@ -56,11 +57,11 @@ fun main() {
     println("inversionsCount=$inversionsCount")
 
     //用练习19求出的倒置数应该和插入排序的交换数相同
-    var selectSortSwapCount = 0L
+    var insertionSortSwapCount = 0L
     val swapCallback = object : SwapCallback {
         override fun before(tag: Any, i: Int, j: Int) {
             if (tag === array2) {
-                selectSortSwapCount++
+                insertionSortSwapCount++
             }
         }
 
@@ -71,5 +72,5 @@ fun main() {
     swapCallbackList.add(swapCallback)
     insertionSort(array2)
     swapCallbackList.remove(swapCallback)
-    println("selectSortSwapCount=$selectSortSwapCount")
+    println("insertionSortSwapCount=$insertionSortSwapCount")
 }
