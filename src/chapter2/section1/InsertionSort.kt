@@ -15,6 +15,21 @@ fun <T : Comparable<T>> insertionSort(array: Array<T>) {
     }
 }
 
+/**
+ * 对数组中的指定范围进行插入排序（范围包括start和end）
+ */
+fun <T : Comparable<T>> insertionSort(array: Array<T>, start: Int, end: Int) {
+    for (i in start + 1..end) {
+        for (j in i downTo start + 1) {
+            if (array.less(j, j - 1)) {
+                array.swap(j, j - 1)
+            } else {
+                break
+            }
+        }
+    }
+}
+
 fun main() {
     sortingMethodMainFunTemplate("Insertion Sort", ::insertionSort, false)
 }

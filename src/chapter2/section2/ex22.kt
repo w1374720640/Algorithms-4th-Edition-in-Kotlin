@@ -1,8 +1,12 @@
 package chapter2.section2
 
+import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
 import chapter2.section1.checkAscOrder
+import chapter2.section1.doubleGrowthTest
+import chapter2.sortMethodsCompare
 import extensions.spendTimeMillis
+import kotlin.math.log2
 
 /**
  * 三向归并
@@ -13,7 +17,7 @@ import extensions.spendTimeMillis
  * 每层需要从原始数组向额外数组拷贝N次，每次拷贝进行两次数组访问，2N
  * 每层N个元素，每个元素需要对比两次才能判断最小值，每次对比需要访问数组两次，4N
  * 从额外数组向原始数组拷贝数据，需要访问数组两次，2N
- * 总增长数量级为8NlgN/log₂3   ~NlgN
+ * 总增长数量级为8NlgN/log₂3 ≈5NlgN   ~NlgN
  */
 fun <T : Comparable<T>> ex22(originalArray: Array<T>) {
     val extraArray = originalArray.copyOf()
@@ -55,9 +59,12 @@ fun <T : Comparable<T>> ex22Merge(originalArray: Array<T>,
     var k = start
     while (k <= end) {
         when {
+            //有两部分超范围，直接取第三部分的值
             first >= secondStart && second >= thirdStart -> originalArray[k++] = extraArray[third++]
             first >= secondStart && third > end -> originalArray[k++] = extraArray[second++]
             second >= thirdStart && third > end -> originalArray[k++] = extraArray[first++]
+
+            //有一部分超范围，比较剩余两部分的值，取较小的值
             first >= secondStart -> {
                 if (extraArray[second] <= extraArray[third]) {
                     originalArray[k++] = extraArray[second++]
@@ -79,6 +86,8 @@ fun <T : Comparable<T>> ex22Merge(originalArray: Array<T>,
                     originalArray[k++] = extraArray[second++]
                 }
             }
+
+            //三部分都在有效范围内，找出最小值
             else -> {
                 if (extraArray[first] <= extraArray[second]) {
                     if (extraArray[first] <= extraArray[third]) {
@@ -99,6 +108,7 @@ fun <T : Comparable<T>> ex22Merge(originalArray: Array<T>,
 }
 
 fun main() {
+    println("checkAscOrder: ")
     val size = 100_0000
     val array = getDoubleArray(size)
     val time = spendTimeMillis {
@@ -106,4 +116,14 @@ fun main() {
     }
     val isAscOrder = array.checkAscOrder()
     println("isAscOrder=$isAscOrder time=$time ms")
+
+    println("doubleGrowthTest:")
+    doubleGrowthTest(size *10, ::ex22) { N -> N * log2(N.toDouble()) }
+
+    println("sortMethodsCompare: ")
+    val sortMethodList = arrayOf<Pair<String, (Array<Double>)-> Unit>>(
+            "Top Down Merge Sort" to ::topDownMergeSort,
+            "ex22" to ::ex22
+    )
+    sortMethodsCompare(sortMethodList, 10, size, ArrayInitialState.RANDOM)
 }

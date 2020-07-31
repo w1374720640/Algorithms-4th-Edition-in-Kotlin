@@ -20,6 +20,19 @@ fun <T : Comparable<T>> selectionSort(array: Array<T>) {
 }
 
 /**
+ * 对数组中的指定范围进行选择排序（包括start和end）
+ */
+fun <T : Comparable<T>> selectionSort(array: Array<T>, start: Int, end: Int) {
+    for (i in start..end) {
+        var minIndex = i
+        for (j in i + 1..end) {
+            if (array.less(j, minIndex)) minIndex = j
+        }
+        if (minIndex != i) array.swap(i, minIndex)
+    }
+}
+
+/**
  * 通用的排序方法主函数模板，用于显示数组中数据的交换过程
  */
 fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit, showComparisonProcess: Boolean = true) {
