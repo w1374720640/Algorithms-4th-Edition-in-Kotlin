@@ -54,6 +54,13 @@ fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int): Boolean {
     return this[i] < this[j]
 }
 
+fun <T : Comparable<T>> Array<T>.compare(i: Int, j: Int): Int {
+    comparisonCallbackList.forEach { callback ->
+        callback(this, i, j)
+    }
+    return if (this[i] == this[j]) 0 else if (this[i] < this[j]) -1 else 1
+}
+
 /**
  * 暂停程序一段时间
  */
