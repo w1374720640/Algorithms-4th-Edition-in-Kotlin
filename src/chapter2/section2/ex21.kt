@@ -34,16 +34,24 @@ fun ex21(list1: Array<String>, list2: Array<String>, list3: Array<String>): Stri
 }
 
 fun main() {
-    val size = 100_0000
-    repeat(10) {
-        val list1 = Array(size) { random(Int.MAX_VALUE).toString() }
-        val list2 = Array(size) { random(Int.MAX_VALUE).toString() }
-        val list3 = Array(size) { random(Int.MAX_VALUE).toString() }
-        val name = ex21(list1, list2, list3)
-        if (name == null) {
-            println("Not found")
-        } else {
-            println("Has found, name = $name")
-        }
+    val size = 10
+    //对比数字形式的字符串时，9比11大，因为第一个元素不同时，不会继续比较第二个元素
+    println("(The string '9' is greater than '11')")
+    val list1 = Array(size) { random(size * 5).toString() }
+    val list2 = Array(size) { random(size * 5).toString() }
+    val list3 = Array(size) { random(size * 5).toString() }
+    val name = ex21(list1, list2, list3)
+    //第一个数组为无序，第二和第三个数组已排序
+    if (name == null) {
+        println("Not found")
+        println(list1.joinToString(limit = 100))
+        println(list2.joinToString(limit = 100))
+        println(list3.joinToString(limit = 100))
+    } else {
+        println("Has found, name = $name")
+        println(list1.joinToString(limit = 100))
+        println(list2.joinToString(limit = 100))
+        println(list3.joinToString(limit = 100))
     }
+    println()
 }

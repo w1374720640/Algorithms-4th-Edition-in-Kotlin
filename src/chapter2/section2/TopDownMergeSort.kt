@@ -11,13 +11,13 @@ import extensions.readLong
 /**
  * 归并排序（自顶向下）
  */
-inline fun <reified T : Comparable<T>> topDownMergeSort(originalArray: Array<T>) {
+fun <T : Comparable<T>> topDownMergeSort(originalArray: Array<T>) {
     if (originalArray.size <= 1) return
-    val extraArray = arrayOfNulls<T>(originalArray.size)
+    val extraArray = originalArray.copyOf()
     topDownMergeSort(originalArray, extraArray, 0, originalArray.size - 1)
 }
 
-fun <T : Comparable<T>> topDownMergeSort(originalArray: Array<T>, extraArray: Array<T?>, start: Int, end: Int) {
+fun <T : Comparable<T>> topDownMergeSort(originalArray: Array<T>, extraArray: Array<T>, start: Int, end: Int) {
     if (start >= end) return
     val mid = (start + end) / 2
     topDownMergeSort(originalArray, extraArray, start, mid)
@@ -25,7 +25,7 @@ fun <T : Comparable<T>> topDownMergeSort(originalArray: Array<T>, extraArray: Ar
     merge(originalArray, extraArray, start, mid, end)
 }
 
-fun <T : Comparable<T>> merge(originalArray: Array<T>, extraArray: Array<T?>, start: Int, mid: Int, end: Int) {
+fun <T : Comparable<T>> merge(originalArray: Array<T>, extraArray: Array<T>, start: Int, mid: Int, end: Int) {
     mergeSortCallbackList.forEach {
         it.mergeStart(start, end)
     }
@@ -39,19 +39,19 @@ fun <T : Comparable<T>> merge(originalArray: Array<T>, extraArray: Array<T?>, st
         when {
             i > mid -> {
                 mergeSortCallbackList.forEach { it.copyToOriginal(j, k) }
-                originalArray[k++] = extraArray[j++]!!
+                originalArray[k++] = extraArray[j++]
             }
             j > end -> {
                 mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
-                originalArray[k++] = extraArray[i++]!!
+                originalArray[k++] = extraArray[i++]
             }
-            extraArray[i]!! < extraArray[j]!! -> {
+            extraArray[i] < extraArray[j] -> {
                 mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
-                originalArray[k++] = extraArray[i++]!!
+                originalArray[k++] = extraArray[i++]
             }
             else -> {
                 mergeSortCallbackList.forEach { it.copyToOriginal(j, k) }
-                originalArray[k++] = extraArray[j++]!!
+                originalArray[k++] = extraArray[j++]
             }
         }
     }

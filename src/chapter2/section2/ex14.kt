@@ -8,7 +8,6 @@ import extensions.random
  * 编写一个方法，将两个有序的队列作为参数，返回一个归并后的有序队列
  */
 fun <T: Comparable<T>> ex14(queue1: Queue<T>, queue2: Queue<T>): Queue<T> {
-    require(queue1.checkAscOrder() && queue2.checkAscOrder())
     val result = Queue<T>()
     while (!queue1.isEmpty || !queue2.isEmpty) {
         when {

@@ -14,56 +14,35 @@ import chapter2.sortMethodsCompare
 fun <T : Comparable<T>> ex16(array: Array<T>) {
     if (array.size <= 1) return
     val extraArray = array.copyOf()
-    var firstRangeStart = 0
-    var firstRangeEnd = 0
-    var secondRangStart = 0
-    var secondRangeEnd = 0
+    var start = 0
+    var mid = 0
+    var end = 0
+
+    fun findSortedSubArray(array: Array<T>, start: Int): Int {
+        for (i in start until array.size - 1) {
+            if (array[i + 1] < array[i]) {
+                return i
+            }
+        }
+        return array.size - 1
+    }
 
     while (true) {
-        firstRangeEnd = firstRangeStart
-        for (i in firstRangeStart until array.size - 1) {
-            if (array[i + 1] < array[i]) {
+        mid = findSortedSubArray(array, start)
+        if (mid == array.size - 1) {
+            if (start == 0) {
                 break
+            } else {
+                start = 0
+                continue
             }
-            firstRangeEnd = i + 1
         }
-        secondRangStart = firstRangeEnd + 1
-        secondRangeEnd = secondRangStart
-        for (i in secondRangStart until array.size - 1) {
-            if (array[i + 1] < array[i]) {
-                break
-            }
-            secondRangeEnd = i + 1
-        }
-        if (firstRangeStart == 0 && secondRangStart >= array.size) {
-            break
-        }
-        if (secondRangStart >= array.size) {
-            firstRangeStart = 0
-            continue
-        }
-        ex16Merge(array, extraArray, firstRangeStart, firstRangeEnd, secondRangeEnd)
-        firstRangeStart = if (secondRangeEnd >= array.size - 1) {
+        end = findSortedSubArray(array, mid + 1)
+        merge(array, extraArray, start, mid, end)
+        start = if (end == array.size - 1) {
             0
         } else {
-            secondRangeEnd + 1
-        }
-    }
-}
-
-fun <T : Comparable<T>> ex16Merge(originalArray: Array<T>, extraArray: Array<T>, start: Int, mid: Int, end: Int) {
-    for (i in start..end) {
-        extraArray[i] = originalArray[i]
-    }
-    var i = start
-    var j = mid + 1
-    var k = start
-    while (k <= end) {
-        when {
-            i > mid -> originalArray[k++] = extraArray[j++]
-            j > end -> originalArray[k++] = extraArray[i++]
-            extraArray[i] < extraArray[j] -> originalArray[k++] = extraArray[i++]
-            else -> originalArray[k++] = extraArray[j++]
+            end + 1
         }
     }
 }

@@ -13,12 +13,12 @@ import chapter2.sortMethodsCompare
  * 解：如果左侧的最大值比右侧的最大值小，则左侧循环结束后无需将右侧的值复制回原数组，因为剩余的值在原数组中已经有序
  * 如果左侧的最大值比右侧的最大值大，则右侧循环结束后会将左侧值依次与左侧最大值对比，永远返回左侧值
  */
-inline fun <reified T : Comparable<T>> ex10(array: Array<T>) {
-    val extraArray = arrayOfNulls<T>(array.size)
+fun <T : Comparable<T>> ex10(array: Array<T>) {
+    val extraArray = array.copyOf()
     ex10(array, extraArray, 0, array.size - 1)
 }
 
-fun <T : Comparable<T>> ex10(array: Array<T>, extraArray: Array<T?>, start: Int, end: Int) {
+fun <T : Comparable<T>> ex10(array: Array<T>, extraArray: Array<T>, start: Int, end: Int) {
     if (start >= end) return
     val mid = (start + end) / 2
     ex10(array, extraArray, start, mid)
@@ -26,7 +26,7 @@ fun <T : Comparable<T>> ex10(array: Array<T>, extraArray: Array<T?>, start: Int,
     ex10Merge(array, extraArray, start, mid, end)
 }
 
-fun <T : Comparable<T>> ex10Merge(array: Array<T>, extraArray: Array<T?>, start: Int, mid: Int, end: Int) {
+fun <T : Comparable<T>> ex10Merge(array: Array<T>, extraArray: Array<T>, start: Int, mid: Int, end: Int) {
     for (i in start..mid) {
         extraArray[i] = array[i]
     }
@@ -36,11 +36,11 @@ fun <T : Comparable<T>> ex10Merge(array: Array<T>, extraArray: Array<T?>, start:
     var leftIndex = start
     var rightIndex = end
     var index = start
-    while (leftIndex <= mid) {
-        if (extraArray[leftIndex]!! <= extraArray[rightIndex]!!) {
-            array[index++] = extraArray[leftIndex++]!!
+    while (index <= end) {
+        if (extraArray[leftIndex] <= extraArray[rightIndex]) {
+            array[index++] = extraArray[leftIndex++]
         } else {
-            array[index++] = extraArray[rightIndex--]!!
+            array[index++] = extraArray[rightIndex--]
         }
     }
 }

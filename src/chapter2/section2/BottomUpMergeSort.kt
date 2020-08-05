@@ -12,9 +12,9 @@ import kotlin.math.min
 /**
  * 归并排序（自底向上）
  */
-inline fun <reified T : Comparable<T>> bottomUpMergeSort(originalArray: Array<T>) {
+fun <T : Comparable<T>> bottomUpMergeSort(originalArray: Array<T>) {
     if (originalArray.size <= 1) return
-    val extraArray = arrayOfNulls<T>(originalArray.size)
+    val extraArray = originalArray.copyOf()
     var step = 1 //1 2 4 8 16...
     while (step < originalArray.size) {
         //依次合并[0,1],[2,3],[4,5]... [0,3],[4,7],[8,11]... [0,7],[8,15],[16,23]...

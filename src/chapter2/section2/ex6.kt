@@ -13,7 +13,7 @@ import kotlin.math.max
  * 编写一个程序来计算自顶向下和自底向上的归并排序访问数组的准确次数
  * 使用这个程序将N=1至512的结果绘制成曲线，并将其和上限6NlgN比较
  */
-fun ex6(array: Array<Double>, sortMethod: (Array<Double>) -> Unit): Int {
+fun getMergeSortComparisonTimes(array: Array<Double>, sortMethod: (Array<Double>) -> Unit): Int {
     var count = 0
 
     val callback = object : MergeSortCallback {
@@ -78,8 +78,8 @@ fun main() {
         //从大到小绘制，确定坐标范围
         val size = maxSize - i
         expectPointList.add(Point2D(size.toDouble(), 6 * size * log2(size.toDouble())))
-        topDownMergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::topDownMergeSort).toDouble()))
-        bottomUpMergePointList.add(Point2D(size.toDouble(), ex6(getDoubleArray(size), ::bottomUpMergeSort).toDouble()))
+        topDownMergePointList.add(Point2D(size.toDouble(), getMergeSortComparisonTimes(getDoubleArray(size), ::topDownMergeSort).toDouble()))
+        bottomUpMergePointList.add(Point2D(size.toDouble(), getMergeSortComparisonTimes(getDoubleArray(size), ::bottomUpMergeSort).toDouble()))
         drawPoint(i)
     }
     delayExit()
