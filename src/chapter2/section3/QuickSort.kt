@@ -7,10 +7,23 @@ import edu.princeton.cs.algs4.StdRandom
 
 /**
  * 快速排序基础实现
+ *
+ * 具体实现为：从第二个值开始向右循环，找到一个大于第一个值的位置
+ * 从末尾向左循环，找到一个小于第一个值的位置，交换两个位置上的值
+ * 继续循环，直到左右两侧相遇，数组遍历完成
+ * 交换左侧的第一位和最后一位，以左侧最后一位为分界线，左边都小于等于它，右边都大于等于它
+ * 递归排序左右两侧
  */
 fun <T : Comparable<T>> quickSort(array: Array<T>) {
     //消除对输入的依赖
-//    StdRandom.shuffle(array)
+    StdRandom.shuffle(array)
+    quickSort(array, 0, array.size - 1)
+}
+
+/**
+ * 用原始数组排序，不打乱
+ */
+fun <T : Comparable<T>> quickSortWithOriginalArray(array: Array<T>) {
     quickSort(array, 0, array.size - 1)
 }
 
@@ -39,5 +52,5 @@ fun <T : Comparable<T>> partition(array: Array<T>, start: Int, end: Int): Int {
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Quick Sort", ::quickSort)
+    sortingMethodMainFunTemplate("Quick Sort", ::quickSortWithOriginalArray)
 }

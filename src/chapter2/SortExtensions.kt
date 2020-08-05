@@ -61,6 +61,13 @@ fun <T : Comparable<T>> Array<T>.compare(i: Int, j: Int): Int {
     return if (this[i] == this[j]) 0 else if (this[i] < this[j]) -1 else 1
 }
 
+fun <T : Comparable<T>> Array<T>.compare(i: Int, value: T): Int {
+    comparisonCallbackList.forEach { callback ->
+        callback(this, i, -1)
+    }
+    return if (this[i] == value) 0 else if (this[i] < value) -1 else 1
+}
+
 /**
  * 暂停程序一段时间
  */
@@ -101,6 +108,7 @@ fun showSortingProcess(array: Array<Double>, sortFun: (Array<Double>) -> Unit, d
     StdDraw.setYscale(min - space, max + space)
 
     fun drawItem(index: Int) {
+        if (index !in array.indices) return
         //绘制直方图，每个item中间设置一定间隔
         StdDraw.filledRectangle(index + 0.5, (array[index] + min - space) / 2, 0.4, (array[index] - min + space) / 2)
     }
