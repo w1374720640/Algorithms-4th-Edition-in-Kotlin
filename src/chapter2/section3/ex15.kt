@@ -14,7 +14,7 @@ import extensions.random
  * 解：设螺丝放在数组A中，螺帽放在数组B中，A和B的大小相等，且无重复值
  * 用数组A中的第一个螺丝作为基准，以快速排序的切分方法将数组B分为小于、等于、大于基准的三部分
  * （需要注意的是，标准快速排序的切分方法只能切分成小于等于和大于等于两部分，需要手动记录等于值，循环结束后手动调整位置）
- * 在以数组B中等于第一个螺丝的螺帽作为基准，将数组A切分为三部分
+ * 再以数组B中等于第一个螺丝的螺帽作为基准，将数组A切分为三部分，这时作为基准的螺丝和螺帽在A、B中的位置相同
  * 用递归的形式，在左半边和右半边分别取第一个螺丝将螺帽切分，在用螺帽将螺丝切分，直到数组A和数组B完全有序
  * 需要对两个数组进行归并，复杂度为2NlgN ~NlgN
  */
@@ -102,6 +102,7 @@ fun ex15PartitionNuts(nuts: Array<Nut>, bolt: Bolt, start: Int, end: Int): Int {
 
 /**
  * 螺丝
+ * 只能和螺帽比较大小，而不能和其他螺丝比较大小
  */
 class Bolt(val size: Double) : Comparable<Nut> {
     override fun compareTo(other: Nut): Int {
@@ -115,6 +116,7 @@ class Bolt(val size: Double) : Comparable<Nut> {
 
 /**
  * 螺帽
+ * 只能和螺丝比较大小，而不能和其他螺帽比较大小
  */
 class Nut(val size: Double) : Comparable<Bolt> {
     override fun compareTo(other: Bolt): Int {
