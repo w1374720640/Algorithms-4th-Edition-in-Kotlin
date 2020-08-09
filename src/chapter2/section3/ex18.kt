@@ -1,8 +1,7 @@
 package chapter2.section3
 
 import chapter2.compare
-import chapter2.getDoubleArray
-import chapter2.section1.checkAscOrder
+import chapter2.section1.cornerCases
 import chapter2.section1.doubleGrowthTest
 import chapter2.section1.insertionSort
 import chapter2.swap
@@ -10,6 +9,7 @@ import kotlin.math.log2
 
 /**
  * 三取样切分
+ * 以取值范围前三位的中位数切分数组，当范围小于等于15时，用插入排序替代快速排序
  */
 fun <T : Comparable<T>> quickSort3Select(array: Array<T>) {
     quickSort3Select(array, 0, array.size - 1)
@@ -17,7 +17,7 @@ fun <T : Comparable<T>> quickSort3Select(array: Array<T>) {
 
 fun <T : Comparable<T>> quickSort3Select(array: Array<T>, start: Int, end: Int) {
     if (start >= end) return
-    if (end - start + 1 < 15) {
+    if (end - start < 15) {
         insertionSort(array, start, end)
         return
     }
@@ -66,9 +66,8 @@ fun <T : Comparable<T>> midOf(a: T, b: T, c: T): T {
 }
 
 fun main() {
-//    val array = getDoubleArray(1000)
-//    quickSort3Select(array)
-//    println("isAscOrder=${array.checkAscOrder()}")
+    //检查排序方法是否正确
+    cornerCases(::quickSort3Select)
 
     println("quickSortWithOriginalArray:")
     doubleGrowthTest(1000_0000, ::quickSortWithOriginalArray) { N -> N * log2(N.toDouble()) }
