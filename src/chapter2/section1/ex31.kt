@@ -1,5 +1,6 @@
 package chapter2.section1
 
+import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
 import extensions.formatDouble
 import extensions.formatInt
@@ -18,10 +19,15 @@ import kotlin.math.pow
  * @param O 理论上的算法复杂度，如 O(lgN) O(N) O(NlgN) O(N²) 等
  */
 fun doubleGrowthTest(maxSize: Int, sortMethod: (Array<Double>) -> Unit, O: (N: Int) -> Double) {
+    val createArray: (Int) -> Array<Double> = { getDoubleArray(it, ArrayInitialState.RANDOM)}
+    doubleGrowthTest(maxSize, sortMethod, createArray, O)
+}
+
+fun doubleGrowthTest(maxSize: Int, sortMethod: (Array<Double>) -> Unit, createArray: (Int) -> Array<Double>, O: (N: Int) -> Double) {
     var N = 1000
     var preTime = 0L
     while (N <= maxSize) {
-        val array = getDoubleArray(N)
+        val array = createArray(N)
         val time = spendTimeMillis {
             sortMethod(array)
         }

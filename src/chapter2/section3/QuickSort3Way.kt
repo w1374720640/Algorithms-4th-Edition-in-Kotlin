@@ -1,13 +1,14 @@
 package chapter2.section3
 
 import chapter2.compare
+import chapter2.section1.doubleGrowthTest
 import chapter2.showSortingProcess
 import chapter2.swap
 import extensions.*
 
 /**
  * 快速排序的3路算法
- * 用于排序有大量重复值的数组，交换次数较多，面对随机数组效率不如快速排序的基础实现
+ * 用于排序只有有限主键的数组时，时间复杂度为O(N)
  *
  * 具体实现：以数组第一个值A为基准，将数组从左到右分为四部分
  * 第一部分所有元素都小于A，初始大小为0
@@ -49,11 +50,23 @@ fun <T : Comparable<T>> quickSort3Way(array: Array<T>, start: Int, end: Int) {
     quickSort3Way(array, greaterThan + 1, end)
 }
 
-fun main() {
+private fun drawSortingProcess() {
     inputPrompt()
     val size = readInt("size: ")
     val delay = readLong("delay: ")
     val array = Array(size) { random(5).toDouble() }
     showSortingProcess(array, ::quickSort3Way, delay, true)
     delayExit()
+}
+
+//时间复杂度为O(N)
+private fun growthTest() {
+    doubleGrowthTest(1000_0000, ::quickSort3Way, createArray = {
+        Array(it) { random(10).toDouble() }
+    }, O = { N -> N.toDouble() })
+}
+
+fun main() {
+    drawSortingProcess()
+    //growthTest()
 }

@@ -13,10 +13,9 @@ import extensions.*
  *
  * 解：最佳情况应该切分数组的次数最少，且交换元素的次数最少
  * 对应的行为是：每次切分前第一个元素的值是中位数，且左侧半边都小于第一个值，右半边都大于第一个值
- * 先创建一个有序数组，取中间值与第一位元素交换
- * 递归左半边（不包括中间值和第一个元素）和右半边，直到范围小于等于1
- *
- * （不是真的最优解，还有优化空间，不应该将中间值和第一个元素交换，应该将中间值放到第一位，新区间的中间值放到旧的中间值位置，判断比较复杂，未完成）
+ * 先创建一个有序数组，执行快速排序的逆向运算
+ * 递归左半边（不包括中间值但包括第一个元素）和右半边，直到范围小于等于1
+ * 递归完左半边和右半边后，取中间值与第一位元素交换
  */
 fun ex16(size: Int): Array<Double> {
     val array = Array(size) { it.toDouble() }
@@ -27,9 +26,9 @@ fun ex16(size: Int): Array<Double> {
 fun ex16(array: Array<Double>, start: Int, end: Int) {
     if (start >= end) return
     val mid = (start + end) / 2
-    array.swap(start, mid)
-    ex16(array, start + 1, mid - 1)
+    ex16(array, start, mid - 1)
     ex16(array, mid + 1, end)
+    array.swap(start, mid)
 }
 
 private fun drawSortingProcess() {
@@ -48,7 +47,7 @@ private fun compareWithRandomArray() {
         quickSortWithOriginalArray(bestArray)
     }
     println("bestTime=$bestTime")
-    repeat(20) {
+    repeat(10) {
         val randomArray = getDoubleArray(size)
         val randomTime = spendTimeMillis { quickSortWithOriginalArray(randomArray) }
         println("randomTime=$randomTime")
