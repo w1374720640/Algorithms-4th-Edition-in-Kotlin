@@ -17,29 +17,24 @@ fun cornerCases(sortMethod: (Array<Double>) -> Unit) {
     sortMethod(arrayOf(1.0))
     repeat(10) {
         val array = getDoubleArray(2)
-        sortMethod(array)
-        check(array.checkAscOrder())
+        check(ex16(array, sortMethod))
     }
 
-    val ascArray = getDoubleArray(100, ArrayInitialState.ASC)
-    sortMethod(ascArray)
-    check(ascArray.checkAscOrder())
+    val size = 100
+    val ascArray = getDoubleArray(size, ArrayInitialState.ASC)
+    check(ex16(ascArray, sortMethod))
 
-    val descArray = getDoubleArray(100, ArrayInitialState.DESC)
-    sortMethod(descArray)
-    check(descArray.checkAscOrder())
+    val descArray = getDoubleArray(size, ArrayInitialState.DESC)
+    check(ex16(descArray, sortMethod))
 
-    val sameValueArray = Array(100) { 1.0 }
-    sortMethod(sameValueArray)
-    check(sameValueArray.checkAscOrder())
+    val sameValueArray = Array(size) { 1.0 }
+    check(ex16(sameValueArray, sortMethod))
 
-    val twoValuesArray = Array(100) { if (randomBoolean()) 0.0 else 1.0 }
-    sortMethod(twoValuesArray)
-    check(twoValuesArray.checkAscOrder())
+    val twoValuesArray = Array(size) { if (randomBoolean()) 0.0 else 1.0 }
+    check(ex16(twoValuesArray, sortMethod))
 
-    val randomValuesArray = getDoubleArray(100)
-    sortMethod(randomValuesArray)
-    check(randomValuesArray.checkAscOrder())
+    val randomValuesArray = getDoubleArray(size)
+    check(ex16(randomValuesArray, sortMethod))
 
     println("The sorting method is correct")
 }
