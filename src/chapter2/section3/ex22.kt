@@ -47,7 +47,7 @@ fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int
         when {
             compareLeft > 0 -> array.swap(i, j--)
             compareLeft < 0 -> i++
-            p == j -> {
+            p == i -> {
                 p++
                 i++
             }

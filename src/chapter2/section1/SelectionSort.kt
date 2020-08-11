@@ -35,7 +35,7 @@ fun <T : Comparable<T>> selectionSort(array: Array<T>, start: Int, end: Int) {
 /**
  * 通用的排序方法主函数模板，用于显示数组中数据的交换过程
  */
-fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit, showComparisonProcess: Boolean = true) {
+fun displaySortingProcessTemplate(name: String, sortFun: (Array<Double>) -> Unit, showComparisonProcess: Boolean = true) {
     inputPrompt()
     val size = readInt("size: ")
     //两次绘制的间隔
@@ -50,6 +50,17 @@ fun sortingMethodMainFunTemplate(name: String, sortFun: (Array<Double>) -> Unit,
     delayExit()
 }
 
+fun performanceTesting(name: String, sortFun: (Array<Double>) -> Unit) {
+    inputPrompt()
+    val times = readInt("repeat times: ")
+    val size = readInt("size: ")
+    val ordinal = readInt("array initial state(0~5): ")
+    val state = enumValueOf<ArrayInitialState>(ordinal)
+    println("Array initial state: ${state.name}")
+    sortMethodsCompare(arrayOf(name to sortFun), times, size, state)
+}
+
 fun main() {
-    sortingMethodMainFunTemplate("Selection sort", ::selectionSort)
+    displaySortingProcessTemplate("Selection sort", ::selectionSort)
+//    performanceTesting("Selection sort", ::selectionSort)
 }

@@ -3,6 +3,7 @@ package chapter2.section3
 import chapter2.*
 import chapter2.section1.cornerCases
 import chapter2.section1.doubleGrowthTest
+import chapter2.section1.performanceTesting
 import extensions.*
 
 /**
@@ -72,5 +73,6 @@ private fun growthTest() {
 fun main() {
     cornerCases(::quickSort3Way)
     drawSortingProcess()
+//    performanceTesting("quickSort3Way", ::quickSort3Way)
 //    growthTest()
 }

@@ -31,5 +31,5 @@ fun <T : Comparable<T>> insertionSort(array: Array<T>, start: Int, end: Int) {
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Insertion Sort", ::insertionSort, false)
+    displaySortingProcessTemplate("Insertion Sort", ::insertionSort, false)
 }

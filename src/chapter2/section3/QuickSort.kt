@@ -1,9 +1,8 @@
 package chapter2.section3
 
 import chapter2.compare
-import chapter2.getDoubleArray
-import chapter2.section1.checkAscOrder
-import chapter2.section1.sortingMethodMainFunTemplate
+import chapter2.section1.displaySortingProcessTemplate
+import chapter2.section1.performanceTesting
 import chapter2.swap
 import edu.princeton.cs.algs4.StdRandom
 
@@ -54,5 +53,6 @@ fun <T : Comparable<T>> partition(array: Array<T>, start: Int, end: Int): Int {
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Quick Sort", ::quickSortWithOriginalArray)
+    displaySortingProcessTemplate("Quick Sort", ::quickSortWithOriginalArray)
+//    performanceTesting("Quick Sort", ::quickSortWithOriginalArray)
 }

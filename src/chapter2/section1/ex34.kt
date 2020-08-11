@@ -41,6 +41,9 @@ fun cornerCases(sortMethod: (Array<Double>) -> Unit) {
     val nearlyDescArray = getDoubleArray(size, ArrayInitialState.NEARLY_DESC)
     check(ex16(nearlyDescArray, sortMethod))
 
+    val repeatArray = getDoubleArray(size, ArrayInitialState.REPEAT)
+    check(ex16(repeatArray, sortMethod))
+
     val randomValuesArray = getDoubleArray(size)
     check(ex16(randomValuesArray, sortMethod))
 

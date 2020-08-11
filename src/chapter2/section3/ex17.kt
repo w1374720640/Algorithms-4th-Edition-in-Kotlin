@@ -2,7 +2,7 @@ package chapter2.section3
 
 import chapter2.compare
 import chapter2.less
-import chapter2.section1.sortingMethodMainFunTemplate
+import chapter2.section1.displaySortingProcessTemplate
 import chapter2.swap
 import edu.princeton.cs.algs4.StdRandom
 
@@ -64,5 +64,5 @@ fun <T : Comparable<T>> ex17Partition(array: Array<T>, start: Int, end: Int): In
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Quick Sort", ::ex17QuickSortWithOriginalArray)
+    displaySortingProcessTemplate("Quick Sort", ::ex17QuickSortWithOriginalArray)
 }

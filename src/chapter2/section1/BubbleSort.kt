@@ -17,5 +17,5 @@ fun <T: Comparable<T>> bubbleSort(array: Array<T>) {
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Bubble Sort", ::bubbleSort, false)
+    displaySortingProcessTemplate("Bubble Sort", ::bubbleSort, false)
 }

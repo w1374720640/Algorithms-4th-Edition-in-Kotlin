@@ -21,5 +21,5 @@ fun <T : Comparable<T>> shellSort(array: Array<T>) {
 }
 
 fun main() {
-    sortingMethodMainFunTemplate("Shell Sort", ::shellSort)
+    displaySortingProcessTemplate("Shell Sort", ::shellSort)
 }
