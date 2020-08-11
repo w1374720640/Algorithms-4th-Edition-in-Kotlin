@@ -1,10 +1,10 @@
 package chapter2.section3
 
+import chapter2.ArrayInitialState
 import chapter2.compare
 import chapter2.section1.cornerCases
-import chapter2.section1.doubleGrowthTest
+import chapter2.sortMethodsCompare
 import chapter2.swap
-import extensions.random
 
 /**
  * 快速三向切分
@@ -87,12 +87,10 @@ fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int
 fun main() {
     cornerCases(::quickSortQuick3Way)
 
-    println("quickSort3Way")
-    doubleGrowthTest(1000_0000, ::quickSort3Way, createArray = {
-        Array(it) { random(10).toDouble() }
-    }, O = { N -> N.toDouble() })
-    println("quickSortQuick3Way")
-    doubleGrowthTest(1000_0000, ::quickSortQuick3Way, createArray = {
-        Array(it) { random(10).toDouble() }
-    }, O = { N -> N.toDouble() })
+    val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
+            "quickSortWithOriginalArray" to ::quickSortWithOriginalArray,
+            "quickSort3Way" to ::quickSort3Way,
+            "quickSortQuick3Way" to ::quickSortQuick3Way
+    )
+    sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.REPEAT)
 }

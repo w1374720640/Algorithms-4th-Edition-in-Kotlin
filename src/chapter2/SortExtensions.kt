@@ -81,6 +81,7 @@ fun sleep(timeMillis: Long) {
 fun setPenColor(color: Color) {
     StdDraw.setPenColor(color)
 }
+
 /**
  * 使用绘图API直观显示数组的排序过程
  * 可用通过showComparisonProcess参数控制只显示交换过程还是同时显示对比和交换过程
@@ -181,7 +182,8 @@ enum class ArrayInitialState {
     ASC, //完全升序
     DESC, //完全降序
     NEARLY_ASC, //接近升序
-    NEARLY_DESC //接近降序
+    NEARLY_DESC, //接近降序
+    REPEAT //大量重复元素
 }
 
 /**
@@ -215,6 +217,9 @@ fun getDoubleArray(size: Int, initialState: ArrayInitialState = ArrayInitialStat
         ArrayInitialState.NEARLY_DESC -> {
             Array(size) { if (randomBoolean(0.9)) it * -1.0 else random(size * -1.0, -0.0) }
         }
+        ArrayInitialState.REPEAT -> {
+            Array(size) { random(5).toDouble() }
+        }
     }
 }
 
@@ -246,7 +251,7 @@ fun main() {
     val times = readInt("repeat times: ")
     val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
-    val ordinal = readInt("array initial state(0~4): ")
+    val ordinal = readInt("array initial state(0~5): ")
     val state = enumValueOf<ArrayInitialState>(ordinal)
     println("Array initial state: ${state.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(

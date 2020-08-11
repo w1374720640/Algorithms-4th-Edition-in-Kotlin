@@ -1,9 +1,8 @@
 package chapter2.section3
 
-import chapter2.compare
+import chapter2.*
+import chapter2.section1.cornerCases
 import chapter2.section1.doubleGrowthTest
-import chapter2.showSortingProcess
-import chapter2.swap
 import extensions.*
 
 /**
@@ -35,12 +34,16 @@ fun <T : Comparable<T>> quickSort3Way(array: Array<T>, start: Int, end: Int) {
         val result = array.compare(i, value)
         when {
             result < 0 -> {
-                array.swap(lowerThan, i)
+                if (lowerThan != i) {
+                    array.swap(lowerThan, i)
+                }
                 lowerThan++
                 i++
             }
             result > 0 -> {
-                array.swap(greaterThan, i)
+                if (greaterThan != i) {
+                    array.swap(greaterThan, i)
+                }
                 greaterThan--
             }
             else -> i++
@@ -62,11 +65,12 @@ private fun drawSortingProcess() {
 //时间复杂度为O(N)
 private fun growthTest() {
     doubleGrowthTest(1000_0000, ::quickSort3Way, createArray = {
-        Array(it) { random(10).toDouble() }
+        getDoubleArray(it, ArrayInitialState.REPEAT)
     }, O = { N -> N.toDouble() })
 }
 
 fun main() {
+    cornerCases(::quickSort3Way)
     drawSortingProcess()
-    //growthTest()
+//    growthTest()
 }

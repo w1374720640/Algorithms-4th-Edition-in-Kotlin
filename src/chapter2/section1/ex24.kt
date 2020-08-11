@@ -32,7 +32,7 @@ fun main() {
     val times = readInt("repeat times: ")
     val size = readInt("size: ")
     //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
-    val ordinal = readInt("array initial state(0~4): ")
+    val ordinal = readInt("array initial state(0~5): ")
     val state = enumValueOf<ArrayInitialState>(ordinal)
     println("Array initial state: ${state.name}")
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(

@@ -61,7 +61,7 @@ fun main() {
     inputPrompt()
     val size = readInt("size: ")
     val delay = readLong("delay time millis: ")
-    val ordinal = readInt("array initial state(0~4): ")
+    val ordinal = readInt("array initial state(0~5): ")
     val state = enumValueOf<ArrayInitialState>(ordinal)
     val array = getDoubleArray(size, state)
     showMergeSortProcess(array, ::topDownMergeSort, delay)
