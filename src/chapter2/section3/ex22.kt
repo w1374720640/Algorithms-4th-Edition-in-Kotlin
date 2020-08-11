@@ -1,0 +1,98 @@
+package chapter2.section3
+
+import chapter2.compare
+import chapter2.section1.cornerCases
+import chapter2.section1.doubleGrowthTest
+import chapter2.swap
+import extensions.random
+
+/**
+ * 快速三向切分
+ * 用将重复元素防止于子数组两端的方式实现一个信息量最优的排序算法
+ * 使用两个索引p和q，使得a[lo..p-1]和a[q+1..hi]的元素都和a[lo]相等
+ * 使用另外两个索引i和j，使得a[p..i-1]小于a[lo]，a[j+i..q]大于a[lo]
+ * 在内循环中加入代码，在a[i]和v相当时将其与a[p]交换（并将p加1）
+ * 在a[j]和v相等且a[i]和a[j]尚未和v进行比较之前将其与a[q]交换
+ * 添加在切分循环结束后将和v相等的元素交换到正确位置的代码，如图所示
+ * 请注意：这里实现的代码和正文中给出的代码是等价的，因为这里额外的交换用于和切分元素相等的元素
+ * 而正文中的代码将额外的交换用于和切分元素不等的元素
+ * 排序前：
+ * |v|                                           |
+ *  ↑                                           ↑
+ *  lo                                          hi
+ *
+ *  排序中：
+ * |  =v  |  <v  |                 |  >v  |  =v  |
+ *  ↑      ↑      ↑               ↑        ↑    ↑
+ *  lo     p      i               j        q    hi
+ *
+ *  排序后：
+ * |    <v    |          =v           |    >v    |
+ *  ↑        ↑                         ↑        ↑
+ *  lo       j                         i        hi
+ */
+fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>) {
+    quickSortQuick3Way(array, 0, array.size - 1)
+}
+
+fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int) {
+    if (start >= end) return
+    var p = start + 1
+    var q = end + 1
+    var i = p
+    var j = end
+    val value = array[start]
+    while (true) {
+        val compareLeft = array.compare(i, value)
+        when {
+            compareLeft > 0 -> array.swap(i, j--)
+            compareLeft < 0 -> i++
+            p == j -> {
+                p++
+                i++
+            }
+            else -> array.swap(i++, p++)
+        }
+        if (i > j) break
+        val compareRight = array.compare(j, value)
+        when {
+            compareRight > 0 -> j--
+            compareRight < 0 -> array.swap(i++, j)
+            j == q - 1 -> {
+                j--
+                q--
+            }
+            else -> array.swap(j--, --q)
+        }
+        if (i > j) break
+    }
+    if (i > p) {
+        while (p > start) {
+            array.swap(--p, j--)
+        }
+    } else {
+        j = start - 1
+    }
+    if (j < q - 1) {
+        while (q <= end) {
+            array.swap(q++, i++)
+        }
+    } else {
+        i = end + 1
+    }
+    quickSortQuick3Way(array, start, j)
+    quickSortQuick3Way(array, i, end)
+}
+
+fun main() {
+    cornerCases(::quickSortQuick3Way)
+
+    println("quickSort3Way")
+    doubleGrowthTest(1000_0000, ::quickSort3Way, createArray = {
+        Array(it) { random(10).toDouble() }
+    }, O = { N -> N.toDouble() })
+    println("quickSortQuick3Way")
+    doubleGrowthTest(1000_0000, ::quickSortQuick3Way, createArray = {
+        Array(it) { random(10).toDouble() }
+    }, O = { N -> N.toDouble() })
+}

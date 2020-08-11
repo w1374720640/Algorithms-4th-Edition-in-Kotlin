@@ -19,19 +19,27 @@ fun cornerCases(sortMethod: (Array<Double>) -> Unit) {
         val array = getDoubleArray(2)
         check(ex16(array, sortMethod))
     }
-
     val size = 100
-    val ascArray = getDoubleArray(size, ArrayInitialState.ASC)
-    check(ex16(ascArray, sortMethod))
-
-    val descArray = getDoubleArray(size, ArrayInitialState.DESC)
-    check(ex16(descArray, sortMethod))
 
     val sameValueArray = Array(size) { 1.0 }
     check(ex16(sameValueArray, sortMethod))
 
-    val twoValuesArray = Array(size) { if (randomBoolean()) 0.0 else 1.0 }
-    check(ex16(twoValuesArray, sortMethod))
+    repeat(10) {
+        val twoValuesArray = Array(size) { if (randomBoolean()) 0.0 else 1.0 }
+        check(ex16(twoValuesArray, sortMethod))
+    }
+
+    val ascArray = getDoubleArray(size, ArrayInitialState.ASC)
+    check(ex16(ascArray, sortMethod))
+
+    val nearlyAscArray = getDoubleArray(size, ArrayInitialState.NEARLY_ASC)
+    check(ex16(nearlyAscArray, sortMethod))
+
+    val descArray = getDoubleArray(size, ArrayInitialState.DESC)
+    check(ex16(descArray, sortMethod))
+
+    val nearlyDescArray = getDoubleArray(size, ArrayInitialState.NEARLY_DESC)
+    check(ex16(nearlyDescArray, sortMethod))
 
     val randomValuesArray = getDoubleArray(size)
     check(ex16(randomValuesArray, sortMethod))
