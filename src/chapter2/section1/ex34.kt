@@ -44,8 +44,10 @@ fun cornerCases(sortMethod: (Array<Double>) -> Unit) {
     val repeatArray = getDoubleArray(size, ArrayInitialState.REPEAT)
     check(ex16(repeatArray, sortMethod))
 
-    val randomValuesArray = getDoubleArray(size)
-    check(ex16(randomValuesArray, sortMethod))
+    repeat(10) {
+        val randomValuesArray = getDoubleArray(size)
+        check(ex16(randomValuesArray, sortMethod))
+    }
 
     println("The sorting method is correct")
 }
