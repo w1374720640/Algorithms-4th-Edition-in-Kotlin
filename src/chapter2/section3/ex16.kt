@@ -36,7 +36,7 @@ private fun drawSortingProcess() {
     val size = readInt("size: ")
     val delay = readLong("delay: ")
     val array = ex16(size)
-    showSortingProcess(array, ::quickSortWithOriginalArray, delay, true)
+    showSortingProcess(array, ::quickSortNotShuffle, delay, true)
     delayExit()
 }
 
@@ -44,12 +44,12 @@ private fun compareWithRandomArray() {
     val size = 100_0000
     val bestArray = ex16(size)
     val bestTime = spendTimeMillis {
-        quickSortWithOriginalArray(bestArray)
+        quickSortNotShuffle(bestArray)
     }
     println("bestTime=$bestTime")
     repeat(10) {
         val randomArray = getDoubleArray(size)
-        val randomTime = spendTimeMillis { quickSortWithOriginalArray(randomArray) }
+        val randomTime = spendTimeMillis { quickSortNotShuffle(randomArray) }
         println("randomTime=$randomTime")
     }
 }

@@ -28,6 +28,7 @@ val swapCallbackList = mutableListOf<SwapCallback>()
  * 所有排序函数都应该使用这个扩展函数交换数据
  */
 fun <T : Comparable<T>> Array<T>.swap(i: Int, j: Int) {
+    if (i == j) return
     swapCallbackList.forEach { callback ->
         callback.before(this, i, j)
     }
@@ -48,6 +49,7 @@ val comparisonCallbackList = mutableListOf<(Any, Int, Int) -> Unit>()
  * 所有排序函数都应该使用这个方法对比大小
  */
 fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int): Boolean {
+    if (i == j) return false
     comparisonCallbackList.forEach { callback ->
         callback(this, i, j)
     }
@@ -55,6 +57,7 @@ fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int): Boolean {
 }
 
 fun <T : Comparable<T>> Array<T>.compare(i: Int, j: Int): Int {
+    if (i == j) return 0
     comparisonCallbackList.forEach { callback ->
         callback(this, i, j)
     }

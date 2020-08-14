@@ -90,7 +90,7 @@ fun main() {
     val ordinal = readInt("array initial state(0~5): ")
     val state = chapter2.enumValueOf<ArrayInitialState>(ordinal)
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-            "quickSort3Select" to ::quickSort3Select,
+            "quickSort3SelectNotShuffle" to ::quickSort3SelectNotShuffle,
             "ex23" to ::ex23
     )
     sortMethodsCompare(sortMethods, 10, size, state)

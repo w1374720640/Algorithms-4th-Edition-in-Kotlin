@@ -1,11 +1,10 @@
 package chapter2.section3
 
-import chapter2.compare
+import chapter2.*
 import chapter2.section1.cornerCases
 import chapter2.section1.doubleGrowthTest
 import chapter2.section1.insertionSort
-import chapter2.swap
-import extensions.random
+import edu.princeton.cs.algs4.StdRandom
 import kotlin.math.log2
 
 /**
@@ -25,6 +24,11 @@ import kotlin.math.log2
  * 一共比较6次，对于任意输入都只需要少于7次比较
  */
 fun <T : Comparable<T>> quickSort5Select(array: Array<T>) {
+    StdRandom.shuffle(array)
+    quickSort5Select(array, 0, array.size - 1)
+}
+
+fun <T : Comparable<T>> quickSort5SelectNotShuffle(array: Array<T>) {
     quickSort5Select(array, 0, array.size - 1)
 }
 
@@ -41,8 +45,9 @@ fun <T : Comparable<T>> quickSort5Select(array: Array<T>, start: Int, end: Int) 
 
 fun <T : Comparable<T>> partition5Select(array: Array<T>, start: Int, end: Int): Int {
     swapStartWith5Mid(array, start, end)
-    var i = start
-    var j = end
+    //前三位数小于等于第一位的值，后两位数大于等于第一位的值
+    var i = start + 2
+    var j = end - 1
     while (true) {
         while (array.compare(++i, start) < 0) {
         }
@@ -59,54 +64,47 @@ fun <T : Comparable<T>> partition5Select(array: Array<T>, start: Int, end: Int):
  * 在指定范围内随机取5个值，取中值和范围起始值交换，大于中值的一个值和范围的最后一个值交换
  */
 private fun <T : Comparable<T>> swapStartWith5Mid(array: Array<T>, start: Int, end: Int) {
-    val indexArray = IntArray(5)
-    //将取值范围等分为5份，分别在5份内取随机值（范围小于15时用插入排序不会调用这个方法）
-    val size = (end - start + 1) / 5
-    repeat(5) {
-        val index = random(size) + size * it + start
-        indexArray[it] = index
+    //排序前先打乱，所以可以直接取前五个数
+    if (array.less(start + 2, start + 1)) {
+        array.swap(start + 1, start + 2)
     }
-    if (array[indexArray[2]] < array[indexArray[1]]) {
-        indexArray.swap(1, 2)
+    if (array.less(start + 4, start + 3)) {
+        array.swap(start + 3, start + 4)
     }
-    if (array[indexArray[4]] < array[indexArray[3]]) {
-        indexArray.swap(3, 4)
+    if (array.less(start + 3, start + 1)) {
+        array.swap(start + 1, start + 3)
+        array.swap(start + 2, start + 4)
     }
-    if (array[indexArray[3]] < array[indexArray[1]]) {
-        indexArray.swap(1, 3)
-        indexArray.swap(2, 4)
+    array.swap(start, start + 1)
+    if (array.less(start + 2, start + 1)) {
+        array.swap(start + 1, start + 2)
     }
-    indexArray.swap(0, 1)
-    if (array[indexArray[2]] < array[indexArray[1]]) {
-        indexArray.swap(1, 2)
+    if (array.less(start + 3, start + 1)) {
+        array.swap(start + 1, start + 3)
+        array.swap(start + 2, start + 4)
     }
-    if (array[indexArray[3]] < array[indexArray[1]]) {
-        indexArray.swap(1, 3)
-        indexArray.swap(2, 4)
+    if (array.less(start + 3, start + 2)) {
+        array.swap(start + 3, start + 2)
     }
-    val midIndex = if (array[indexArray[2]] < array[indexArray[3]]) {
-        2
-    } else {
-        3
-    }
-    //让最后一个值大于中间值，第一个值等于中间值，可以省略partition方法内循环中的判断
-    array.swap(indexArray[4], end)
-    array.swap(indexArray[midIndex], start)
-}
-
-fun IntArray.swap(i: Int, j: Int) {
-    val temp = this[i]
-    this[i] = this[j]
-    this[j] = temp
+    //中位数和第一个值交换，大于中位数的两个值和取值范围内的最后两个数交换
+    array.swap(start, start + 2)
+    array.swap(start + 3, end - 1)
+    array.swap(start + 4, end)
 }
 
 fun main() {
-    cornerCases(::quickSort5Select)
+    cornerCases(::quickSort5SelectNotShuffle)
+    val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
+            "quickSortNotShuffle" to ::quickSortNotShuffle,
+            "quickSort3SelectNotShuffle" to ::quickSort3SelectNotShuffle,
+            "quickSort5SelectNotShuffle" to ::quickSort5SelectNotShuffle
+    )
+    sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.RANDOM)
 
-    println("quickSortWithOriginalArray:")
-    doubleGrowthTest(1000_0000, ::quickSortWithOriginalArray) { N -> N * log2(N.toDouble()) }
-    println("quickSort3Select:")
-    doubleGrowthTest(1000_0000, ::quickSort3Select) { N -> N * log2(N.toDouble()) }
-    println("quickSort5Select:")
-    doubleGrowthTest(1000_0000, ::quickSort5Select) { N -> N * log2(N.toDouble()) }
+    println("quickSortNotShuffle:")
+    doubleGrowthTest(1000_0000, ::quickSortNotShuffle) { N -> N * log2(N.toDouble()) }
+    println("quickSort3SelectNotShuffle:")
+    doubleGrowthTest(1000_0000, ::quickSort3SelectNotShuffle) { N -> N * log2(N.toDouble()) }
+    println("quickSort5SelectNotShuffle:")
+    doubleGrowthTest(1000_0000, ::quickSort5SelectNotShuffle) { N -> N * log2(N.toDouble()) }
 }

@@ -2,7 +2,6 @@ package chapter2.section3
 
 import chapter2.compare
 import chapter2.section1.displaySortingProcessTemplate
-import chapter2.section1.performanceTesting
 import chapter2.swap
 import edu.princeton.cs.algs4.StdRandom
 
@@ -24,7 +23,7 @@ fun <T : Comparable<T>> quickSort(array: Array<T>) {
 /**
  * 用原始数组排序，不打乱
  */
-fun <T : Comparable<T>> quickSortWithOriginalArray(array: Array<T>) {
+fun <T : Comparable<T>> quickSortNotShuffle(array: Array<T>) {
     quickSort(array, 0, array.size - 1)
 }
 
@@ -53,6 +52,7 @@ fun <T : Comparable<T>> partition(array: Array<T>, start: Int, end: Int): Int {
 }
 
 fun main() {
-    displaySortingProcessTemplate("Quick Sort", ::quickSortWithOriginalArray)
+    //显示排序过程时，要用不预先打乱数组的版本，否则会显示异常
+    displaySortingProcessTemplate("Quick Sort", ::quickSortNotShuffle)
 //    performanceTesting("Quick Sort", ::quickSortWithOriginalArray)
 }

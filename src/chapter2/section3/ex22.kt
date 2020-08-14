@@ -26,7 +26,12 @@ import chapter2.swap
  *  ↑      ↑      ↑               ↑        ↑    ↑
  *  lo     p      i               j        q    hi
  *
- *  排序后：
+ *  排序后（未将和a[lo]相等的值移动至数组中间）：
+ * |    =v    |     <v    |    >v     |    =v    |
+ *  ↑          ↑         ↑ ↑           ↑        ↑
+ *  lo         p         j i           q        hi
+ *
+ *  排序后（最终状态）：
  * |    <v    |          =v           |    >v    |
  *  ↑        ↑                         ↑        ↑
  *  lo       j                         i        hi
@@ -66,6 +71,7 @@ fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int
         }
         if (i > j) break
     }
+    //小于array[start]的部分有数据
     if (i > p) {
         while (p > start) {
             array.swap(--p, j--)
@@ -73,6 +79,7 @@ fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int
     } else {
         j = start - 1
     }
+    //大于array[start]的部分有数据
     if (j < q - 1) {
         while (q <= end) {
             array.swap(q++, i++)
@@ -88,7 +95,7 @@ fun main() {
     cornerCases(::quickSortQuick3Way)
 
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-            "quickSortWithOriginalArray" to ::quickSortWithOriginalArray,
+            "quickSortNotShuffle" to ::quickSortNotShuffle,
             "quickSort3Way" to ::quickSort3Way,
             "quickSortQuick3Way" to ::quickSortQuick3Way
     )

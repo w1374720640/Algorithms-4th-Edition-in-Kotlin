@@ -25,7 +25,7 @@ fun <T : Comparable<T>> ex24(array: Array<T>, k: Int) {
     StdRandom.shuffle(array)
     val sampleSize = 2.0.pow(k).toInt() - 1
     if (sampleSize < 3 || sampleSize >= array.size) {
-        quickSortWithOriginalArray(array)
+        quickSortNotShuffle(array)
         return
     }
     //对取样数组排序

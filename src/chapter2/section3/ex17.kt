@@ -2,6 +2,7 @@ package chapter2.section3
 
 import chapter2.compare
 import chapter2.less
+import chapter2.section1.cornerCases
 import chapter2.section1.displaySortingProcessTemplate
 import chapter2.swap
 import edu.princeton.cs.algs4.StdRandom
@@ -16,13 +17,23 @@ import edu.princeton.cs.algs4.StdRandom
 fun <T : Comparable<T>> ex17QuickSort(array: Array<T>) {
     //消除对输入的依赖
     StdRandom.shuffle(array)
-    ex17QuickSort(array, 0, array.size - 1)
+    ex17QuickSortWithOriginalArray(array)
 }
 
 /**
  * 用原始数组排序，不打乱
  */
 fun <T : Comparable<T>> ex17QuickSortWithOriginalArray(array: Array<T>) {
+    if (array.size < 2) return
+    var maxValue = array[0]
+    var maxIndex = 0
+    for (i in 1 until array.size) {
+        if (array.compare(i, maxValue) > 0) {
+            maxValue = array[i]
+            maxIndex = i
+        }
+    }
+    array.swap(maxIndex, array.size - 1)
     ex17QuickSort(array, 0, array.size - 1)
 }
 
@@ -35,20 +46,7 @@ fun <T : Comparable<T>> ex17QuickSort(array: Array<T>, start: Int, end: Int) {
 
 fun <T : Comparable<T>> ex17Partition(array: Array<T>, start: Int, end: Int): Int {
     var i = start
-    var j: Int
-    if (end < array.size - 1) {
-        //如果范围右侧还有数据，说明右侧都比左侧数据大，范围扩大一个范围，可以省略右边界判断
-        //因为用的时候先自减一再使用，所以需要加二
-        j = end + 2
-    } else {
-        //如果范围右侧没有数据，遍历范围，找到最大值，与右边界交换，可以省略右边界判断
-        j = end + 1
-        var maxIndex = start
-        for (k in start + 1..end) {
-            if (array.less(maxIndex, k)) maxIndex = k
-        }
-        if (maxIndex != end) array.swap(maxIndex, end)
-    }
+    var j: Int = end + 1
     while (true) {
         while (array.compare(++i, start) < 0) {
             //省略右边界的检查
@@ -64,5 +62,6 @@ fun <T : Comparable<T>> ex17Partition(array: Array<T>, start: Int, end: Int): In
 }
 
 fun main() {
+    cornerCases(::ex17QuickSortWithOriginalArray)
     displaySortingProcessTemplate("Quick Sort", ::ex17QuickSortWithOriginalArray)
 }
