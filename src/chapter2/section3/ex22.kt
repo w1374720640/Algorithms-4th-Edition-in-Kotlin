@@ -35,12 +35,15 @@ import chapter2.swap
  * |    <v    |          =v           |    >v    |
  *  ↑        ↑                         ↑        ↑
  *  lo       j                         i        hi
+ *
+ *  解：这个算法是快速排序三路算法的升级版，需要从左右两侧同时向中间遍历
+ *  需要注意上图中每个变量相对于分界点的位置
  */
-fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>) {
-    quickSortQuick3Way(array, 0, array.size - 1)
+fun <T : Comparable<T>> quickSortFast3Way(array: Array<T>) {
+    quickSortFast3Way(array, 0, array.size - 1)
 }
 
-fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int) {
+fun <T : Comparable<T>> quickSortFast3Way(array: Array<T>, start: Int, end: Int) {
     if (start >= end) return
     var p = start + 1
     var q = end + 1
@@ -48,26 +51,30 @@ fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int
     var j = end
     val value = array[start]
     while (true) {
-        val compareLeft = array.compare(i, value)
-        when {
-            compareLeft > 0 -> array.swap(i, j--)
-            compareLeft < 0 -> i++
-            p == i -> {
-                p++
+        while (true) {
+            val compare = array.compare(i, value)
+            if (compare == 0) {
+                array.swap(i++, p++)
+            } else if (compare > 0) {
+                array.swap(i, j--)
+                break
+            } else {
                 i++
             }
-            else -> array.swap(i++, p++)
+            if (i > j) break
         }
         if (i > j) break
-        val compareRight = array.compare(j, value)
-        when {
-            compareRight > 0 -> j--
-            compareRight < 0 -> array.swap(i++, j)
-            j == q - 1 -> {
+        while (true) {
+            val compare = array.compare(j, value)
+            if (compare == 0) {
+                array.swap(j--, --q)
+            } else if (compare > 0) {
                 j--
-                q--
+            } else {
+                array.swap(i++, j)
+                break
             }
-            else -> array.swap(j--, --q)
+            if (i > j) break
         }
         if (i > j) break
     }
@@ -87,17 +94,20 @@ fun <T : Comparable<T>> quickSortQuick3Way(array: Array<T>, start: Int, end: Int
     } else {
         i = end + 1
     }
-    quickSortQuick3Way(array, start, j)
-    quickSortQuick3Way(array, i, end)
+    quickSortFast3Way(array, start, j)
+    quickSortFast3Way(array, i, end)
 }
 
 fun main() {
-    cornerCases(::quickSortQuick3Way)
+    cornerCases(::quickSortFast3Way)
 
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
             "quickSortNotShuffle" to ::quickSortNotShuffle,
             "quickSort3Way" to ::quickSort3Way,
-            "quickSortQuick3Way" to ::quickSortQuick3Way
+            "quickSortFast3Way" to ::quickSortFast3Way
     )
+    println("ArrayInitialState.REPEAT:")
     sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.REPEAT)
+    println("ArrayInitialState.RANDOM:")
+    sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.RANDOM)
 }

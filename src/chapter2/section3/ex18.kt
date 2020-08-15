@@ -44,17 +44,6 @@ fun <T : Comparable<T>> partition3Select(array: Array<T>, start: Int, end: Int):
     return j
 }
 
-/**
- * 返回三个数大小的中间值
- */
-fun <T : Comparable<T>> midOf(a: T, b: T, c: T): T {
-    return when {
-        (a >= b && a <= c) || (a <= b && a >= c) -> a
-        (b >= a && b <= c) || (b >= c && b <= a) -> b
-        else -> c
-    }
-}
-
 fun main() {
     //检查排序方法是否正确
     cornerCases(::quickSort3SelectNotShuffle)

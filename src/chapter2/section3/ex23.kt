@@ -6,8 +6,6 @@ import chapter2.section1.cornerCases
 import chapter2.section1.insertionSort
 import chapter2.sortMethodsCompare
 import chapter2.swap
-import extensions.random
-import extensions.readInt
 
 /**
  * 优化练习2.3.22
@@ -19,7 +17,7 @@ fun <T : Comparable<T>> ex23(array: Array<T>) {
 
 fun <T : Comparable<T>> ex23(array: Array<T>, start: Int, end: Int) {
     if (start >= end) return
-    if (end - start < 15) {
+    if (end - start < 9) {
         insertionSort(array, start, end)
         return
     }
@@ -29,26 +27,30 @@ fun <T : Comparable<T>> ex23(array: Array<T>, start: Int, end: Int) {
     var j = end
     val value = getMedian(array, start, end)
     while (true) {
-        val compareLeft = array.compare(i, value)
-        when {
-            compareLeft > 0 -> array.swap(i, j--)
-            compareLeft < 0 -> i++
-            p == j -> {
-                p++
+        while (true) {
+            val compare = array.compare(i, value)
+            if (compare == 0) {
+                array.swap(i++, p++)
+            } else if (compare > 0) {
+                array.swap(i, j--)
+                break
+            } else {
                 i++
             }
-            else -> array.swap(i++, p++)
+            if (i > j) break
         }
         if (i > j) break
-        val compareRight = array.compare(j, value)
-        when {
-            compareRight > 0 -> j--
-            compareRight < 0 -> array.swap(i++, j)
-            j == q - 1 -> {
+        while (true) {
+            val compare = array.compare(j, value)
+            if (compare == 0) {
+                array.swap(j--, --q)
+            } else if (compare > 0) {
                 j--
-                q--
+            } else {
+                array.swap(i++, j)
+                break
             }
-            else -> array.swap(j--, --q)
+            if (i > j) break
         }
         if (i > j) break
     }
@@ -72,26 +74,36 @@ fun <T : Comparable<T>> ex23(array: Array<T>, start: Int, end: Int) {
 
 private fun <T : Comparable<T>> getMedian(array: Array<T>, start: Int, end: Int): T {
     require(end - start + 1 >= 9)
-    val size = (end - start + 1) / 3
-    val medianArray = array.copyOfRange(0, 3)
-    repeat(3) {
-        val low = start + size * it
-        val high = start + size * (it + 1) - 1
-        val index = random(low, high - 2)
-        medianArray[it] = midOf(array[index], array[index + 1], array[index + 2])
+    val eps = (end - start + 1) / 9
+    val mid = (start + end) / 2
+    val value1 = midOf(array[start], array[start + eps], array[start + eps * 2])
+    val value2 = midOf(array[mid - eps], array[mid], array[mid + eps])
+    val value3 = midOf(array[end - 2 * eps], array[end - eps], array[end])
+    return midOf(value1, value2, value3)
+}
+
+/**
+ * 返回三个数大小的中间值
+ */
+fun <T : Comparable<T>> midOf(a: T, b: T, c: T): T {
+    return when {
+        (a >= b && a <= c) || (a <= b && a >= c) -> a
+        (b >= a && b <= c) || (b >= c && b <= a) -> b
+        else -> c
     }
-    return midOf(medianArray[0], medianArray[1], medianArray[2])
 }
 
 fun main() {
     cornerCases(::ex23)
 
-    val size = readInt("size: ")
-    val ordinal = readInt("array initial state(0~5): ")
-    val state = chapter2.enumValueOf<ArrayInitialState>(ordinal)
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-            "quickSort3SelectNotShuffle" to ::quickSort3SelectNotShuffle,
+            "quickSortNotShuffle" to ::quickSortNotShuffle,
+            "quickSort3Way" to ::quickSort3Way,
+            "quickSortFast3Way" to ::quickSortFast3Way,
             "ex23" to ::ex23
     )
-    sortMethodsCompare(sortMethods, 10, size, state)
+    println("ArrayInitialState.REPEAT:")
+    sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.REPEAT)
+    println("ArrayInitialState.RANDOM:")
+    sortMethodsCompare(sortMethods, 10, 100_0000, ArrayInitialState.RANDOM)
 }
