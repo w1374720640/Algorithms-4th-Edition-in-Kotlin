@@ -57,7 +57,7 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(private val maxSize: Int) : MaxPri
     }
 
     fun joinToString(): String {
-        return priorityQueue.joinToString()
+        return priorityQueue.copyOfRange(1, size + 1).joinToString()
     }
 
     /**
