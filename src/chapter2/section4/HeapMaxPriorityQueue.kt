@@ -17,6 +17,19 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(private val maxSize: Int) : MaxPri
     private var priorityQueue: Array<T?> = arrayOfNulls<Comparable<T>>(maxSize + 1) as Array<T?>
     private var size = 0
 
+    //练习2.4.19，接受一个数组作为参数的构造函数，使用自底向上的方法构造堆
+    constructor(array: Array<T>) : this(array.size + 1) {
+        array.forEachIndexed { index, value ->
+            priorityQueue[index + 1] = value
+        }
+        size = array.size
+        var k = array.size / 2
+        while (k > 0) {
+            sink(k)
+            k--
+        }
+    }
+
     override fun insert(value: T) {
         //当数组达到最大长度时，先判断是否小于最大值，不小于直接忽略，小于则删除最大值后添加进去
         if (size >= maxSize) {
