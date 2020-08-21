@@ -1,8 +1,9 @@
 package chapter2.section4
 
 import chapter1.section3.*
-import edu.princeton.cs.algs4.In
-import java.lang.StringBuilder
+import extensions.random
+import extensions.randomBoolean
+import extensions.setSeed
 
 /**
  * 用一下数据结构实现优先队列，支持插入元素和删除最大元素的操作
@@ -12,36 +13,31 @@ import java.lang.StringBuilder
 
 /**
  * 基于无序数组的最大优先队列
+ * 最坏情况（排除扩容、缩容的影响）：
+ * insert: 1
+ * max: N
  */
-class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPriorityQueue<T> {
+class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQueue<T> {
+
     init {
-        require(maxSize > 0)
+        require(initialSize >= 0)
     }
 
-    private val array: Array<T?> = arrayOfNulls<Comparable<T>>(maxSize) as Array<T?>
+    constructor() : this(4)
+
+    private var array: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize) as Array<T?>
     private var size: Int = 0
 
     override fun insert(value: T) {
-        if (size >= maxSize) {
-            var max = array[0]!!
-            var maxIndex = 0
-            for (i in 1 until size) {
-                if (array[i]!! > max) {
-                    max = array[i]!!
-                    maxIndex = i
-                }
-            }
-            if (value < max) {
-                array[maxIndex] = value
-            }
-        } else {
-            array[size++] = value
+        if (needExpansion()) {
+            expansion()
         }
+        array[size++] = value
     }
 
     override fun max(): T {
         if (isEmpty()) throw NoSuchElementException()
-        var max: T = array[0]!!
+        var max = array[0]!!
         for (i in 1 until size) {
             if (array[i]!! > max) {
                 max = array[i]!!
@@ -60,10 +56,15 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxP
                 maxIndex = i
             }
         }
+        //最大值和最后一位交换，然后将最后一位置空
         if (maxIndex != size - 1) {
             array[maxIndex] = array[size - 1]
         }
         array[--size] = null
+
+        if (needShrink()) {
+            shrink()
+        }
         return max
     }
 
@@ -75,29 +76,52 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxP
         return size
     }
 
+    private fun needExpansion() = array.size == size
+
+    private fun needShrink() = array.size > 4 && array.size >= size * 4
+
+    private fun expansion() {
+        var newSize = size * 2
+        if (newSize < 4) {
+            newSize = 4
+        }
+        val newArray = arrayOfNulls<Comparable<T>>(newSize) as Array<T?>
+        repeat(size) {
+            newArray[it] = array[it]
+        }
+        array = newArray
+    }
+
+    private fun shrink() {
+        val newArray = arrayOfNulls<Comparable<T>>(array.size / 2) as Array<T?>
+        repeat(size) {
+            newArray[it] = array[it]
+        }
+        array = newArray
+    }
 }
 
 /**
  * 基于有序数组的最大优先队列
+ * 最坏情况（排除扩容、缩容的影响）：
+ * insert: N
+ * max: 1
  */
-class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPriorityQueue<T> {
+class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQueue<T> {
     init {
-        require(maxSize > 0)
+        require(initialSize >= 0)
     }
 
-    private val array: Array<T?> = arrayOfNulls<Comparable<T>>(maxSize) as Array<T?>
+    constructor() : this(4)
+
+    private var array: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize) as Array<T?>
     private var size: Int = 0
 
     override fun insert(value: T) {
-        if (size == maxSize) {
-            if (value < max()) {
-                array[size - 1] = value
-            } else {
-                return
-            }
-        } else {
-            array[size++] = value
+        if (needExpansion()) {
+            expansion()
         }
+        array[size++] = value
         for (i in size - 1 downTo 1) {
             if (array[i]!! < array[i - 1]!!) {
                 val temp = array[i - 1]
@@ -118,6 +142,9 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPri
         if (isEmpty()) throw NoSuchElementException()
         val max = max()
         array[--size] = null
+        if (needShrink()) {
+            shrink()
+        }
         return max
     }
 
@@ -129,36 +156,42 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPri
         return size
     }
 
+    private fun needExpansion() = array.size == size
+
+    private fun needShrink() = array.size > 4 && array.size >= size * 4
+
+    private fun expansion() {
+        var newSize = size * 2
+        if (newSize < 4) {
+            newSize = 4
+        }
+        val newArray = arrayOfNulls<Comparable<T>>(newSize) as Array<T?>
+        repeat(size) {
+            newArray[it] = array[it]
+        }
+        array = newArray
+    }
+
+    private fun shrink() {
+        val newArray = arrayOfNulls<Comparable<T>>(array.size / 2) as Array<T?>
+        repeat(size) {
+            newArray[it] = array[it]
+        }
+        array = newArray
+    }
 }
 
 /**
  * 基于无序链表的最大优先队列
+ * 最坏情况：
+ * insert: 1
+ * max: N
  */
-class UnorderedLinkedMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPriorityQueue<T> {
-    init {
-        require(maxSize > 0)
-    }
-
+class UnorderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
     private val list = DoublyLinkedList<T>()
 
     override fun insert(value: T) {
-        if (list.size() >= maxSize) {
-            var maxNode = list.first!!
-            var node = list.first
-            while (node?.next != null) {
-                if (node.next!!.item > maxNode.item) {
-                    maxNode = node.next!!
-                }
-                node = node.next
-            }
-            if (value < maxNode.item) {
-                maxNode.item = value
-            } else {
-                return
-            }
-        } else {
-            list.addTail(value)
-        }
+        list.addTail(value)
     }
 
     override fun max(): T {
@@ -213,12 +246,11 @@ class UnorderedLinkedMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : Max
 
 /**
  * 基于有序链表的最大优先队列
+ * 最坏情况：
+ * insert: N
+ * max: 1
  */
-class OrderedLinkedMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPriorityQueue<T> {
-    init {
-        require(maxSize > 0)
-    }
-
+class OrderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
     private val list = DoublyLinkedList<T>()
 
     override fun insert(value: T) {
@@ -239,9 +271,6 @@ class OrderedLinkedMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPr
                 }
                 node = node.next
             }
-        }
-        if (list.size() > maxSize) {
-            list.deleteTail()
         }
     }
 
@@ -265,22 +294,32 @@ class OrderedLinkedMaxPriorityQueue<T : Comparable<T>>(val maxSize: Int) : MaxPr
 
 }
 
+/**
+ * 对不同方式实现的优先队列进行测试
+ */
 fun maxPriorityQueueTest(priorityQueue: MaxPriorityQueue<Int>) {
-    val input = In("./data/1Kints.txt")
-    while (!input.isEmpty) {
-        priorityQueue.insert(input.readInt())
+    //通过设置随机数种子来保证每次方法调用获取的随机数顺序相同
+    setSeed(0)
+    repeat(1000) {
+        if (randomBoolean(0.8)) {
+            priorityQueue.insert(random(Int.MAX_VALUE))
+        } else {
+            if (!priorityQueue.isEmpty()) {
+                priorityQueue.delMax()
+            }
+        }
     }
     val builder = StringBuilder()
-    while (!priorityQueue.isEmpty()) {
+    repeat(10) {
         builder.append(priorityQueue.delMax()).append(" ")
     }
-    println("priorityQueue=${builder}")
+    println("size=${priorityQueue.size() + 10} max10=${builder}")
 }
 
 fun main() {
-    maxPriorityQueueTest(HeapMaxPriorityQueue(10))
-    maxPriorityQueueTest(UnorderedArrayMaxPriorityQueue(10))
-    maxPriorityQueueTest(OrderedArrayMaxPriorityQueue(10))
-    maxPriorityQueueTest(UnorderedLinkedMaxPriorityQueue(10))
-    maxPriorityQueueTest(OrderedLinkedMaxPriorityQueue(10))
+    maxPriorityQueueTest(HeapMaxPriorityQueue())
+    maxPriorityQueueTest(UnorderedArrayMaxPriorityQueue())
+    maxPriorityQueueTest(OrderedArrayMaxPriorityQueue())
+    maxPriorityQueueTest(UnorderedLinkedMaxPriorityQueue())
+    maxPriorityQueueTest(OrderedLinkedMaxPriorityQueue())
 }

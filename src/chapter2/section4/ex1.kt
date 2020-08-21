@@ -5,7 +5,7 @@ package chapter2.section4
  */
 fun main() {
     val array = "PRIO*R**I*T*Y***QUE***U*E".toCharArray()
-    val pq = HeapMaxPriorityQueue<Char>(10)
+    val pq = HeapMaxPriorityQueue<Char>()
     array.forEach {
         if (it == '*') {
             print(pq.delMax() + " ")

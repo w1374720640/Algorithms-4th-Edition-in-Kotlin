@@ -9,9 +9,8 @@ import extensions.random
  * 操作接两次delMax()操作呢？
  */
 fun main() {
-    val array = Array(100) { random(Int.MAX_VALUE - 2) }
-    //最大容量必须至少比数组长度大二
-    val pq = HeapMaxPriorityQueue<Int>(110)
+    val array = Array(100) { random(100_0000) }
+    val pq = HeapMaxPriorityQueue<Int>()
     array.forEach {
         pq.insert(it)
     }

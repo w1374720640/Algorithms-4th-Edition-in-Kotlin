@@ -1,6 +1,5 @@
 package chapter2.section4
 
-import extensions.inputPrompt
 import extensions.readInt
 import extensions.safeCall
 
@@ -8,14 +7,16 @@ import extensions.safeCall
  * 基于堆的优先队列
  * 保证最大值在堆顶，移除数据时先移除最大值，所以可以获取一组数据中最小的M个值，也可以用于升序排序
  */
-class HeapMaxPriorityQueue<T : Comparable<T>>(private val maxSize: Int) : MaxPriorityQueue<T> {
+class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQueue<T> {
+    private var priorityQueue: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize + 1) as Array<T?>
+    private var size = 0
+
     init {
-        require(maxSize > 0)
+        require(initialSize >= 0)
     }
 
-    //不能直接创建泛型数组，使用强制类型转换
-    private var priorityQueue: Array<T?> = arrayOfNulls<Comparable<T>>(maxSize + 1) as Array<T?>
-    private var size = 0
+    //默认初始大小为4
+    constructor() : this(4)
 
     //练习2.4.19，接受一个数组作为参数的构造函数，使用自底向上的方法构造堆
     constructor(array: Array<T>) : this(array.size + 1) {
@@ -31,21 +32,16 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(private val maxSize: Int) : MaxPri
     }
 
     override fun insert(value: T) {
-        //当数组达到最大长度时，先判断是否小于最大值，不小于直接忽略，小于则删除最大值后添加进去
-        if (size >= maxSize) {
-            if (value < priorityQueue[1]!!) {
-                priorityQueue[1] = value
-                sink(1)
-            }
-        } else {
-            priorityQueue[++size] = value
-            swim(size)
+        if (needExpansion()) {
+            expansion()
         }
+        priorityQueue[++size] = value
+        swim(size)
     }
 
     override fun max(): T {
         if (isEmpty()) {
-            throw NoSuchElementException()
+            throw NoSuchElementException("Priority Queue is empty!")
         }
         return priorityQueue[1]!!
     }
@@ -57,6 +53,9 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(private val maxSize: Int) : MaxPri
         size--
         if (size > 0) {
             sink(1)
+        }
+        if (needShrink()) {
+            shrink()
         }
         return max
     }
@@ -117,12 +116,40 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(private val maxSize: Int) : MaxPri
         if (value1 == null || value2 == null) return false
         return value1 < value2
     }
+
+    private fun needExpansion() = priorityQueue.size - 1 == size
+
+    private fun needShrink() = priorityQueue.size > 5 && priorityQueue.size - 1 >= size * 4
+
+    /**
+     * 当数组占满时容量扩大一倍
+     */
+    private fun expansion() {
+        var newSize = size * 2 + 1
+        if (newSize < 5) {
+            newSize = 5
+        }
+        val newArray = arrayOfNulls<Comparable<T>>(newSize) as Array<T?>
+        repeat(size) {
+            newArray[it + 1] = priorityQueue[it + 1]
+        }
+        priorityQueue = newArray
+    }
+
+    /**
+     * 当数组使用空间小于四分之一时缩小一倍
+     */
+    private fun shrink() {
+        val newArray = arrayOfNulls<Comparable<T>>((priorityQueue.size - 1) / 2 + 1) as Array<T?>
+        repeat(size) {
+            newArray[it + 1] = priorityQueue[it + 1]
+        }
+        priorityQueue = newArray
+    }
 }
 
 fun main() {
-    inputPrompt()
-    val maxSize = readInt("maxSize: ")
-    val priorityQueue = HeapMaxPriorityQueue<Int>(maxSize)
+    val priorityQueue = HeapMaxPriorityQueue<Int>()
     println("Please input command:")
     println("0: exit, 1: insert, 2: max, 3: delMax, 4: isEmpty, 5: size, 6: joinToString")
     while (true) {

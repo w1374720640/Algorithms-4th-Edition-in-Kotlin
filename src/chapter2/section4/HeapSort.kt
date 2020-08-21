@@ -2,6 +2,7 @@ package chapter2.section4
 
 import chapter2.less
 import chapter2.section1.cornerCases
+import chapter2.section1.displaySortingProcessTemplate
 import chapter2.swap
 
 /**
@@ -44,4 +45,5 @@ object HeapSort {
 
 fun main() {
     cornerCases(HeapSort::sort)
+    displaySortingProcessTemplate("HeapSort", HeapSort::sort)
 }
