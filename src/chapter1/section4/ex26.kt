@@ -73,10 +73,4 @@ fun main() {
     val array = intArrayOf(-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
     println("threeSum: ${threeSum(array)}")
     println("ex26: ${ex26(array)}")
-
-
-    //下面的数据源会导致部分数据溢出，使用BigInteger替代ex26中的Long可以防止溢出，但是效率比Long低几十倍
-//    val mayOverflowArray = getIntArrayFromFile(1000)
-//    println("threeSum: ${threeSum(mayOverflowArray)}")
-//    println("ex26: ${ex26(mayOverflowArray)}")
 }

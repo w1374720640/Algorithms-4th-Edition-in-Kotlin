@@ -110,13 +110,5 @@ inline fun spendTimeMillis(action: () -> Unit): Long {
     return endTime - startTime
 }
 
-/**
- * 快速创建指定大小的整数数组
- */
-fun getIntArrayFromFile(size: Int, path: String = "./data/1Mints.txt"): IntArray {
-    val originArray = In(path).readAllInts()
-    return if (size < originArray.size) originArray.copyOf(size) else originArray
-}
-
 fun main() {
 }
