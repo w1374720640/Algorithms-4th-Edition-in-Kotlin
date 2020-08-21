@@ -14,17 +14,17 @@ fun main() {
     array.forEach {
         pq.insert(it)
     }
-    val origin = pq.joinToString()
+    val origin = pq.toString()
 
     pq.insert(pq.max() + 1)
     pq.delMax()
-    val result1 = pq.joinToString()
+    val result1 = pq.toString()
     println(origin == result1)
 
     pq.insert(pq.max() + 1)
     pq.insert(pq.max() + 2)
     pq.delMax()
     pq.delMax()
-    val result2 = pq.joinToString()
+    val result2 = pq.toString()
     println(origin == result2)
 }

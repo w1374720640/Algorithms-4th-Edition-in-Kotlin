@@ -68,7 +68,24 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQue
         return size
     }
 
-    fun joinToString(): String {
+    /**
+     * 使用迭代器返回的顺序和使用delMax()方法返回的顺序不同
+     */
+    override fun iterator(): Iterator<T> {
+        return object : Iterator<T> {
+            private var index = 0
+
+            override fun hasNext(): Boolean {
+                return size > index
+            }
+
+            override fun next(): T {
+                return priorityQueue[++index]!!
+            }
+        }
+    }
+
+    override fun toString(): String {
         return priorityQueue.copyOfRange(1, size + 1).joinToString()
     }
 
@@ -164,7 +181,7 @@ fun main() {
                 3 -> println(priorityQueue.delMax())
                 4 -> println("isEmpty=${priorityQueue.isEmpty()}")
                 5 -> println("size=${priorityQueue.size()}")
-                6 -> println(priorityQueue.joinToString())
+                6 -> println(priorityQueue.toString())
             }
         }
     }

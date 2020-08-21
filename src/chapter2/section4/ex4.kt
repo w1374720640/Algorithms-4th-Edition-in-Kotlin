@@ -7,5 +7,5 @@ fun main() {
     val array = "EASYQUESTION".toCharArray()
     val pq = HeapMaxPriorityQueue<Char>(array.size)
     array.forEach { pq.insert(it) }
-    println(pq.joinToString())
+    println(pq.toString())
 }

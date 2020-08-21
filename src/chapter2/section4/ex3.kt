@@ -4,6 +4,7 @@ import chapter1.section3.*
 import extensions.random
 import extensions.randomBoolean
 import extensions.setSeed
+import java.util.function.Consumer
 
 /**
  * 用一下数据结构实现优先队列，支持插入元素和删除最大元素的操作
@@ -74,6 +75,21 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxP
 
     override fun size(): Int {
         return size
+    }
+
+    override fun iterator(): Iterator<T> {
+        return object : Iterator<T> {
+            private var index = 0
+
+            override fun hasNext(): Boolean {
+                return size > index
+            }
+
+            override fun next(): T {
+                return array[size++]!!
+            }
+
+        }
     }
 
     private fun needExpansion() = array.size == size
@@ -154,6 +170,20 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPri
 
     override fun size(): Int {
         return size
+    }
+
+    override fun iterator(): Iterator<T> {
+        return object : Iterator<T> {
+            private var index = 0
+            override fun hasNext(): Boolean {
+                return size > index
+            }
+
+            override fun next(): T {
+                return array[index++]!!
+            }
+
+        }
     }
 
     private fun needExpansion() = array.size == size
@@ -242,6 +272,9 @@ class UnorderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
         return list.size()
     }
 
+    override fun iterator(): Iterator<T> {
+        return list.forwardIterator()
+    }
 }
 
 /**
@@ -292,6 +325,9 @@ class OrderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
         return list.size()
     }
 
+    override fun iterator(): Iterator<T> {
+        return list.forwardIterator()
+    }
 }
 
 /**
