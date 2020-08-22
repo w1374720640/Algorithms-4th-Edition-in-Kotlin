@@ -84,6 +84,8 @@ fun random(a: Int, b: Int) = StdRandom.uniform(a, b)//[a,b)范围内的Int值
 fun random(a: Double, b: Double) = StdRandom.uniform(a, b)
 fun randomBoolean() = StdRandom.bernoulli()//以相等概率返回true或false
 fun randomBoolean(p: Double) = StdRandom.bernoulli(p)//以指定概率（true的概率）返回true或false
+fun shuffle(array: Array<out Any>) = StdRandom.shuffle(array)//随机打乱数组
+fun shuffle(array: Array<out Any>, low: Int, high: Int) = StdRandom.shuffle(array, low, high)//打乱[low,high)范围内的数据
 
 /**
  * 对可能抛出异常的代码用try{}catch(){}包裹

@@ -72,6 +72,43 @@ fun <T : Comparable<T>> Array<T>.compare(i: Int, value: T): Int {
 }
 
 /**
+ * 获取排序方法的对比次数
+ */
+fun <T : Comparable<T>> getCompareTimes(array: Array<T>, sortMethod: (Array<T>) -> Unit): Long {
+    var count = 0L
+    val callback: (Any, Int, Int) -> Unit = { tag, _, _ ->
+        if (tag === array) {
+            count++
+        }
+    }
+    comparisonCallbackList.add(callback)
+    sortMethod(array)
+    comparisonCallbackList.remove(callback)
+    return count
+}
+
+/**
+ * 获取排序方法的交换次数
+ */
+fun <T : Comparable<T>> getSwapTimes(array: Array<T>, sortMethod: (Array<T>) -> Unit): Long {
+    var count = 0L
+    val swapCallback = object : SwapCallback {
+        override fun before(tag: Any, i: Int, j: Int) {
+            if (tag === array) {
+                count++
+            }
+        }
+
+        override fun after(tag: Any, i: Int, j: Int) {
+        }
+    }
+    swapCallbackList.add(swapCallback)
+    sortMethod(array)
+    swapCallbackList.remove(swapCallback)
+    return count
+}
+
+/**
  * 暂停程序一段时间
  */
 fun sleep(timeMillis: Long) {
