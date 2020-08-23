@@ -7,9 +7,9 @@ import extensions.safeCall
  * 基于堆的优先队列
  * 保证最大值在堆顶，移除数据时先移除最大值，所以可以获取一组数据中最小的M个值，也可以用于升序排序
  */
-class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQueue<T> {
-    private var priorityQueue: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize + 1) as Array<T?>
-    private var size = 0
+open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQueue<T> {
+    protected var priorityQueue: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize + 1) as Array<T?>
+    protected var size = 0
 
     init {
         require(initialSize >= 0)
@@ -92,7 +92,7 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQue
     /**
      * 上浮
      */
-    private fun swim(k: Int) {
+    protected open fun swim(k: Int) {
         var i = k
         while (i > 1 && less(i / 2, i)) {
             swap(i / 2, i)
@@ -103,7 +103,7 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQue
     /**
      * 下沉
      */
-    private fun sink(k: Int) {
+    protected open fun sink(k: Int) {
         var i = k
         while (2 * i <= size) {
             var j = i * 2
@@ -119,14 +119,14 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQue
         }
     }
 
-    private fun swap(i: Int, j: Int) {
+    protected open fun swap(i: Int, j: Int) {
         if (i == j) return
         val temp = priorityQueue[i]
         priorityQueue[i] = priorityQueue[j]
         priorityQueue[j] = temp
     }
 
-    private fun less(i: Int, j: Int): Boolean {
+    protected open fun less(i: Int, j: Int): Boolean {
         if (i == j) return false
         val value1 = priorityQueue[i]
         val value2 = priorityQueue[j]
@@ -134,14 +134,14 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQue
         return value1 < value2
     }
 
-    private fun needExpansion() = priorityQueue.size - 1 == size
+    protected open fun needExpansion() = priorityQueue.size - 1 == size
 
-    private fun needShrink() = priorityQueue.size > 5 && priorityQueue.size - 1 >= size * 4
+    protected open fun needShrink() = priorityQueue.size > 5 && priorityQueue.size - 1 >= size * 4
 
     /**
      * 当数组占满时容量扩大一倍
      */
-    private fun expansion() {
+    protected open fun expansion() {
         var newSize = size * 2 + 1
         if (newSize < 5) {
             newSize = 5
@@ -156,7 +156,7 @@ class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQue
     /**
      * 当数组使用空间小于四分之一时缩小一倍
      */
-    private fun shrink() {
+    protected open fun shrink() {
         val newArray = arrayOfNulls<Comparable<T>>((priorityQueue.size - 1) / 2 + 1) as Array<T?>
         repeat(size) {
             newArray[it + 1] = priorityQueue[it + 1]
