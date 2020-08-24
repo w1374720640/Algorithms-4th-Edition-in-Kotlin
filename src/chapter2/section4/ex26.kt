@@ -12,33 +12,33 @@ class HeapMaxPriorityQueueNotSwap<T : Comparable<T>> : HeapMaxPriorityQueue<T>()
 
     override fun swim(k: Int) {
         var i = k
-        val value = priorityQueue[i]!!
-        while (i > 1 && priorityQueue[i / 2]!! < value) {
-            priorityQueue[i] = priorityQueue[i / 2]
+        val value = this[i]!!
+        while (i > 1 && this[i / 2]!! < value) {
+            this[i] = this[i / 2]
             i /= 2
         }
         if (i < k) {
-            priorityQueue[i] = value
+            this[i] = value
         }
     }
 
     override fun sink(k: Int) {
         var i = k
-        val value = priorityQueue[i]!!
+        val value = this[i]!!
         while (2 * i <= size) {
             var j = i * 2
             if (j < size && less(j, j + 1)) {
                 j++
             }
-            if (value < priorityQueue[j]!!) {
-                priorityQueue[i] = priorityQueue[j]
+            if (value < this[j]!!) {
+                this[i] = this[j]
                 i = j
             } else {
                 break
             }
         }
         if (i > k) {
-            priorityQueue[i] = value
+            this[i] = value
         }
     }
 

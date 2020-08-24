@@ -90,7 +90,7 @@ fun shuffle(array: Array<out Any>, low: Int, high: Int) = StdRandom.shuffle(arra
 /**
  * 对可能抛出异常的代码用try{}catch(){}包裹
  */
-inline fun safeCall(catchAction: (e: Exception) -> Unit = { println("Throw an exception, message = ${it.message}") },
+inline fun safeCall(catchAction: (e: Exception) -> Unit = { println(it.toString()) },
                     finallyAction: () -> Unit = {},
                     action: () -> Unit) {
     try {

@@ -5,9 +5,9 @@ import extensions.safeCall
 
 /**
  * 基于堆的优先队列
- * 保证最大值在堆顶，移除数据时先移除最大值，所以可以获取一组数据中最小的M个值，也可以用于升序排序
+ * 保证最小值在堆顶，移除数据时先移除最大值，所以可以获取一组数据中最小的M个值，也可以用于升序排序
  */
-open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQueue<T> {
+open class HeapMinPriorityQueue<T : Comparable<T>>(initialSize: Int) : MinPriorityQueue<T> {
     private var priorityQueue: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize + 1) as Array<T?>
     protected var size = 0
 
@@ -15,21 +15,7 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
         require(initialSize >= 0)
     }
 
-    //默认初始大小为4
     constructor() : this(4)
-
-    //练习2.4.19，接受一个数组作为参数的构造函数，使用自底向上的方法构造堆
-    constructor(array: Array<T>) : this(array.size + 1) {
-        array.forEachIndexed { index, value ->
-            priorityQueue[index + 1] = value
-        }
-        size = array.size
-        var k = array.size / 2
-        while (k > 0) {
-            sink(k)
-            k--
-        }
-    }
 
     override fun insert(value: T) {
         if (needExpansion()) {
@@ -39,15 +25,15 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
         swim(size)
     }
 
-    override fun max(): T {
+    override fun min(): T {
         if (isEmpty()) {
             throw NoSuchElementException("Priority Queue is empty!")
         }
         return priorityQueue[1]!!
     }
 
-    override fun delMax(): T {
-        val max = max()
+    override fun delMin(): T {
+        val min = min()
         swap(1, size)
         priorityQueue[size] = null
         size--
@@ -57,7 +43,7 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
         if (needShrink()) {
             shrink()
         }
-        return max
+        return min
     }
 
     override fun isEmpty(): Boolean {
@@ -104,7 +90,7 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
      */
     protected open fun swim(k: Int) {
         var i = k
-        while (i > 1 && less(i / 2, i)) {
+        while (i > 1 && less(i, i / 2)) {
             swap(i / 2, i)
             i /= 2
         }
@@ -117,10 +103,10 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
         var i = k
         while (2 * i <= size) {
             var j = i * 2
-            if (j < size && less(j, j + 1)) {
+            if (j < size && less(j + 1, j)) {
                 j++
             }
-            if (less(i, j)) {
+            if (less(j, i)) {
                 swap(i, j)
                 i = j
             } else {
@@ -176,9 +162,9 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
 }
 
 fun main() {
-    val priorityQueue = HeapMaxPriorityQueue<Int>()
+    val priorityQueue = HeapMinPriorityQueue<Int>()
     println("Please input command:")
-    println("0: exit, 1: insert, 2: max, 3: delMax, 4: isEmpty, 5: size, 6: joinToString")
+    println("0: exit, 1: insert, 2: min, 3: delMin, 4: isEmpty, 5: size, 6: joinToString")
     while (true) {
         safeCall {
             when (readInt("command: ")) {
@@ -187,8 +173,8 @@ fun main() {
                     val value = readInt("insert value: ")
                     priorityQueue.insert(value)
                 }
-                2 -> println(priorityQueue.max())
-                3 -> println(priorityQueue.delMax())
+                2 -> println(priorityQueue.min())
+                3 -> println(priorityQueue.delMin())
                 4 -> println("isEmpty=${priorityQueue.isEmpty()}")
                 5 -> println("size=${priorityQueue.size()}")
                 6 -> println(priorityQueue.joinToString())
