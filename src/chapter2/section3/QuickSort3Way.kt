@@ -2,8 +2,7 @@ package chapter2.section3
 
 import chapter2.*
 import chapter2.section1.cornerCases
-import chapter2.section1.doubleGrowthTest
-import chapter2.section1.performanceTesting
+import chapter2.section1.doublingTest
 import extensions.*
 
 /**
@@ -65,7 +64,7 @@ private fun drawSortingProcess() {
 
 //时间复杂度为O(N)
 private fun growthTest() {
-    doubleGrowthTest(1000_0000, ::quickSort3Way, createArray = {
+    doublingTest(1000_0000, ::quickSort3Way, createArray = {
         getDoubleArray(it, ArrayInitialState.REPEAT)
     }, O = { N -> N.toDouble() })
 }
