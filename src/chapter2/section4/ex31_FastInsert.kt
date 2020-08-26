@@ -26,7 +26,6 @@ class FastInsertHeapMinPriorityQueue<T: Comparable<T>> : HeapMinPriorityQueue<T>
 
     /**
      * 插入时二分查找范围为[1, lgN]，需要转换为实际索引从数组中取值
-     *
      */
     private fun binarySearchLargeThan(k: Int, start: Int, end: Int): Int {
         val key = this[k]!!

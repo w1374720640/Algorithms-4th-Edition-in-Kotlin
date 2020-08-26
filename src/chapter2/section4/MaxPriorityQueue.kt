@@ -1,5 +1,8 @@
 package chapter2.section4
 
+/**
+ * 最大优先队列
+ */
 interface MaxPriorityQueue<T : Comparable<T>> : Iterable<T> {
     fun insert(value: T)
 

@@ -4,7 +4,6 @@ import chapter1.section3.*
 import extensions.random
 import extensions.randomBoolean
 import extensions.setSeed
-import java.util.function.Consumer
 
 /**
  * 用一下数据结构实现优先队列，支持插入元素和删除最大元素的操作
@@ -26,7 +25,7 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxP
 
     constructor() : this(4)
 
-    private var array: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize) as Array<T?>
+    private var array = arrayOfNulls<Comparable<T>>(initialSize)
     private var size: Int = 0
 
     override fun insert(value: T) {
@@ -36,23 +35,25 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxP
         array[size++] = value
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun max(): T {
         if (isEmpty()) throw NoSuchElementException()
         var max = array[0]!!
         for (i in 1 until size) {
-            if (array[i]!! > max) {
+            if (array[i]!! > max as T) {
                 max = array[i]!!
             }
         }
-        return max
+        return max as T
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun delMax(): T {
         if (isEmpty()) throw NoSuchElementException()
         var max = array[0]!!
         var maxIndex = 0
         for (i in 1 until size) {
-            if (array[i]!! > max) {
+            if (array[i]!! > max as T) {
                 max = array[i]!!
                 maxIndex = i
             }
@@ -66,7 +67,7 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxP
         if (needShrink()) {
             shrink()
         }
-        return max
+        return max as T
     }
 
     override fun isEmpty(): Boolean {
@@ -86,7 +87,8 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxP
             }
 
             override fun next(): T {
-                return array[size++]!!
+                @Suppress("UNCHECKED_CAST")
+                return array[size++]!! as T
             }
 
         }
@@ -101,7 +103,7 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxP
         if (newSize < 4) {
             newSize = 4
         }
-        val newArray = arrayOfNulls<Comparable<T>>(newSize) as Array<T?>
+        val newArray = arrayOfNulls<Comparable<T>>(newSize)
         repeat(size) {
             newArray[it] = array[it]
         }
@@ -109,7 +111,7 @@ class UnorderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxP
     }
 
     private fun shrink() {
-        val newArray = arrayOfNulls<Comparable<T>>(array.size / 2) as Array<T?>
+        val newArray = arrayOfNulls<Comparable<T>>(array.size / 2)
         repeat(size) {
             newArray[it] = array[it]
         }
@@ -130,7 +132,7 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPri
 
     constructor() : this(4)
 
-    private var array: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize) as Array<T?>
+    private var array = arrayOfNulls<Comparable<T>>(initialSize)
     private var size: Int = 0
 
     override fun insert(value: T) {
@@ -139,7 +141,8 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPri
         }
         array[size++] = value
         for (i in size - 1 downTo 1) {
-            if (array[i]!! < array[i - 1]!!) {
+            @Suppress("UNCHECKED_CAST")
+            if (array[i]!! < array[i - 1]!! as T) {
                 val temp = array[i - 1]
                 array[i - 1] = array[i]
                 array[i] = temp
@@ -151,7 +154,8 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPri
 
     override fun max(): T {
         if (isEmpty()) throw NoSuchElementException()
-        return array[size - 1]!!
+        @Suppress("UNCHECKED_CAST")
+        return array[size - 1]!! as T
     }
 
     override fun delMax(): T {
@@ -180,7 +184,8 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPri
             }
 
             override fun next(): T {
-                return array[index++]!!
+                @Suppress("UNCHECKED_CAST")
+                return array[index++]!! as T
             }
 
         }
@@ -195,7 +200,7 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPri
         if (newSize < 4) {
             newSize = 4
         }
-        val newArray = arrayOfNulls<Comparable<T>>(newSize) as Array<T?>
+        val newArray = arrayOfNulls<Comparable<T>>(newSize)
         repeat(size) {
             newArray[it] = array[it]
         }
@@ -203,7 +208,7 @@ class OrderedArrayMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPri
     }
 
     private fun shrink() {
-        val newArray = arrayOfNulls<Comparable<T>>(array.size / 2) as Array<T?>
+        val newArray = arrayOfNulls<Comparable<T>>(array.size / 2)
         repeat(size) {
             newArray[it] = array[it]
         }

@@ -8,7 +8,7 @@ import extensions.safeCall
  * 保证最大值在堆顶，移除数据时先移除最大值，所以可以获取一组数据中最小的M个值，也可以用于升序排序
  */
 open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriorityQueue<T> {
-    private var priorityQueue: Array<T?> = arrayOfNulls<Comparable<T>>(initialSize + 1) as Array<T?>
+    private var priorityQueue = arrayOfNulls<Comparable<T>>(initialSize + 1)
     protected var size = 0
 
     init {
@@ -43,7 +43,8 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
         if (isEmpty()) {
             throw NoSuchElementException("Priority Queue is empty!")
         }
-        return priorityQueue[1]!!
+        @Suppress("UNCHECKED_CAST")
+        return priorityQueue[1]!! as T
     }
 
     override fun delMax(): T {
@@ -80,21 +81,17 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
             }
 
             override fun next(): T {
-                return priorityQueue[++index]!!
+                @Suppress("UNCHECKED_CAST")
+                return priorityQueue[++index]!! as T
             }
         }
     }
 
-    /**
-     * 快速获取指定位置对象
-     */
     operator fun get(index: Int): T? {
-        return priorityQueue[index]
+        @Suppress("UNCHECKED_CAST")
+        return priorityQueue[index]  as T?
     }
 
-    /**
-     * 仅供子类扩展功能时使用，不直接放开priorityQueue对象权限是为了防止泛型数组类型转换异常
-     */
     protected operator fun set(index: Int, value: T?) {
         priorityQueue[index] = value
     }
@@ -141,7 +138,8 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
         val value1 = priorityQueue[i]
         val value2 = priorityQueue[j]
         if (value1 == null || value2 == null) return false
-        return value1 < value2
+        @Suppress("UNCHECKED_CAST")
+        return value1 < (value2  as T)
     }
 
     protected open fun needExpansion() = priorityQueue.size - 1 == size
@@ -156,7 +154,7 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
         if (newSize < 5) {
             newSize = 5
         }
-        val newArray = arrayOfNulls<Comparable<T>>(newSize) as Array<T?>
+        val newArray = arrayOfNulls<Comparable<T>>(newSize)
         repeat(size) {
             newArray[it + 1] = priorityQueue[it + 1]
         }
@@ -167,7 +165,7 @@ open class HeapMaxPriorityQueue<T : Comparable<T>>(initialSize: Int) : MaxPriori
      * 当数组使用空间小于四分之一时缩小一倍
      */
     protected open fun shrink() {
-        val newArray = arrayOfNulls<Comparable<T>>((priorityQueue.size - 1) / 2 + 1) as Array<T?>
+        val newArray = arrayOfNulls<Comparable<T>>((priorityQueue.size - 1) / 2 + 1)
         repeat(size) {
             newArray[it + 1] = priorityQueue[it + 1]
         }
