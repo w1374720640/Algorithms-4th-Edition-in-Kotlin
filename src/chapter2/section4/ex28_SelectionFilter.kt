@@ -25,7 +25,7 @@ fun ex28_SelectionFilter(N: Int, M: Int): MaxPriorityQueue<Double> {
     return pq
 }
 
-class Point3D(val x: Double, val y: Double, val z: Double) {
+private class Point3D(val x: Double, val y: Double, val z: Double) {
     fun distance(other: Point3D): Double {
         return sqrt((x - other.x).pow(2) + (y - other.y).pow(2) + (z - other.z).pow(2))
     }
