@@ -47,7 +47,7 @@ class FastInsertHeapMinPriorityQueue<T: Comparable<T>> : HeapMinPriorityQueue<T>
      * t越大，返回索引越小，实际值越小
      */
     private fun getIndex(k: Int, t: Int): Int {
-        return k / (2.0.pow(t).toInt())
+        return k / (1 shl t)
     }
 }
 

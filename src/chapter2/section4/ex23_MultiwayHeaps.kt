@@ -57,7 +57,7 @@ private fun <T : Comparable<T>> Array<T>.maxIndex(start: Int, end: Int): Int {
  * 在堆排序中使用t向堆的情况下找出使比较次数NlgN的系数最小的t值
  */
 fun main() {
-    //使用7路
+    //使用7向堆测试排序算法是否正确
     cornerCases { multiwayHeapSort(it, 7) }
     val size = 10000
     repeat(10) {

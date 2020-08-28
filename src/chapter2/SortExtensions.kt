@@ -6,6 +6,8 @@ import chapter2.section1.selectionSort
 import chapter2.section1.shellSort
 import chapter2.section2.bottomUpMergeSort
 import chapter2.section2.topDownMergeSort
+import chapter2.section3.quickSort
+import chapter2.section4.heapSort
 import edu.princeton.cs.algs4.StdDraw
 import extensions.*
 import java.awt.Color
@@ -294,13 +296,17 @@ fun main() {
     val ordinal = readInt("array initial state(0~5): ")
     val state = enumValueOf<ArrayInitialState>(ordinal)
     println("Array initial state: ${state.name}")
-    val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
-            "Selection Sort" to ::selectionSort,
-            "Bubble Sort" to ::bubbleSort,
-            "Insertion Sort" to ::insertionSort,
-            "Shell Sort" to ::shellSort,
-            "Top Down Merge Sort" to ::topDownMergeSort,
-            "Bottom Up Merge Sort" to ::bottomUpMergeSort
-    )
-    sortMethodsCompare(sortMethods, times, size, state)
+    val sortMethods: MutableList<Pair<String, (Array<Double>) -> Unit>> = mutableListOf()
+    //因为快速排序、冒泡排序、插入排序效率太低，数组太大时不参与性能对比
+    if (size < 10_0000) {
+        sortMethods.add("Selection Sort" to ::selectionSort)
+        sortMethods.add("Bubble Sort" to ::bubbleSort)
+        sortMethods.add("Insertion Sort" to ::insertionSort)
+    }
+    sortMethods.add("Shell Sort" to ::shellSort)
+    sortMethods.add("Top Down Merge Sort" to ::topDownMergeSort)
+    sortMethods.add("Bottom Up Merge Sort" to ::bottomUpMergeSort)
+    sortMethods.add("Quick Sort" to ::quickSort)
+    sortMethods.add("Heap Sort" to ::heapSort)
+    sortMethodsCompare(sortMethods.toTypedArray(), times, size, state)
 }

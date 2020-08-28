@@ -11,15 +11,22 @@ import kotlin.math.sqrt
  *
  * 解：三维坐标点和原点的距离公式为sqr(x²+y²+z²)
  * 使用基于大顶堆的优先队列保存最小的M个值
- * 像队列中添加数据后，判断长度是否大于M，大于则弹出最大值
+ * 当优先队列长度等于M时，判断插入的值是否比最大值小，比最大值小则删除最大值后插入，否则忽略
+ * 如果要按升序打印距离原点最近的M个点，可以将优先队列中的最大值依次弹出到栈中，再从栈中依次弹出
  */
 fun ex28_SelectionFilter(N: Int, M: Int): MaxPriorityQueue<Double> {
-    val pq = HeapMaxPriorityQueue<Double>(M + 1)
+    val pq = HeapMaxPriorityQueue<Double>(M)
     repeat(N) {
         val point = Point3D(random(), random(), random())
-        pq.insert(point.distanceFromOrigin())
-        if (pq.size() > M) {
-            pq.delMax()
+        val distance = point.distanceFromOrigin()
+        when {
+            pq.size() < M -> pq.insert(distance)
+            distance < pq.max() -> {
+                pq.delMax()
+                pq.insert(distance)
+            }
+            else -> {
+            }
         }
     }
     return pq

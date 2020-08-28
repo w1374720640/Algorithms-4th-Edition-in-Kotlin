@@ -1,8 +1,7 @@
 package chapter2.section4
 
+import chapter2.section1.cornerCases
 import edu.princeton.cs.algs4.Queue
-import extensions.random
-import extensions.randomBoolean
 import extensions.readInt
 import extensions.safeCall
 
@@ -21,7 +20,7 @@ import extensions.safeCall
  *    如果该结点是左子节点，则找到右子节点的最左侧叶子结点，插入左子结点
  *    如果该结点是根节点，则遍历根节点的左子节点，找到最左侧的位置插入
  *    最多需要查找2lgN次
- * 3、删除最大值时，和插入新值类似，只不过方向相反，找到左侧左后一个值或上一行的最后一个值
+ * 3、删除最大值时，和插入新值类似，只不过遍历方向相反，找到左侧最后一个值或上一行的最后一个值
  * 插入的三种情况（↑表示新插入的位置）：
  *              a                            a                         a
  *        b            c                b            c             b           c
@@ -244,34 +243,15 @@ class LinkedHeapMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
     }
 }
 
-/**
- * 检查实现的优先队列是否正确
- */
-private fun checkCorrect() {
-    val priorityQueue = LinkedHeapMaxPriorityQueue<Int>()
-    repeat(1000) {
-        if (randomBoolean(0.8)) {
-            priorityQueue.insert(random(Int.MAX_VALUE))
-        } else {
-            if (!priorityQueue.isEmpty()) {
-                priorityQueue.delMax()
-            }
-        }
-    }
-    var max = priorityQueue.delMax()
-    while (!priorityQueue.isEmpty()) {
-        val newMax = priorityQueue.delMax()
-        if (newMax <= max) {
-            max = newMax
-        } else {
-            println("check failed!")
-        }
-    }
-    println("check succeed!")
-}
-
 fun main() {
-    checkCorrect()
+    //检查实现的优先队列是否正确
+    cornerCases { array ->
+        val priorityQueue = LinkedHeapMaxPriorityQueue<Double>()
+        array.forEach { priorityQueue.insert(it) }
+        for (i in array.size - 1 downTo 0) {
+            array[i] = priorityQueue.delMax()
+        }
+    }
     val priorityQueue = LinkedHeapMaxPriorityQueue<Int>()
     println("Please input command:")
     println("0: exit, 1: insert, 2: max, 3: delMax, 4: isEmpty, 5: size, 6: joinToString")

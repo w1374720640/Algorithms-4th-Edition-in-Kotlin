@@ -12,6 +12,6 @@ fun main() {
         } else {
             pq.insert(it)
         }
-        println(pq.toString())
+        println(pq.joinToString())
     }
 }
