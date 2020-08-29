@@ -16,17 +16,10 @@ fun ex21_Triplicates(list1: Array<String>, list2: Array<String>, list3: Array<St
     topDownMergeSort(list2)
     topDownMergeSort(list3)
 
-    val comparator = { first: String, second: String ->
-        when {
-            first > second -> 1
-            first == second -> 0
-            else -> -1
-        }
-    }
     list1.forEach {
-        val index2 = binarySearch(it, list2, comparator)
+        val index2 = binarySearch(it, list2)
         if (index2 != -1) {
-            val index3 = binarySearch(it, list3, comparator)
+            val index3 = binarySearch(it, list3)
             if (index3 != -1) return it
         }
     }
