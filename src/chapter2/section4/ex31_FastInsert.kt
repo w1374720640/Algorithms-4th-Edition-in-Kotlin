@@ -1,7 +1,5 @@
 package chapter2.section4
 
-import kotlin.math.pow
-
 /**
  * 用基于比较的方式实现MinPriorityQueue的API，使得插入元素需要~loglogN次比较，删除最小元素需要~2logN次比较
  * 提示：在swim()方法中用二分查找来寻找祖先结点

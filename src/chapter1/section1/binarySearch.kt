@@ -29,3 +29,18 @@ fun <T : Comparable<T>> binarySearch(key: T, array: Array<T>): Int {
     }
     return -1
 }
+
+fun <T> binarySearch(key: T, array: Array<T>, comparator: (T, T) -> Int): Int {
+    var low = 0
+    var high = array.size - 1
+    while (low <= high) {
+        val mid = (low + high) / 2
+        val compareResult = comparator(key, array[mid])
+        when {
+            compareResult < 0 -> high = mid - 1
+            compareResult > 0 -> low = mid + 1
+            else -> return mid
+        }
+    }
+    return -1
+}

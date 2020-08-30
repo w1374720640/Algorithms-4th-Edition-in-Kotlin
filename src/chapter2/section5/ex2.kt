@@ -31,6 +31,41 @@ fun ex2a(array: Array<String>): List<String> {
 }
 
 /**
+ * 对String的封装，先比较长度，再依次比较每个字符
+ */
+private class LengthFirstString(val item: String) : Comparable<LengthFirstString> {
+    override fun compareTo(other: LengthFirstString): Int {
+        return when {
+            item === other.item -> 0
+            item.length < other.item.length -> -1
+            item.length > other.item.length -> 1
+            else -> item.compareTo(other.item)
+        }
+    }
+
+    fun length(): Int = item.length
+
+    operator fun plus(other: LengthFirstString): LengthFirstString {
+        return LengthFirstString(item + other.item)
+    }
+
+    override fun toString(): String {
+        return item
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other == null) return false
+        if (other !is LengthFirstString) return false
+        if (this.item === other.item) return true
+        return item == other.item
+    }
+
+    override fun hashCode(): Int {
+        return item.hashCode()
+    }
+}
+
+/**
  * 对上面方法的优化
  * 自定义数据类型，比较大小时先比较字符串长度，长度相同时才依次比较每个字符
  * 对自定义的数据类型排序，找出字符串的最大长度，两个字符串相加长度超过最大长度时直接返回
@@ -38,26 +73,6 @@ fun ex2a(array: Array<String>): List<String> {
  * 有一个长度特长的字符串，超过其他任意两个字符相加的长度，内循环中根据长度快速返回的代码失效
  */
 fun ex2b(array: Array<String>): List<String> {
-    class LengthFirstString(val item: String) : Comparable<LengthFirstString> {
-        override fun compareTo(other: LengthFirstString): Int {
-            return when {
-                item.length < other.item.length -> -1
-                item.length > other.item.length -> 1
-                else -> item.compareTo(other.item)
-            }
-        }
-
-        fun length(): Int = item.length
-
-        operator fun plus(other: LengthFirstString): LengthFirstString {
-            return LengthFirstString(item + other.item)
-        }
-
-        override fun toString(): String {
-            return item
-        }
-    }
-
     if (array.size < 3) return emptyList()
     val newArray = Array(array.size) { LengthFirstString(array[it]) }
     newArray.sort()
@@ -68,6 +83,7 @@ fun ex2b(array: Array<String>): List<String> {
             //当两个字符串长度相加超长时，内循环中剩余的任意一个值和外循环的值相加都超长
             if (newArray[i].length() + newArray[j].length() > maxLength) break
 
+            //还可以用HashSet替代二分查找，不过需要更多的额外空间
             val index1 = binarySearch(newArray[i] + newArray[j], newArray)
             val index2 = binarySearch(newArray[j] + newArray[i], newArray)
             if (index1 != -1) {
@@ -83,6 +99,7 @@ fun ex2b(array: Array<String>): List<String> {
 
 fun main() {
     val array1 = Array(10000) { it.toString() }
+//    array1[array1.size - 1] = "10000000"
     var list1: List<String> = emptyList()
     val time1 = spendTimeMillis {
         list1 = ex2a(array1)
@@ -91,7 +108,7 @@ fun main() {
 
     val array2 = Array(10000) { it.toString() }
     //如果放开下面这个注释，会导致内循环中根据长度快速返回的代码失效，是最坏情况
-    //array2[array2.size - 1] = "10000000"
+//    array2[array2.size - 1] = "10000000"
     var list2: List<String> = emptyList()
     val time2 = spendTimeMillis {
         list2 = ex2b(array2)

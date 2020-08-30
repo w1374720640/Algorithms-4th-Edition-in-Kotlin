@@ -7,6 +7,7 @@ import chapter2.section1.shellSort
 import chapter2.section2.bottomUpMergeSort
 import chapter2.section2.topDownMergeSort
 import chapter2.section3.quickSort
+import chapter2.section3.quickSortNotShuffle
 import chapter2.section4.heapSort
 import edu.princeton.cs.algs4.StdDraw
 import extensions.*
@@ -292,12 +293,12 @@ fun main() {
     inputPrompt()
     val times = readInt("repeat times: ")
     val size = readInt("size: ")
-    //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序这五种状态
+    //设置初始数组是完全随机、完全升序、完全降序、接近升序、接近降序、大量重复元素这六种状态
     val ordinal = readInt("array initial state(0~5): ")
     val state = enumValueOf<ArrayInitialState>(ordinal)
     println("Array initial state: ${state.name}")
     val sortMethods: MutableList<Pair<String, (Array<Double>) -> Unit>> = mutableListOf()
-    //因为快速排序、冒泡排序、插入排序效率太低，数组太大时不参与性能对比
+    //因为选择排序、冒泡排序、插入排序效率太低，数组太大时不参与性能对比
     if (size < 10_0000) {
         sortMethods.add("Selection Sort" to ::selectionSort)
         sortMethods.add("Bubble Sort" to ::bubbleSort)
