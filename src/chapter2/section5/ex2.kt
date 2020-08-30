@@ -1,6 +1,7 @@
 package chapter2.section5
 
 import chapter1.section1.binarySearch
+import chapter1.section1.binarySearchWith
 import extensions.spendTimeMillis
 
 /**
@@ -31,66 +32,43 @@ fun ex2a(array: Array<String>): List<String> {
 }
 
 /**
- * 对String的封装，先比较长度，再依次比较每个字符
- */
-private class LengthFirstString(val item: String) : Comparable<LengthFirstString> {
-    override fun compareTo(other: LengthFirstString): Int {
-        return when {
-            item === other.item -> 0
-            item.length < other.item.length -> -1
-            item.length > other.item.length -> 1
-            else -> item.compareTo(other.item)
-        }
-    }
-
-    fun length(): Int = item.length
-
-    operator fun plus(other: LengthFirstString): LengthFirstString {
-        return LengthFirstString(item + other.item)
-    }
-
-    override fun toString(): String {
-        return item
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other == null) return false
-        if (other !is LengthFirstString) return false
-        if (this.item === other.item) return true
-        return item == other.item
-    }
-
-    override fun hashCode(): Int {
-        return item.hashCode()
-    }
-}
-
-/**
  * 对上面方法的优化
- * 自定义数据类型，比较大小时先比较字符串长度，长度相同时才依次比较每个字符
- * 对自定义的数据类型排序，找出字符串的最大长度，两个字符串相加长度超过最大长度时直接返回
+ * 自定义String的比较器，比较大小时先比较字符串长度，长度相同时才依次比较每个字符
+ * 用自定义比较器对数组排序，找出字符串的最大长度，两个字符串相加长度超过最大长度时直接返回
  * 具体对效率的提升依赖数据源，最坏情况：
  * 有一个长度特长的字符串，超过其他任意两个字符相加的长度，内循环中根据长度快速返回的代码失效
  */
 fun ex2b(array: Array<String>): List<String> {
     if (array.size < 3) return emptyList()
-    val newArray = Array(array.size) { LengthFirstString(array[it]) }
-    newArray.sort()
-    val maxLength = newArray.last().length()
-    val list = mutableListOf<String>()
-    for (i in 0..newArray.size - 2) {
-        for (j in i until newArray.size) {
-            //当两个字符串长度相加超长时，内循环中剩余的任意一个值和外循环的值相加都超长
-            if (newArray[i].length() + newArray[j].length() > maxLength) break
 
-            //还可以用HashSet替代二分查找，不过需要更多的额外空间
-            val index1 = binarySearch(newArray[i] + newArray[j], newArray)
-            val index2 = binarySearch(newArray[j] + newArray[i], newArray)
+    //自定义String的比较器，先比较长度再依次比较每个字符
+    val lengthFirstStringComparator = Comparator<String> { o1, o2 ->
+        when {
+            o1 === o2 -> 0
+            o1.length < o2.length -> -1
+            o1.length > o2.length -> 1
+            else -> o1.compareTo(o2)
+        }
+    }
+    //sortWith用于自定义比较规则，不用Comparable接口定义的规则比较
+    //sortBy表示用哪个字段比较，例如对于不同学生，认为学号相同的是同一个学生，学生可以不实现Comparable接口，学号可以比较就行，属于委托模式
+    //sorted开头的方法表示先复制一个新数组再执行相应排序方法
+    array.sortWith(lengthFirstStringComparator)
+    val maxLength = array.last().length
+    val list = mutableListOf<String>()
+    for (i in 0..array.size - 2) {
+        for (j in i until array.size) {
+            //当两个字符串长度相加超长时，内循环中剩余的任意一个值和外循环的值相加都超长
+            if (array[i].length + array[j].length > maxLength) break
+
+            //还可以用HashSet替代二分查找，不过需要额外空间
+            val index1 = binarySearchWith(array[i] + array[j], array, lengthFirstStringComparator)
+            val index2 = binarySearchWith(array[j] + array[i], array, lengthFirstStringComparator)
             if (index1 != -1) {
-                list.add(newArray[index1].item)
+                list.add(array[index1])
             }
             if (index2 != -1) {
-                list.add(newArray[index2].item)
+                list.add(array[index2])
             }
         }
     }

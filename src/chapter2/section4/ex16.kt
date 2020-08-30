@@ -24,7 +24,7 @@ fun main() {
 
     repeat(10) {
         val randomArray = Array(size) { it + 1 }
-        shuffle(randomArray)
+        randomArray.shuffle()
         val copyArray = randomArray.copyOf()
         val times = getCompareTimes(copyArray, ::heapSort)
         println("random times=${times} array=${randomArray.joinToString { formatInt(it, 2) }}")

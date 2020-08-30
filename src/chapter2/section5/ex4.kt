@@ -2,7 +2,6 @@ package chapter2.section5
 
 import chapter2.section1.checkAscOrder
 import chapter2.section3.quickSort
-import chapter2.section4.heapSort
 import extensions.random
 import extensions.shuffle
 import extensions.spendTimeMillis
@@ -11,35 +10,38 @@ import extensions.spendTimeMillis
  * 实现一个方法String[] dedup(String[] a)，返回一个有序的a[]，并删去其中重复的元素
  *
  * 解：复制一个新数组，对新数组用快速排序排序，
- * 遍历数组，设删除的重复元素数量为i，遍历时的索引为j，
- * 若a[j]==a[j-1]，则a[j]=a[j-1],a[j-1]=a[i],i++，直到数组遍历完成
- * 复制数组[i,size)范围内的元素到新数组，用堆排序后返回
- * 时间复杂度为: 复制数组N + 快速排序NlgN + 遍历数组N + 复制数组N + 堆排序NlgN ~NlgN
- * 因为需要复制两次数组，所以空间复杂度为2N
- * 注意：重复元素要和数组前半部分交换，不能和后半部分交换，因为前半部分元素已去重，后半部分元素未去重
- * 也不能直接交换a[j]和a[i]，直接交换后a[j+1]无法和a[j]比较是否重复
- * 去重后的数组用堆排序比用快速排序更快（用堆排序正序数组和逆序数组都比随机数组要快）
+ * 遍历数组，统计有多少个需要删除的重复元素（有三个元素相同，删除两个保留一个）
+ * 创建一个新数组，大小等于原数组大小减去需要删除的重复元素数量
+ * 再次遍历数组，复制原数组中的值到新数组中，当a[i]==a[i-1]时直接跳过，遍历结束时正好填满新数组
  */
-inline fun <reified T : Comparable<T>> Array<T>.dedup(): Array<T> {
+fun < T : Comparable<T>> Array<T>.dedup(): Array<T> {
     val copyArray = this.copyOf()
     quickSort(copyArray)
-    var i = 0
-    for (j in 1 until copyArray.size) {
-        if (copyArray[j] == copyArray[j - 1]) {
-            copyArray[j] = copyArray[j - 1]
-            copyArray[j - 1] = copyArray[i]
-            i++
+    var delCount = 0
+    for (i in 1 until copyArray.size) {
+        if (copyArray[i] == copyArray[i - 1]) {
+            delCount++
         }
     }
-    val copyArray2 = copyArray.copyOfRange(i, copyArray.size)
-    heapSort(copyArray2)
+    if (delCount == 0) return copyArray
+    val copyArray2 = copyArray.copyOfRange(0, copyArray.size - delCount)
+    //从后向前遍历可以重复利用delCount变量，也可以减少部分循环次数
+    for (i in copyArray.size - 1 downTo 1) {
+        if (copyArray[i] == copyArray[i - 1]) {
+            delCount--
+            //第一个重复元素前面的元素不需要重新赋值
+            if (delCount == 0) break
+        } else {
+            copyArray2[i - delCount] = copyArray[i]
+        }
+    }
     return copyArray2
 }
 
 fun main() {
     val size = 100_0000
     val array = Array(size) { it.toString() }
-    shuffle(array)
+    array.shuffle()
     repeat(size / 10) {
         array[random(size)] = random(size).toString()
     }
