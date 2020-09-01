@@ -1,8 +1,9 @@
 package chapter2.section2
 
 import chapter2.ArrayInitialState
-import chapter2.getDoubleArray
 import chapter2.enumValueOf
+import chapter2.getDoubleArray
+import chapter2.less
 import extensions.delayExit
 import extensions.inputPrompt
 import extensions.readInt
@@ -45,13 +46,14 @@ fun <T : Comparable<T>> merge(originalArray: Array<T>, extraArray: Array<T>, sta
                 mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
                 originalArray[k++] = extraArray[i++]
             }
-            extraArray[i] < extraArray[j] -> {
-                mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
-                originalArray[k++] = extraArray[i++]
-            }
-            else -> {
+            //这里必须先处理a[j]<a[i]的情况，保证a[i]==a[j]时先将左侧的a[i]赋值到a[k]中，保证算法的稳定
+            extraArray.less(j, i) -> {
                 mergeSortCallbackList.forEach { it.copyToOriginal(j, k) }
                 originalArray[k++] = extraArray[j++]
+            }
+            else -> {
+                mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
+                originalArray[k++] = extraArray[i++]
             }
         }
     }

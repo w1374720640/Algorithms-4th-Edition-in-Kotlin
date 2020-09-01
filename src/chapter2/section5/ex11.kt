@@ -1,6 +1,9 @@
 package chapter2.section5
 
+import chapter2.ArrayInitialState
 import chapter2.SwapCallback
+import chapter2.getDoubleArray
+import chapter2.section1.bubbleSort
 import chapter2.section1.insertionSort
 import chapter2.section1.selectionSort
 import chapter2.section1.shellSort
@@ -11,6 +14,8 @@ import chapter2.section2.topDownMergeSort
 import chapter2.section3.quickSortNotShuffle
 import chapter2.section4.heapSort
 import chapter2.swapCallbackList
+import extensions.formatDouble
+import extensions.formatStringLength
 
 /**
  * 描述排序结果的一种方法是创建一个保存0到a.length-1的排列p[]，使得p[i]的值为a[i]元素的最终位置
@@ -34,13 +39,16 @@ fun <T : Comparable<T>> ex11(array: Array<T>, sortMethod: (Array<T>) -> Unit): I
         }
     }
     val mergeSortCallback = object : MergeSortCallback {
+        //归并排序需要创建一个额外数组
+        val q = IntArray(array.size)
         override fun mergeStart(start: Int, end: Int) {
+            for (i in start..end) {
+                q[i] = p[i]
+            }
         }
 
         override fun copyToOriginal(extraIndex: Int, originalIndex: Int) {
-            val temp = p[extraIndex]
-            p[extraIndex] = p[originalIndex]
-            p[originalIndex] = temp
+            p[originalIndex] = q[extraIndex]
         }
 
     }
@@ -49,16 +57,39 @@ fun <T : Comparable<T>> ex11(array: Array<T>, sortMethod: (Array<T>) -> Unit): I
     sortMethod(array)
     swapCallbackList.remove(swapCallback)
     mergeSortCallbackList.remove(mergeSortCallback)
-    return p
+
+    //p数组表示原来在p[i]位置的值现在放到了i的位置，和题目要求相反
+    val result = IntArray(p.size)
+    for (i in p.indices) {
+        result[p[i]] = i
+    }
+    return result
 }
 
 fun main() {
+    val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(
+            "Selection Sort" to ::selectionSort, //不稳定
+            "Bubble Sort" to ::bubbleSort, //稳定
+            "Insertion Sort" to ::insertionSort, //稳定
+            "Shell Sort" to ::shellSort, //不稳定
+            "Top Down Merge Sort" to ::topDownMergeSort, //稳定
+            "Bottom Up Merge Sort" to ::bottomUpMergeSort, //稳定
+            "Quick Sort" to ::quickSortNotShuffle, //不稳定
+            "Heap Sort" to ::heapSort //不稳定
+    )
+    //名称对齐
+    var maxNameLength = 0
+    sortMethods.forEach {
+        if (it.first.length > maxNameLength) maxNameLength = it.first.length
+    }
     val array = Array(7) { 1.0 }
-    println("insertionSort:       ${ex11(array, ::insertionSort).joinToString()}")
-    println("selectionSort:       ${ex11(array, ::selectionSort).joinToString()}")
-    println("shellSort:           ${ex11(array, ::shellSort).joinToString()}")
-    println("topDownMergeSort:    ${ex11(array, ::topDownMergeSort).joinToString()}")
-    println("bottomUpMergeSort:   ${ex11(array, ::bottomUpMergeSort).joinToString()}")
-    println("quickSortNotShuffle: ${ex11(array, ::quickSortNotShuffle).joinToString()}")
-    println("heapSort:            ${ex11(array, ::heapSort).joinToString()}")
+    //放开下面的注释，测试由大量重复值组成的数组排序结果
+//    val array = getDoubleArray(10, ArrayInitialState.REPEAT)
+//    println("${formatStringLength("array", maxNameLength)}: ${array.joinToString { formatDouble(it, 2) }}")
+//    println("${formatStringLength("result", maxNameLength)}: ${array.sorted().joinToString { formatDouble(it, 2) }}")
+    sortMethods.forEach {
+        val copyArray = array.copyOf()
+        val result = ex11(copyArray, it.second)
+        println("${formatStringLength(it.first, maxNameLength)}: ${result.joinToString()}")
+    }
 }

@@ -2,6 +2,7 @@ package chapter2.section2
 
 import chapter2.ArrayInitialState
 import chapter2.getDoubleArray
+import chapter2.less
 import chapter2.section1.checkAscOrder
 import chapter2.section1.insertionSort
 import chapter2.sortMethodsCompare
@@ -61,13 +62,13 @@ fun <T : Comparable<T>> optimizedMerge(originalArray: Array<T>, extraArray: Arra
                 mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
                 extraArray[k++] = originalArray[i++]
             }
-            originalArray[i] < originalArray[j] -> {
-                mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
-                extraArray[k++] = originalArray[i++]
-            }
-            else -> {
+            originalArray.less(j, i) -> {
                 mergeSortCallbackList.forEach { it.copyToOriginal(j, k) }
                 extraArray[k++] = originalArray[j++]
+            }
+            else -> {
+                mergeSortCallbackList.forEach { it.copyToOriginal(i, k) }
+                extraArray[k++] = originalArray[i++]
             }
         }
     }
