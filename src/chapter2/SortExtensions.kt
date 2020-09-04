@@ -59,6 +59,17 @@ fun <T : Comparable<T>> Array<T>.less(i: Int, j: Int): Boolean {
     return this[i] < this[j]
 }
 
+/**
+ * 基于比较器的大小对比方法
+ */
+fun <T> Array<T>.less(i: Int, j: Int, comparator: Comparator<T>): Boolean {
+    if (i == j) return false
+    comparisonCallbackList.forEach { callback ->
+        callback(this, i, j)
+    }
+    return comparator.compare(this[i], this[j]) < 0
+}
+
 fun <T : Comparable<T>> Array<T>.compare(i: Int, j: Int): Int {
     if (i == j) return 0
     comparisonCallbackList.forEach { callback ->
@@ -67,11 +78,27 @@ fun <T : Comparable<T>> Array<T>.compare(i: Int, j: Int): Int {
     return if (this[i] == this[j]) 0 else if (this[i] < this[j]) -1 else 1
 }
 
+fun <T> Array<T>.compare(i: Int, j: Int, comparator: Comparator<T>): Int {
+    if (i == j) return 0
+    comparisonCallbackList.forEach { callback ->
+        callback(this, i, j)
+    }
+    return comparator.compare(this[i], this[j])
+}
+
+
 fun <T : Comparable<T>> Array<T>.compare(i: Int, value: T): Int {
     comparisonCallbackList.forEach { callback ->
         callback(this, i, -1)
     }
     return if (this[i] == value) 0 else if (this[i] < value) -1 else 1
+}
+
+fun <T> Array<T>.compare(i: Int, value: T, comparator: Comparator<T>): Int {
+    comparisonCallbackList.forEach { callback ->
+        callback(this, i, -1)
+    }
+    return comparator.compare(this[i], value)
 }
 
 /**

@@ -19,7 +19,9 @@ class CandidateOrder(name: String) : Comparable<CandidateOrder> {
     val name = name.toUpperCase()
 
     companion object {
-        //使用HashMap效率更高，也可以使用数组存放，每次查询都要遍历一次
+        //因为26个字母编码连续，所以也可以创建一个新数组，字母的值减去字符'A'作为索引，字母的位置作为值
+        //如array['R'-'A']=0 array['W'-'A']=1 ... array['L'-'A']=25，从数组中取值时也用字符减'A'作为索引取值
+        //参考练习2.5.19
         val scheduledOrder: HashMap<Char, Int> = "RWQOJMVAHBSGZXNTCIEKUPDYFL".toCharArray().let { array ->
             val map = HashMap<Char, Int>()
             for (i in array.indices) {
