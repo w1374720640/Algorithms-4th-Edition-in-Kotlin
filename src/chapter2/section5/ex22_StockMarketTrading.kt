@@ -13,12 +13,12 @@ import java.util.concurrent.atomic.AtomicInteger
  * 编写一段程序，用优先队列来匹配买家和卖家并用模拟数据进行测试
  * 可以使用两个优先队列，一个用于买家一个用于卖家，当一方的报价能够和另一方的一份或多份报价匹配时就进行交易
  *
- * 解：股票的交易规则：
+ * 解：股票的限价委托交易规则：
  * 买方的出价按由高到低的顺序依次排序，出价高的优先成交，相同价格按照提交时间排序，先提交的先成交
  * 卖方的出价按由低到高的顺序依次排序，出价低的优先成交，相同价格按照提交时间排序，先提交的先成交
  * 当买方提交一个价格时，先在卖方队列中查询，是否有小于等于出价的，如果有，则按照卖方队列的最低价成交，否则加入到买方队列中等待交易
  * 当卖方提交一个价格时，先在买方队列中查询，是否有大于等于出价的，如果有，则按照买方队列的最高价成交，否则加入到卖方队列中等待交易
- * 也就是说，当你提交一个价格时，初次匹配有可能比你的出价更优惠（买的更便宜，卖的更贵），
+ * 也就是说，当你提交一个价格时，初次匹配有可能比你的出价更优惠（买的更便宜，卖的更贵）（买的时候限定最高价格，卖的时候限定最低价格）
  * 但如果初次匹配失败，被加入到队列中，只可能按出价成交或未成交
  * 买卖可以部分成交，如果以10元的价格买10手，卖方队列里有9元1手，10元3手，11元5手，则以9元成交1手，10元成交3手，剩余6手以10元的价格加入买方队列
  * 买方队列的最大价格始终小于卖方的最低价格，否则可以撮合成功，订单被移除队列
@@ -66,7 +66,7 @@ class StockMarketTrading {
     }
 
     private fun deal(buyOrder: BuyOrder, sellOrder: SellOrder, price: Int, volume: Int) {
-        //可以通过buyOrder和sellOrder的index参数通知相应的投资者交易成功，为了简洁起见这里不打印index的值
+        //可以通过buyOrder和sellOrder的id通知相应的投资者交易成功，为了简洁起见这里不打印id的值
         println("deal: price=$price volume=$volume")
     }
 }
@@ -77,10 +77,10 @@ class BuyOrder(val price: Int, var volume: Int) : Comparable<BuyOrder> {
         require(price > 0 && volume > 0)
     }
 
-    val index = atomicInteger.incrementAndGet()
+    val id = atomicInteger.incrementAndGet()
 
     companion object {
-        //线程安全的自增索引，全局共享，保证每个对象的索引唯一且逐渐增长
+        //线程安全的自增索引，全局共享，保证每个对象的id唯一且逐渐增长
         private val atomicInteger = AtomicInteger()
     }
 
@@ -89,8 +89,8 @@ class BuyOrder(val price: Int, var volume: Int) : Comparable<BuyOrder> {
             //价格越高的优先级越高
             price > other.price -> 1
             price < other.price -> -1
-            index < other.index -> 1
-            index > other.index -> -1
+            id < other.id -> 1
+            id > other.id -> -1
             else -> 0
         }
     }
@@ -101,10 +101,10 @@ class SellOrder(val price: Int, var volume: Int) : Comparable<SellOrder> {
         require(price > 0 && volume > 0)
     }
 
-    val index = atomicInteger.incrementAndGet()
+    val id = atomicInteger.incrementAndGet()
 
     companion object {
-        //线程安全的自增索引，全局共享，保证每个对象的索引唯一且逐渐增长
+        //线程安全的自增索引，全局共享，保证每个对象的id唯一且逐渐增长
         private val atomicInteger = AtomicInteger()
     }
 
@@ -113,8 +113,8 @@ class SellOrder(val price: Int, var volume: Int) : Comparable<SellOrder> {
             //价格越高的优先级越低
             price > other.price -> -1
             price < other.price -> 1
-            index < other.index -> 1
-            index > other.index -> -1
+            id < other.id -> 1
+            id > other.id -> -1
             else -> 0
         }
     }

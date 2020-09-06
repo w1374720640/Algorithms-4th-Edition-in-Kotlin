@@ -40,6 +40,7 @@ fun Point2DDistanceComparator(other: Point2D): Comparator<Point2D> {
 
 /**
  * angleTo()方法在Point2D中是私有方法，通过扩展函数让它成为public方法
+ * 返回以this为极坐标原点，延伸到that点的极坐标角度值
  */
 fun Point2D.angleTo(that: Point2D): Double {
     val dx = that.x() - x()
@@ -49,10 +50,11 @@ fun Point2D.angleTo(that: Point2D): Double {
 
 /**
  * 创建一个新的比较器，按照两个点相对于第三个点的辐角比较
+ * 辐角就是极坐标的角度值
  */
 fun Point2DAngleComparator(other: Point2D): Comparator<Point2D> {
     return Comparator { o1, o2 ->
-        o1.angleTo(other).compareTo(o2.angleTo(other))
+        other.angleTo(o1).compareTo(other.angleTo(o2))
     }
 }
 
