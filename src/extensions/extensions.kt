@@ -18,11 +18,33 @@ fun printf(local: Locale, format: String, vararg args: Any) = StdOut.printf(loca
 fun format(format: String, vararg args: Any) = String.format(format, *args)
 fun format(local: Locale, format: String, vararg args: Any) = String.format(local, format, *args)
 
-fun formatDouble(value: Double, decimal: Int) = format("%.${decimal}f", value)
-fun formatFloat(value: Float, decimal: Int) = format("%.${decimal}f", value)
-fun formatInt(value: Int, length: Int) = format("%${length}d", value)
-fun formatLong(value: Long, length: Int) = format("%${length}d", value)
-fun formatStringLength(value: String, length: Int) = format("%${length}s", value)
+/**
+ * 格式化Double值，可以指定小数点精度、长度以及是否左对齐，长度和是否左对齐参数可以省略，用默认值
+ */
+fun formatDouble(value: Double, decimal: Int, length: Int = -1, alignLeft: Boolean = false): String {
+    require(decimal > 0)
+    return format("%${if (alignLeft) "-" else ""}${if (length > 0) length.toString() else ""}.${decimal}f", value)
+}
+
+fun formatFloat(value: Float, decimal: Int, length: Int = -1, alignLeft: Boolean = false): String {
+    require(decimal > 0)
+    return format("%${if (alignLeft) "-" else ""}${if (length > 0) length.toString() else ""}.${decimal}f", value)
+}
+
+fun formatInt(value: Int, length: Int, alignLeft: Boolean = false): String {
+    require(length > 0)
+    return format("%${if (alignLeft) "-" else ""}${length}d", value)
+}
+
+fun formatLong(value: Long, length: Int, alignLeft: Boolean = false): String {
+    require(length > 0)
+    return format("%${if (alignLeft) "-" else ""}${length}d", value)
+}
+
+fun formatStringLength(value: String, length: Int, alignLeft: Boolean = false): String {
+    require(length > 0)
+    return format("%${if (alignLeft) "-" else ""}${length}s", value)
+}
 
 /**
  * 当需要从键盘输入参数时，建议先调用这个方法打印提示信息
@@ -54,7 +76,7 @@ private inline fun <T> read(message: String, readAction: () -> T): T {
 
 //从标准输入设备（键盘）读取数据
 //kotlin中有自带的readLine函数
-fun readLine(message: String = "") = read(message) { StdIn.readLine() }
+fun readLine(message: String = "") = read(message) { kotlin.io.readLine() ?: "" }
 fun readChar(message: String = "") = read(message) { StdIn.readChar() }
 fun readString(message: String = "") = read(message) { StdIn.readString() }
 fun readInt(message: String = "") = read(message) { StdIn.readInt() }
