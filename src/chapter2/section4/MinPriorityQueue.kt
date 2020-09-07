@@ -13,4 +13,21 @@ interface MinPriorityQueue<T : Comparable<T>> : Iterable<T> {
     fun isEmpty(): Boolean
 
     fun size(): Int
+
+    fun indexOf(item: T): Int {
+        var i = 0
+        val iterator = iterator()
+        while (iterator.hasNext()) {
+            val value = iterator.next()
+            if (value == item) {
+                return i
+            }
+            i++
+        }
+        return -1
+    }
+
+    fun contains(item: T): Boolean {
+        return indexOf(item) >= 0
+    }
 }

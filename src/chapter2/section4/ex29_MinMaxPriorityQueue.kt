@@ -142,6 +142,18 @@ class HeapMaxAndMinPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T>, MinPr
             }
         }
     }
+
+    /**
+     * MaxPriorityQueue和MinPriorityQueue都有indexOf和contains方法，必须要指定调用哪个父类的方法才行
+     * 两个接口中的默认实现相同，都是通过迭代器实现的，调用哪个都行
+     */
+    override fun indexOf(item: T): Int {
+        return super<MaxPriorityQueue>.indexOf(item)
+    }
+
+    override fun contains(item: T): Boolean {
+        return super<MaxPriorityQueue>.contains(item)
+    }
 }
 
 fun main() {
