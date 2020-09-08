@@ -12,7 +12,7 @@ import kotlin.math.abs
  *
  * 算法原理直接参考上面的参考文章，这里直接给出Kotlin实现的代码，并用StdDraw绘制寻路过程
  */
-class AStartPathFind(val startPoint: Point, val endPoint: Point, val barriers: Array<Point>) {
+class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: Boolean = true) {
     companion object {
         const val mapSize = 20
     }
@@ -21,6 +21,12 @@ class AStartPathFind(val startPoint: Point, val endPoint: Point, val barriers: A
         init {
             check(x in 0 until mapSize && y in 0 until mapSize)
         }
+
+        enum class State {
+            DEFAULT, START, END, OPEN, CLOSE, BARRIER
+        }
+
+        var state = State.DEFAULT
 
         var G = -1 //从起始点移动到该点的成本
             private set
@@ -60,11 +66,33 @@ class AStartPathFind(val startPoint: Point, val endPoint: Point, val barriers: A
         }
     }
 
-    //用于存放已经计算过总成本的点，插入和删除的时间复杂度为lgN，查询点是否存在的时间复杂度为N
+    //因为地图不大，直接生成所有的点
+    private val allPoints = Array(mapSize) { y ->
+        Array(mapSize) { x ->
+            Point(x, y)
+        }
+    }
+    private val startPoint = getPoint(startPoint.x, startPoint.y)
+    private val endPoint = getPoint(endPoint.x, endPoint.y)
+
+    init {
+        this.startPoint.state = Point.State.START
+        this.endPoint.state = Point.State.END
+    }
+
+    //用于存放已经计算过总成本的点，可以快速获取总成本最小的点
     private val openPQ = HeapMinPriorityQueue<Point>()
 
-    //用于存放已经被排除的点
-    private val closeSet = HashSet<Point>()
+    fun getPoint(x: Int, y: Int): Point {
+        require(x in 0 until mapSize && y in 0 until mapSize)
+        return allPoints[y][x]
+    }
+
+    fun setBarriers(barriers: Array<Point>) {
+        barriers.forEach {
+            getPoint(it.x, it.y).state = Point.State.BARRIER
+        }
+    }
 
     /**
      * 开始查找，返回途径的每个点
@@ -90,7 +118,7 @@ class AStartPathFind(val startPoint: Point, val endPoint: Point, val barriers: A
             childList.forEach {
                 openPQ.insert(it)
             }
-            closeSet.add(point)
+            point.state = Point.State.CLOSE
         }
         return list
     }
@@ -101,36 +129,63 @@ class AStartPathFind(val startPoint: Point, val endPoint: Point, val barriers: A
      */
     fun getPointsAround(point: Point): SinglyLinkedList<Point> {
         val list = SinglyLinkedList<Point>()
-        for (i in point.x - 1..point.x + 1) {
-            for (j in point.y - 1..point.y + 1) {
-                //点不在有效范围内或xy坐标和自己相同直接继续循环
-                if (i < 0 || i >= mapSize || j < 0 || j >= mapSize || (i == point.x && j == point.y)) continue
-                val childPoint = Point(i, j, point)
-                if (!openPQ.contains(childPoint)
-                        && !closeSet.contains(childPoint)
-                        && !isBarrier(childPoint)) {
-                    childPoint.calculateDistance(endPoint)
-                    list.add(childPoint)
-                }
+        //上下左右四个点
+        if (point.x > 0) checkPointValid(getPoint(point.x - 1, point.y), point, list)
+        if (point.y > 0) checkPointValid(getPoint(point.x, point.y - 1), point, list)
+        if (point.x < mapSize - 1) checkPointValid(getPoint(point.x + 1, point.y), point, list)
+        if (point.y < mapSize - 1) checkPointValid(getPoint(point.x, point.y + 1), point, list)
+
+        if (canWalkDiagonally) {
+            //左下角
+            if (point.x > 0 && point.y > 0
+                    && (getPoint(point.x - 1, point.y).state != Point.State.BARRIER
+                            || getPoint(point.x, point.y - 1).state != Point.State.BARRIER)) {
+                checkPointValid(getPoint(point.x - 1, point.y - 1), point, list)
+            }
+            //右下角
+            if (point.x < mapSize - 1 && point.y > 0
+                    && (getPoint(point.x, point.y - 1).state != Point.State.BARRIER
+                            || getPoint(point.x + 1, point.y).state != Point.State.BARRIER)) {
+                checkPointValid(getPoint(point.x + 1, point.y - 1), point, list)
+            }
+            //右上角
+            if (point.x < mapSize - 1 && point.y < mapSize - 1
+                    && (getPoint(point.x + 1, point.y).state != Point.State.BARRIER
+                            || getPoint(point.x, point.y + 1).state != Point.State.BARRIER)) {
+                checkPointValid(getPoint(point.x + 1, point.y + 1), point, list)
+            }
+            //左上角
+            if (point.x > 0 && point.y < mapSize - 1
+                    && (getPoint(point.x - 1, point.y).state != Point.State.BARRIER
+                            || getPoint(point.x, point.y + 1).state != Point.State.BARRIER)) {
+                checkPointValid(getPoint(point.x - 1, point.y + 1), point, list)
             }
         }
         return list
     }
 
-    fun isBarrier(point: Point): Boolean {
-        barriers.forEach {
-            if (point == it) {
-                return true
+    /**
+     * 检查子节点是否有效
+     */
+    private fun checkPointValid(child: Point, parent: Point, list: SinglyLinkedList<Point>) {
+        when (child.state) {
+            Point.State.START, Point.State.OPEN, Point.State.CLOSE, Point.State.BARRIER -> return
+            Point.State.DEFAULT -> child.state = Point.State.OPEN
+            Point.State.END -> {
             }
         }
-        return false
+        child.parent = parent
+        child.calculateDistance(endPoint)
+        list.add(child)
     }
 }
 
 fun main() {
     val startPoint = AStartPathFind.Point(5, 10)
     val endPoint = AStartPathFind.Point(15, 10)
-    val list = AStartPathFind(startPoint, endPoint, getBarriers()).find()
+    val find = AStartPathFind(startPoint, endPoint)
+    find.setBarriers(getBarriers(3))
+    val list = find.find()
     if (list.isEmpty()) {
         if (startPoint == endPoint) {
             println("No need to move")
@@ -145,48 +200,51 @@ fun main() {
     }
 }
 
-fun getBarriers(): Array<AStartPathFind.Point> {
-    //默认没有障碍
-//    return emptyArray<AStartPathFind.Point>()
-
-    //和y轴的平行的障碍
-//    return arrayOf(
-//            AStartPathFind.Point(10, 8),
-//            AStartPathFind.Point(10, 9),
-//            AStartPathFind.Point(10, 10),
-//            AStartPathFind.Point(10, 11),
-//            AStartPathFind.Point(10, 12)
-//    )
-
-    //包围住起始点的障碍
-//    return arrayOf(
-//            AStartPathFind.Point(4, 9),
-//            AStartPathFind.Point(4, 10),
-//            AStartPathFind.Point(4, 11),
-//            AStartPathFind.Point(5, 11),
-//            AStartPathFind.Point(6, 11),
-//            AStartPathFind.Point(6, 10),
-//            AStartPathFind.Point(6, 9),
-//            AStartPathFind.Point(5, 9)
-//    )
-
-    //半包围起始点的障碍
-    return arrayOf(
-            AStartPathFind.Point(3, 8),
-            AStartPathFind.Point(4, 8),
-            AStartPathFind.Point(5, 8),
-            AStartPathFind.Point(6, 8),
-            AStartPathFind.Point(7, 8),
-            AStartPathFind.Point(8, 8),
-            AStartPathFind.Point(8, 9),
-            AStartPathFind.Point(8, 10),
-            AStartPathFind.Point(8, 11),
-            AStartPathFind.Point(8, 12),
-            AStartPathFind.Point(7, 12),
-            AStartPathFind.Point(6, 12),
-            AStartPathFind.Point(5, 12),
-            AStartPathFind.Point(4, 12),
-            AStartPathFind.Point(3, 12)
-    )
+fun getBarriers(which: Int): Array<AStartPathFind.Point> {
+    return when (which) {
+        //和y轴的平行的障碍
+        1 -> arrayOf(
+                AStartPathFind.Point(10, 8),
+                AStartPathFind.Point(10, 9),
+                AStartPathFind.Point(10, 10),
+                AStartPathFind.Point(10, 11),
+                AStartPathFind.Point(10, 12)
+        )
+        //半包围起始点的障碍
+        2 -> arrayOf(
+                AStartPathFind.Point(3, 8),
+                AStartPathFind.Point(4, 8),
+                AStartPathFind.Point(5, 8),
+                AStartPathFind.Point(6, 8),
+                AStartPathFind.Point(7, 8),
+                AStartPathFind.Point(8, 8),
+                AStartPathFind.Point(8, 9),
+                AStartPathFind.Point(8, 10),
+                AStartPathFind.Point(8, 11),
+                AStartPathFind.Point(8, 12),
+                AStartPathFind.Point(7, 12),
+                AStartPathFind.Point(6, 12),
+                AStartPathFind.Point(5, 12),
+                AStartPathFind.Point(4, 12),
+                AStartPathFind.Point(3, 12)
+        )
+        //包围住起始点的障碍
+        3 -> arrayOf(
+                AStartPathFind.Point(3, 11),
+                AStartPathFind.Point(3, 10),
+                AStartPathFind.Point(3, 9),
+                AStartPathFind.Point(4, 8),
+                AStartPathFind.Point(5, 8),
+                AStartPathFind.Point(6, 8),
+                AStartPathFind.Point(7, 9),
+                AStartPathFind.Point(7, 10),
+                AStartPathFind.Point(7, 11),
+                AStartPathFind.Point(6, 12),
+                AStartPathFind.Point(5, 12),
+                AStartPathFind.Point(4, 12)
+        )
+        //默认没有障碍
+        else -> emptyArray()
+    }
 }
 
