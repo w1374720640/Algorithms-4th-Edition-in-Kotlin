@@ -2,6 +2,9 @@ package chapter2.section5
 
 import chapter1.section3.*
 import chapter2.section4.HeapMinPriorityQueue
+import chapter2.sleep
+import edu.princeton.cs.algs4.StdDraw
+import java.awt.Color
 import kotlin.math.abs
 
 /**
@@ -12,9 +15,12 @@ import kotlin.math.abs
  *
  * 算法原理直接参考上面的参考文章，这里直接给出Kotlin实现的代码，并用StdDraw绘制寻路过程
  */
-class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: Boolean = true) {
+class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: Boolean = true, val drawingProcess: Boolean = false) {
     companion object {
         const val mapSize = 20
+        const val side = 1.0 / mapSize
+        const val dashWidth = side / 50
+        const val lineWidth = dashWidth * 4
     }
 
     class Point(val x: Int, val y: Int, var parent: Point? = null) : Comparable<Point> {
@@ -64,6 +70,25 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
         override fun hashCode(): Int {
             return x + 31 * y
         }
+
+        fun draw() {
+            val color = Color(when (state) {
+                State.DEFAULT -> 0xffffff
+                State.START -> 0x00dd00
+                State.END -> 0xee4400
+                State.OPEN -> 0x98fb98
+                State.CLOSE -> 0xafeeee
+                State.BARRIER -> 0x808080
+            })
+            StdDraw.setPenColor(color)
+            StdDraw.filledRectangle((x + 0.5) * side, (y + 0.5) * side, (side - dashWidth) / 2, (side - dashWidth) / 2)
+        }
+
+        fun drawTo(other: Point) {
+            StdDraw.setPenColor(Color(0xffff00))
+            StdDraw.setPenRadius(lineWidth)
+            StdDraw.line((x + 0.5) * side, (y + 0.5) * side, (other.x + 0.5) * side, (other.y + 0.5) * side)
+        }
     }
 
     //因为地图不大，直接生成所有的点
@@ -74,14 +99,32 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
     }
     private val startPoint = getPoint(startPoint.x, startPoint.y)
     private val endPoint = getPoint(endPoint.x, endPoint.y)
+    var drawDelayTime = 100L
 
     init {
         this.startPoint.state = Point.State.START
         this.endPoint.state = Point.State.END
+        if (drawingProcess) {
+            drawBackground()
+            this.startPoint.draw()
+            this.endPoint.draw()
+        }
     }
 
-    //用于存放已经计算过总成本的点，可以快速获取总成本最小的点
+    //用于存放已经计算过总成本的点，可以快速获取当前总成本最小的点
     private val openPQ = HeapMinPriorityQueue<Point>()
+
+    private fun drawBackground() {
+        if (!drawingProcess) return
+        StdDraw.setPenColor(Color(0xcecece))
+        StdDraw.setPenRadius(dashWidth)
+        for (i in 1..19) {
+            StdDraw.line(0.0, i * side, 1.0, i * side)
+        }
+        for (i in 1..19) {
+            StdDraw.line(i * side, 0.0, i * side, 1.0)
+        }
+    }
 
     fun getPoint(x: Int, y: Int): Point {
         require(x in 0 until mapSize && y in 0 until mapSize)
@@ -90,7 +133,11 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
 
     fun setBarriers(barriers: Array<Point>) {
         barriers.forEach {
-            getPoint(it.x, it.y).state = Point.State.BARRIER
+            val barrier = getPoint(it.x, it.y)
+            barrier.state = Point.State.BARRIER
+            if (drawingProcess) {
+                barrier.draw()
+            }
         }
     }
 
@@ -104,28 +151,40 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
         startPoint.calculateDistance(endPoint)
         openPQ.insert(startPoint)
         while (!openPQ.isEmpty()) {
-            val point = openPQ.delMin()
+            //获取Open列表中总成本最小的点
+            var point = openPQ.delMin()
+            //如果列表中包含结束点，则结束点的总成本最小
             if (point == endPoint) {
                 list.addHeader(point)
                 var parent = point.parent
                 while (parent != null) {
+                    if (drawingProcess) {
+                        point.drawTo(parent)
+                    }
                     list.addHeader(parent)
+                    point = parent
                     parent = parent.parent
                 }
                 return list
             }
+
             val childList = getPointsAround(point)
             childList.forEach {
                 openPQ.insert(it)
             }
-            point.state = Point.State.CLOSE
+            if (point != startPoint) {
+                point.state = Point.State.CLOSE
+            }
+            if (drawingProcess) {
+                point.draw()
+                sleep(drawDelayTime)
+            }
         }
         return list
     }
 
     /**
-     * 获取一个点周围能直接到达的点（不包括自己、障碍点、openPQ、closeSet中的点）
-     * FIXME 路径不能穿过两个成对角线的障碍点
+     * 获取一个点周围能直接到达的点
      */
     fun getPointsAround(point: Point): SinglyLinkedList<Point> {
         val list = SinglyLinkedList<Point>()
@@ -136,6 +195,7 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
         if (point.y < mapSize - 1) checkPointValid(getPoint(point.x, point.y + 1), point, list)
 
         if (canWalkDiagonally) {
+            //如果左侧和下方有障碍，则无法直接到达左下角
             //左下角
             if (point.x > 0 && point.y > 0
                     && (getPoint(point.x - 1, point.y).state != Point.State.BARRIER
@@ -170,7 +230,12 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
     private fun checkPointValid(child: Point, parent: Point, list: SinglyLinkedList<Point>) {
         when (child.state) {
             Point.State.START, Point.State.OPEN, Point.State.CLOSE, Point.State.BARRIER -> return
-            Point.State.DEFAULT -> child.state = Point.State.OPEN
+            Point.State.DEFAULT -> {
+                child.state = Point.State.OPEN
+                if (drawingProcess) {
+                    child.draw()
+                }
+            }
             Point.State.END -> {
             }
         }
@@ -183,8 +248,9 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
 fun main() {
     val startPoint = AStartPathFind.Point(5, 10)
     val endPoint = AStartPathFind.Point(15, 10)
-    val find = AStartPathFind(startPoint, endPoint)
-    find.setBarriers(getBarriers(3))
+    val find = AStartPathFind(startPoint, endPoint, canWalkDiagonally = true, drawingProcess = true)
+    //通过设置不同类型的障碍来观察寻路过程
+    find.setBarriers(getBarriers(1))
     val list = find.find()
     if (list.isEmpty()) {
         if (startPoint == endPoint) {
@@ -200,6 +266,9 @@ fun main() {
     }
 }
 
+/**
+ * 获取不同类型的障碍
+ */
 fun getBarriers(which: Int): Array<AStartPathFind.Point> {
     return when (which) {
         //和y轴的平行的障碍
@@ -212,24 +281,46 @@ fun getBarriers(which: Int): Array<AStartPathFind.Point> {
         )
         //半包围起始点的障碍
         2 -> arrayOf(
-                AStartPathFind.Point(3, 8),
-                AStartPathFind.Point(4, 8),
-                AStartPathFind.Point(5, 8),
-                AStartPathFind.Point(6, 8),
-                AStartPathFind.Point(7, 8),
+                AStartPathFind.Point(4, 7),
+                AStartPathFind.Point(5, 7),
+                AStartPathFind.Point(6, 7),
+                AStartPathFind.Point(7, 7),
+                AStartPathFind.Point(8, 7),
                 AStartPathFind.Point(8, 8),
                 AStartPathFind.Point(8, 9),
                 AStartPathFind.Point(8, 10),
                 AStartPathFind.Point(8, 11),
                 AStartPathFind.Point(8, 12),
-                AStartPathFind.Point(7, 12),
-                AStartPathFind.Point(6, 12),
-                AStartPathFind.Point(5, 12),
-                AStartPathFind.Point(4, 12),
-                AStartPathFind.Point(3, 12)
+                AStartPathFind.Point(8, 13),
+                AStartPathFind.Point(7, 13),
+                AStartPathFind.Point(6, 13),
+                AStartPathFind.Point(5, 13),
+                AStartPathFind.Point(4, 13)
+        )
+        //两条平行的障碍
+        3 -> arrayOf(
+                AStartPathFind.Point(8, 8),
+                AStartPathFind.Point(8, 9),
+                AStartPathFind.Point(8, 10),
+                AStartPathFind.Point(8, 11),
+                AStartPathFind.Point(8, 12),
+                AStartPathFind.Point(8, 13),
+                AStartPathFind.Point(8, 14),
+                AStartPathFind.Point(8, 15),
+                AStartPathFind.Point(12, 13),
+                AStartPathFind.Point(12, 12),
+                AStartPathFind.Point(12, 11),
+                AStartPathFind.Point(12, 10),
+                AStartPathFind.Point(12, 9),
+                AStartPathFind.Point(12, 8),
+                AStartPathFind.Point(12, 7),
+                AStartPathFind.Point(12, 6),
+                AStartPathFind.Point(12, 5),
+                AStartPathFind.Point(12, 4),
+                AStartPathFind.Point(12, 3)
         )
         //包围住起始点的障碍
-        3 -> arrayOf(
+        4 -> arrayOf(
                 AStartPathFind.Point(3, 11),
                 AStartPathFind.Point(3, 10),
                 AStartPathFind.Point(3, 9),
