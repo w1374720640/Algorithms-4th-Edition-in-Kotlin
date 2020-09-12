@@ -17,9 +17,13 @@ import kotlin.math.abs
  */
 class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: Boolean = true, val drawingProcess: Boolean = false) {
     companion object {
+        //地图中x轴和y轴的方格数量
         const val mapSize = 20
+        //每个方格的边长
         const val side = 1.0 / mapSize
+        //绘制背景时方格的边框宽度
         const val dashWidth = side / 50
+        //绘制最终路线时线的宽度
         const val lineWidth = dashWidth * 4
     }
 
@@ -34,11 +38,9 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
 
         var state = State.DEFAULT
 
-        var G = -1 //从起始点移动到该点的成本
-            private set
-        var H = -1 //从该点移动到终点的估算成本
-            private set
-        val F: Int //总的成本
+        private var G = -1 //从起始点移动到该点的成本
+        private var H = -1 //从该点移动到终点的估算成本
+        private val F: Int //总的成本
             get() = G + H
 
         /**
@@ -99,7 +101,7 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
     }
     private val startPoint = getPoint(startPoint.x, startPoint.y)
     private val endPoint = getPoint(endPoint.x, endPoint.y)
-    var drawDelayTime = 100L
+    var drawDelayTime = 50L
 
     init {
         this.startPoint.state = Point.State.START
@@ -143,7 +145,7 @@ class AStartPathFind(startPoint: Point, endPoint: Point, val canWalkDiagonally: 
 
     /**
      * 开始查找，返回途径的每个点
-     * 不包括起始点，包括结束点，所以列表长度等于需要走的步数
+     * 不包括起始点，包括结束点，所以列表长度减一等于需要走的步数
      */
     fun find(): DoublyLinkedList<Point> {
         val list = DoublyLinkedList<Point>()
@@ -249,6 +251,7 @@ fun main() {
     val startPoint = AStartPathFind.Point(5, 10)
     val endPoint = AStartPathFind.Point(15, 10)
     val find = AStartPathFind(startPoint, endPoint, canWalkDiagonally = true, drawingProcess = true)
+    find.drawDelayTime = 100L
     //通过设置不同类型的障碍来观察寻路过程
     find.setBarriers(getBarriers(1))
     val list = find.find()
@@ -259,7 +262,7 @@ fun main() {
             println("Cannot move to the end point")
         }
     } else {
-        println("Need to move ${list.size()} times")
+        println("Need to move ${list.size() - 1} times")
         list.forwardIterator().forEach {
             print("(${it.x},${it.y}) ")
         }
@@ -333,6 +336,21 @@ fun getBarriers(which: Int): Array<AStartPathFind.Point> {
                 AStartPathFind.Point(6, 12),
                 AStartPathFind.Point(5, 12),
                 AStartPathFind.Point(4, 12)
+        )
+        //包围住结束点的障碍
+        5 -> arrayOf(
+                AStartPathFind.Point(13, 11),
+                AStartPathFind.Point(13, 10),
+                AStartPathFind.Point(13, 9),
+                AStartPathFind.Point(14, 8),
+                AStartPathFind.Point(15, 8),
+                AStartPathFind.Point(16, 8),
+                AStartPathFind.Point(17, 9),
+                AStartPathFind.Point(17, 10),
+                AStartPathFind.Point(17, 11),
+                AStartPathFind.Point(16, 12),
+                AStartPathFind.Point(15, 12),
+                AStartPathFind.Point(14, 12)
         )
         //默认没有障碍
         else -> emptyArray()
