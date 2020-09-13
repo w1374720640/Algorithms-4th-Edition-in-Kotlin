@@ -3,7 +3,6 @@ package chapter2.section5
 import chapter2.section4.HeapMinPriorityQueue
 import extensions.inputPrompt
 import extensions.readString
-import kotlin.math.min
 
 /**
  * 逆域名排序
@@ -12,30 +11,31 @@ import kotlin.math.min
  * 提示：使用s.split("\\.")将域名用点分为若干部分
  * 编写一个Domain的用例，从标准输入读取域名并将他们按照逆域名有序的打印出来
  */
-class Domain(val name: String) : Comparable<Domain> {
-    private fun split(): List<String> {
-        //这里调用的是CharSequence.split()扩展方法，而不是String的类方法，不是正则匹配
-        return name.split(".")
+class Domain(val domainName: String) : Comparable<Domain> {
+    private val reverseDomainName: String
+
+    init {
+        //这里调用的是CharSequence.split()扩展方法，而不是String的类方法，不需要正则匹配
+        val list = domainName.split(".")
+        if (list.isEmpty()) {
+            reverseDomainName = ""
+        } else {
+            val stringBuilder = StringBuilder()
+            for (i in list.size - 1 downTo 1) {
+                stringBuilder.append(list[i])
+                stringBuilder.append(".")
+            }
+            stringBuilder.append(list[0])
+            reverseDomainName = stringBuilder.toString()
+        }
     }
 
     override fun compareTo(other: Domain): Int {
-        val selfList = split()
-        val otherList = other.split()
-        val minSize = min(selfList.size, otherList.size)
-        //从后向前比较
-        for (i in 1..minSize) {
-            val compareResult = selfList[selfList.size - i].compareTo(otherList[otherList.size - i])
-            if (compareResult != 0) return compareResult
-        }
-        return when {
-            selfList.size == otherList.size -> 0
-            selfList.size < otherList.size -> -1
-            else -> 1
-        }
+        return reverseDomainName.compareTo(other.reverseDomainName)
     }
 
     override fun toString(): String {
-        return name
+        return domainName
     }
 }
 

@@ -14,7 +14,8 @@ fun main() {
     var compareTimes = 0L
     repeat(times) {
         compareTimes += getCompareTimes(getDoubleArray(size)) { array ->
-            select(array, random(size))
+            //因为需要找最小值，所以k=0
+            select(array, 0)
         }
     }
     println("Average ${formatDouble((compareTimes / times) / size.toDouble(), 2)} N comparisons")

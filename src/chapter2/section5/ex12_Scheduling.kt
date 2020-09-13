@@ -26,6 +26,7 @@ class Job(val name: String, val time: Long) : Comparable<Job> {
  */
 fun main() {
     inputPrompt()
+    //也可以先读取任务数量，然后放入数组中排序
     val heapMinPriorityQueue = HeapMinPriorityQueue<Job>()
     while (true) {
         try {

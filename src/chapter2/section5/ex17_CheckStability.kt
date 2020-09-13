@@ -32,6 +32,8 @@ import kotlin.collections.sorted
  * 排序前遍历数组，依次将对象放入键对应的列表中
  * 排序后，遍历数组，对比对象是否在键对应的列表头部，是则移除头部，否则直接返回
  * 最后检查Map是否为空
+ *
+ * 也可以用一个类包裹原始数据，并记录原始索引，对该类构成的数组排序，最后检查相同大小的数据索引是否递增（代码未实现）
  */
 fun <T : Comparable<T>> ex17_CheckStability(array: Array<T>, sort: (Array<T>) -> Unit): Boolean {
     val map = HashMap<T, DoublyLinkedList<T>>()

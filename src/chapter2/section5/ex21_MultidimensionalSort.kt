@@ -6,10 +6,11 @@ package chapter2.section5
  */
 class Vector(val array: Array<Int>) : Comparable<Vector> {
     override fun compareTo(other: Vector): Int {
-        for (i in array.indices) {
+        val minSize = minOf(array.size, other.array.size)
+        for (i in 0..minSize) {
             val compareResult = array[i].compareTo(other.array[i])
             if (compareResult != 0) return compareResult
         }
-        return 0
+        return array.size.compareTo(other.array.size)
     }
 }

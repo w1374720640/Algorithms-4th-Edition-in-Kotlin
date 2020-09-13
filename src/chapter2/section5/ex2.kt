@@ -11,13 +11,14 @@ import extensions.spendTimeMillis
  * 解：先对数组排序，然后从数组中取两个数相加（区分正反顺序），使用二分查找判断结果是否存在于数组中
  * 排序的复杂度为NlgN，从N中取两个数排列的可能性为N*(N-1)，二分查找的复杂度为lgN
  * 所以总时间复杂度为NlgN+N*(N-1)*lgN ~N²lgN
+ * 思想同3-sum问题的N²lgN解法
  */
 fun ex2a(array: Array<String>): List<String> {
     if (array.size < 3) return emptyList()
     array.sort()
     val list = mutableListOf<String>()
     for (i in 0..array.size - 2) {
-        for (j in i until array.size) {
+        for (j in i + 1 until array.size) {
             val index1 = binarySearch(array[i] + array[j], array)
             val index2 = binarySearch(array[j] + array[i], array)
             if (index1 != -1) {
@@ -37,6 +38,9 @@ fun ex2a(array: Array<String>): List<String> {
  * 用自定义比较器对数组排序，找出字符串的最大长度，两个字符串相加长度超过最大长度时直接返回
  * 具体对效率的提升依赖数据源，最坏情况：
  * 有一个长度特长的字符串，超过其他任意两个字符相加的长度，内循环中根据长度快速返回的代码失效
+ * 其他的优化方式：
+ * 1、使用HashSet替代二分查找，将时间复杂度提升至~N²，需要额外空间
+ * 2、参考练习1.4.15快速3-sum的做法，将时间复杂度提升至~N²（太麻烦没有实现，需要注意a+b=c和b+a=c都需要判断）
  */
 fun ex2b(array: Array<String>): List<String> {
     if (array.size < 3) return emptyList()
@@ -57,7 +61,7 @@ fun ex2b(array: Array<String>): List<String> {
     val maxLength = array.last().length
     val list = mutableListOf<String>()
     for (i in 0..array.size - 2) {
-        for (j in i until array.size) {
+        for (j in i + 1 until array.size) {
             //当两个字符串长度相加超长时，内循环中剩余的任意一个值和外循环的值相加都超长
             if (array[i].length + array[j].length > maxLength) break
 

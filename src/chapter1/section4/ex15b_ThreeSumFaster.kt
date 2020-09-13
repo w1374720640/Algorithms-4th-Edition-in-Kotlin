@@ -6,7 +6,7 @@ import extensions.readAllInts
 /**
  * 求三个数相加和为0的组合数量，要求使用平方级算法，参考ex15a
  */
-fun ex15b_TwoSumFaster(array: IntArray): Long {
+fun ex15b_ThreeSumFaster(array: IntArray): Long {
     fun getZeroCount(array: IntArray): Int {
         var count = 0
         array.forEach { if (it == 0) count++ }
@@ -57,5 +57,5 @@ fun main() {
     val array = readAllInts()
     println("ThreeSum count=${threeSum(array)}")
     array.sort()
-    println("ex15b count=${ex15b_TwoSumFaster(array)}")
+    println("ex15b count=${ex15b_ThreeSumFaster(array)}")
 }
