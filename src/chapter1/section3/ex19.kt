@@ -97,6 +97,10 @@ fun <T> SinglyLinkedList<T>.size(): Int {
     return size
 }
 
+fun <T> SinglyLinkedList<T>.isEmpty(): Boolean {
+    return first == null
+}
+
 fun <T> SinglyLinkedList<T>.joinToSting(): String {
     var result = ""
     forEach { result += it.toString() + " " }
