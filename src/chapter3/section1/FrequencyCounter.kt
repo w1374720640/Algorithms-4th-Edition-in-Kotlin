@@ -36,34 +36,6 @@ fun frequencyCounter(input: In, minLength: Int, st: ST<String, Int>): Pair<Strin
     }
 }
 
-fun frequencyCounter(input: In, minLength: Int, orderedST: OrderedST<String, Int>): Pair<String, Int> {
-    while (!input.isEmpty) {
-        val word = input.readString()
-        if (word.length >= minLength) {
-            val count = orderedST.get(word)
-            if (count == null) {
-                orderedST.put(word, 1)
-            } else {
-                orderedST.put(word, count + 1)
-            }
-        }
-    }
-    if (orderedST.isEmpty()) {
-        throw NoSuchElementException("OrderedST is Empty!")
-    } else {
-        var word = ""
-        var maxCount = 0
-        orderedST.keys().forEach {key ->
-            val count = orderedST.get(key)!!
-            if (count > maxCount) {
-                word = key
-                maxCount = count
-            }
-        }
-        return word to maxCount
-    }
-}
-
 fun main() {
     inputPrompt()
     val minLength = readInt("minLength=")
