@@ -46,7 +46,7 @@ class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         if (rankSize < size && keys[rankSize]!! == key) {
             for (i in rankSize until size - 1) {
                 keys[i] = keys[i + 1]
-                values[i] = keys[i + 1]
+                values[i] = values[i + 1]
             }
             keys[size - 1] = null
             values[size - 1] = null
@@ -103,6 +103,7 @@ class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
                 return object : Iterator<K> {
                     var index: Int
                     var highIndex: Int
+
                     init {
                         val lowRankSize = rank(low)
                         index = lowRankSize
@@ -183,7 +184,7 @@ class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
     override fun select(k: Int): K {
-        if (k >= size) throw NoSuchElementException()
+        if (k < 0 || k >= size) throw NoSuchElementException()
         @Suppress("UNCHECKED_CAST")
         return keys[k]!! as K
     }
@@ -243,6 +244,8 @@ class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
 }
 
 fun main() {
+    testOrderedST(ArrayOrderedST())
+
     inputPrompt()
     val st = ArrayOrderedST<String, String>()
     println("Please input commands:")
@@ -259,7 +262,7 @@ fun main() {
                     val value = readString("value=")
                     st.put(key, value)
                 }
-                2 ->println(st.get(readString("get: key=")))
+                2 -> println(st.get(readString("get: key=")))
                 3 -> st.delete(readString("delete: key="))
                 4 -> println(st.contains(readString("contains: key=")))
                 5 -> println("isEmpty=${st.isEmpty()}")

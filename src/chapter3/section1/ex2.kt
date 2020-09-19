@@ -5,6 +5,9 @@ import extensions.readInt
 import extensions.readString
 import extensions.safeCall
 
+/**
+ * 基于数组的无序符号表
+ */
 class ArrayST<K : Any, V : Any> : ST<K, V> {
     private var keys = arrayOfNulls<Any>(4)
     private var values = arrayOfNulls<Any>(4)
@@ -124,6 +127,8 @@ class ArrayST<K : Any, V : Any> : ST<K, V> {
 }
 
 fun main() {
+    testST(ArrayST())
+
     inputPrompt()
     val st = ArrayST<String, String>()
     println("Please input commands:")
