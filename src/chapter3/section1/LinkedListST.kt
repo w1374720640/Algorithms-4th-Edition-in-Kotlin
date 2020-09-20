@@ -80,14 +80,7 @@ open class LinkedListST<K : Any, V : Any> : ST<K, V> {
     }
 
     override fun contains(key: K): Boolean {
-        var node = first
-        while (node != null) {
-            if (node.key == key) {
-                return true
-            }
-            node = node.next
-        }
-        return false
+        return get(key) != null
     }
 
     override fun isEmpty(): Boolean {
