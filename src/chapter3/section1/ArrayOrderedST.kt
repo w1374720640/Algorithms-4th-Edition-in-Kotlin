@@ -8,10 +8,10 @@ import extensions.safeCall
 /**
  * 基于数组的有序符号表
  */
-class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
-    private var keys = Array<Comparable<K>?>(4) { null }
-    private var values = Array<Any?>(4) { null }
-    private var size = 0
+open class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
+    protected var keys = Array<Comparable<K>?>(4) { null }
+    protected var values = Array<Any?>(4) { null }
+    protected var size = 0
 
     override fun put(key: K, value: V) {
         val rankSize = rank(key)

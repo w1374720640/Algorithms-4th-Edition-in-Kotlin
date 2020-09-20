@@ -8,10 +8,10 @@ import extensions.safeCall
 /**
  * 基于数组的无序符号表
  */
-class ArrayST<K : Any, V : Any> : ST<K, V> {
-    private var keys = arrayOfNulls<Any>(4)
-    private var values = arrayOfNulls<Any>(4)
-    private var size = 0
+open class ArrayST<K : Any, V : Any> : ST<K, V> {
+    protected var keys = arrayOfNulls<Any>(4)
+    protected var values = arrayOfNulls<Any>(4)
+    protected var size = 0
 
     override fun put(key: K, value: V) {
         for (i in 0 until size) {

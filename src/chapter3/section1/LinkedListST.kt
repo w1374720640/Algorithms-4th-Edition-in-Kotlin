@@ -8,9 +8,9 @@ import extensions.safeCall
 /**
  * 基于链表的无序符号表
  */
-class LinkedListST<K : Any, V : Any> : ST<K, V> {
-    private var first: Node<K, V>? = null
-    private var size = 0
+open class LinkedListST<K : Any, V : Any> : ST<K, V> {
+    protected var first: Node<K, V>? = null
+    protected var size = 0
 
     class Node<K : Any, V : Any>(val key: K, var value: V, var next: Node<K, V>? = null) {
         override fun equals(other: Any?): Boolean {
