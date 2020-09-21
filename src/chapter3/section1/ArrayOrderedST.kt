@@ -208,14 +208,14 @@ open class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         }
     }
 
-    private fun needExpansion() = keys.size == size
+    protected fun needExpansion() = keys.size == size
 
-    private fun needShrink() = keys.size > 4 && keys.size - 1 >= size * 4
+    protected fun needShrink() = keys.size > 4 && keys.size - 1 >= size * 4
 
     /**
      * 当数组占满时容量扩大一倍
      */
-    private fun expansion() {
+    protected fun expansion() {
         val newSize = keys.size * 2
         val newKeys = arrayOfNulls<Comparable<K>>(newSize)
         val newValues = arrayOfNulls<Any>(newSize)
@@ -230,7 +230,7 @@ open class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     /**
      * 当数组使用空间小于四分之一时缩小一倍
      */
-    private fun shrink() {
+    protected fun shrink() {
         if (keys.size <= 4) return
         val newKeys = arrayOfNulls<Comparable<K>>(keys.size / 2)
         val newValues = arrayOfNulls<Any>(keys.size / 2)
