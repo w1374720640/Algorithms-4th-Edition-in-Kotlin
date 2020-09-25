@@ -1,13 +1,14 @@
 package chapter3.section2
 
 import edu.princeton.cs.algs4.StdDraw
+import extensions.random
 import java.awt.Color
 
 /**
  * 绘制二叉树的图形
  * 标准的二叉树图形所有结点在x轴上的投影应该连续且间距相等，关键在于计算每个结点的x坐标
  * 理想情况下，根结点在x轴的投影在所有投影的中点，所有结点组成完全二叉树，树的深度为lgN+1
- * 最坏情况下，根节点在所有投影的最左侧或最右侧，其他结点向右或向左单向延伸，树的深度为N
+ * 最坏情况下，根节点在所有投影的最左侧或最右侧，其他结点最多只有一个子结点，树的深度为N
  * 创建一个虚拟的二维坐标，左上角为原点，水平向右为x轴正方向，垂直向下为y轴正方向
  * 根节点的坐标固定为(N,1)，其他结点的x坐标范围为[1,2N]，y坐标范围为[1,N]
  * 新建一个结点，包含原始结点的引用以及左右子结点、x、y坐标值，从原始的根结点开始，依次转换为新的结点
@@ -38,8 +39,11 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
                                            var left: Node<K, V>? = null,
                                            var right: Node<K, V>? = null)
 
-    //是否在结点左侧显示key
+    //是否在结点中间显示key
     var showKey = false
+
+    //是否在结点上方显示value
+    var showValue = false
     val size = binaryTreeST.size()
     val array = arrayOfNulls<Node<K, V>>(size * 2 + 1)
 
@@ -162,7 +166,7 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
 
     fun draw() {
         if (root == null) return
-        nodeRadio = 1.0 / (maxX - minX + 2) / 4
+        nodeRadio = 1.0 / (maxX - minX + 2) / 2
         draw(root)
     }
 
@@ -179,7 +183,10 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
         StdDraw.setPenColor(Color.BLACK)
         StdDraw.circle(convertX(node), convertY(node), nodeRadio)
         if (showKey) {
-            StdDraw.textRight(convertX(node) - nodeRadio, convertY(node), node.originNode.key.toString())
+            StdDraw.text(convertX(node), convertY(node), node.originNode.key.toString())
+        }
+        if (showValue) {
+            StdDraw.text(convertX(node), convertY(node) + nodeRadio + 0.02, node.originNode.value.toString())
         }
         if (node.left != null) {
             draw(node.left!!)
@@ -199,10 +206,10 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
 }
 
 fun main() {
-    val array = arrayOf(5, 1, 6, 8, 4, 7, 9, 2, 3)
+    val array = IntArray(20) { random(100) }
     val binaryTreeST = BinaryTreeST<Int, Int>()
-    array.forEach {
-        binaryTreeST.put(it, 0)
+    for (i in array.indices) {
+        binaryTreeST.put(array[i], i)
     }
     if (!binaryTreeST.isEmpty()) {
         val graphics = BinaryTreeGraphics(binaryTreeST, true)

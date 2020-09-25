@@ -9,11 +9,11 @@ import edu.princeton.cs.algs4.Queue
  */
 open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
 
-    class Node<K : Comparable<K>, V : Any>(val key: K,
-                                           var value: V,
-                                           var left: Node<K, V>? = null,
-                                           var right: Node<K, V>? = null,
-                                           var count: Int = 1) : Comparable<Node<K, V>> {
+    open class Node<K : Comparable<K>, V : Any>(val key: K,
+                                                var value: V,
+                                                var left: Node<K, V>? = null,
+                                                var right: Node<K, V>? = null,
+                                                var count: Int = 1) : Comparable<Node<K, V>> {
         override fun compareTo(other: Node<K, V>): Int {
             return key.compareTo(other.key)
         }
@@ -38,7 +38,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return min(root!!).key
     }
 
-    protected fun min(node: Node<K, V>): Node<K, V> {
+    protected open fun min(node: Node<K, V>): Node<K, V> {
         return if (node.left == null) {
             node
         } else {
@@ -51,7 +51,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return max(root!!).key
     }
 
-    protected fun max(node: Node<K, V>): Node<K, V> {
+    protected open fun max(node: Node<K, V>): Node<K, V> {
         return if (node.right == null) {
             node
         } else {
@@ -65,7 +65,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return node.key
     }
 
-    protected fun floor(node: Node<K, V>, key: K): Node<K, V>? {
+    protected open fun floor(node: Node<K, V>, key: K): Node<K, V>? {
         return when {
             node.key < key -> {
                 if (node.right == null) {
@@ -92,7 +92,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return node.key
     }
 
-    protected fun ceiling(node: Node<K, V>, key: K): Node<K, V>? {
+    protected open fun ceiling(node: Node<K, V>, key: K): Node<K, V>? {
         return when {
             node.key > key -> {
                 if (node.left == null) {
@@ -120,7 +120,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         }
     }
 
-    protected fun rank(node: Node<K, V>, key: K): Int {
+    protected open fun rank(node: Node<K, V>, key: K): Int {
         return when {
             node.key < key -> {
                 when {
@@ -145,7 +145,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return select(root!!, k).key
     }
 
-    protected fun select(node: Node<K, V>, k: Int): Node<K, V> {
+    protected open fun select(node: Node<K, V>, k: Int): Node<K, V> {
         val leftSize = size(node.left)
         return when {
             k == leftSize -> node
@@ -155,7 +155,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         }
     }
 
-    protected fun size(node: Node<K, V>?): Int {
+    protected open fun size(node: Node<K, V>?): Int {
         return node?.count ?: 0
     }
 
@@ -164,7 +164,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         root = deleteMin(root!!)
     }
 
-    protected fun deleteMin(node: Node<K, V>): Node<K, V>? {
+    protected open fun deleteMin(node: Node<K, V>): Node<K, V>? {
         if (node.left == null) return node.right
         node.left = deleteMin(node.left!!)
         node.count = size(node.left) + size(node.right) + 1
@@ -176,7 +176,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         root = deleteMax(root!!)
     }
 
-    protected fun deleteMax(node: Node<K, V>): Node<K, V>? {
+    protected open fun deleteMax(node: Node<K, V>): Node<K, V>? {
         if (node.right == null) return node.left
         node.right = deleteMax(node.right!!)
         node.count = size(node.left) + size(node.right) + 1
@@ -200,7 +200,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         }
     }
 
-    protected fun put(node: Node<K, V>, key: K, value: V) {
+    protected open fun put(node: Node<K, V>, key: K, value: V) {
         when {
             node.key > key -> {
                 if (node.left == null) {
@@ -229,7 +229,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         }
     }
 
-    protected fun get(node: Node<K, V>, key: K): Node<K, V>? {
+    protected open fun get(node: Node<K, V>, key: K): Node<K, V>? {
         return when {
             node.key < key -> {
                 if (node.right == null) {
@@ -254,7 +254,7 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         root = delete(root!!, key)
     }
 
-    protected fun delete(node: Node<K, V>, key: K): Node<K, V>? {
+    protected open fun delete(node: Node<K, V>, key: K): Node<K, V>? {
         when {
             node.key > key -> {
                 if (node.left == null) {
