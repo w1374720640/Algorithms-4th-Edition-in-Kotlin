@@ -1,7 +1,6 @@
 package chapter3.section2
 
 import chapter2.sleep
-import edu.princeton.cs.algs4.StdDraw
 
 /**
  * 将 A X C S E R H 作为键按顺序插入会构造一颗最坏情况下的二叉查找树结构
@@ -24,14 +23,11 @@ fun ex2(): Array<CharArray> {
 fun main() {
     val array = ex2()
     array.forEach {
-        StdDraw.clear()
         val binaryTreeST = BinaryTreeST<Char, Int>()
         for (i in it.indices) {
             binaryTreeST.put(it[i], i)
         }
-        val graphics = BinaryTreeGraphics(binaryTreeST, true)
-        graphics.showKey = true
-        graphics.draw()
+        drawBinaryTree(binaryTreeST)
         sleep(5000)
     }
 }

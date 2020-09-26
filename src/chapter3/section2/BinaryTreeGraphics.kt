@@ -6,7 +6,7 @@ import java.awt.Color
 
 /**
  * 绘制二叉树的图形
- * 标准的二叉树图形所有结点在x轴上的投影应该连续且间距相等，关键在于计算每个结点的x坐标
+ * 标准的二叉树图形所有结点在x轴上的投影应该连续且间距相等，一个结点左子树的所有结点在x轴的投影都在该结点左侧
  * 理想情况下，根结点在x轴的投影在所有投影的中点，所有结点组成完全二叉树，树的深度为lgN+1
  * 最坏情况下，根节点在所有投影的最左侧或最右侧，其他结点最多只有一个子结点，树的深度为N
  * 创建一个虚拟的二维坐标，左上角为原点，水平向右为x轴正方向，垂直向下为y轴正方向
@@ -42,8 +42,8 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
     //是否在结点中间显示key
     var showKey = false
 
-    //是否在结点上方显示value
-    var showValue = false
+    //是否在结点上方显示每个子树的大小
+    var showSize = false
     val size = binaryTreeST.size()
     val array = arrayOfNulls<Node<K, V>>(size * 2 + 1)
 
@@ -167,6 +167,7 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
     fun draw() {
         if (root == null) return
         nodeRadio = 1.0 / (maxX - minX + 2) / 2
+        StdDraw.clear()
         draw(root)
     }
 
@@ -185,8 +186,8 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
         if (showKey) {
             StdDraw.text(convertX(node), convertY(node), node.originNode.key.toString())
         }
-        if (showValue) {
-            StdDraw.text(convertX(node), convertY(node) + nodeRadio + 0.02, node.originNode.value.toString())
+        if (showSize) {
+            StdDraw.text(convertX(node), convertY(node) + nodeRadio + 0.02, node.originNode.count.toString())
         }
         if (node.left != null) {
             draw(node.left!!)
@@ -205,15 +206,19 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
     }
 }
 
+fun <K : Comparable<K>, V : Any> drawBinaryTree(binaryTree: BinaryTreeST<K, V>, showKey: Boolean = true, showSize: Boolean = false) {
+    if (binaryTree.isEmpty()) return
+    val graphics = BinaryTreeGraphics(binaryTree, true)
+    graphics.showKey = showKey
+    graphics.showSize = showSize
+    graphics.draw()
+}
+
 fun main() {
     val array = IntArray(20) { random(100) }
     val binaryTreeST = BinaryTreeST<Int, Int>()
     for (i in array.indices) {
         binaryTreeST.put(array[i], i)
     }
-    if (!binaryTreeST.isEmpty()) {
-        val graphics = BinaryTreeGraphics(binaryTreeST, true)
-        graphics.showKey = true
-        graphics.draw()
-    }
+    drawBinaryTree(binaryTreeST)
 }
