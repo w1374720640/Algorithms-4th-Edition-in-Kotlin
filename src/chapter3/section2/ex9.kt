@@ -42,8 +42,9 @@ fun createAllBinaryTree(N: Int): Array<BinaryTreeST<Int, Int>> {
  * 解：全排列P(N)=N*P(N-1)
  * 分别将0,1,2...N-1交换到第一位，对剩余元素求全排列P(N-1)，组合成全排列P(N)
  * 求全排列P(N-1)时，递归调用(N-1)*P(N-2)，直到P(1)只有一种可能性
+ * 参考链接：https://blog.csdn.net/K346K346/article/details/51154786
  */
-fun fullArray(array: Array<Int>, start: Int, list: ArrayList<Array<Int>>) {
+fun <T> fullArray(array: Array<T>, start: Int, list: ArrayList<Array<T>>) {
     if (start == array.size - 1) {
         list.add(array.copyOf())
         return
@@ -51,6 +52,7 @@ fun fullArray(array: Array<Int>, start: Int, list: ArrayList<Array<Int>>) {
     for (i in start until array.size) {
         array.swap(start, i)
         fullArray(array, start + 1, list)
+        //这里必须将start和i交换回去，否则无法保证全排列完整不重复
         array.swap(start, i)
     }
 }
@@ -97,7 +99,7 @@ fun dedupBinaryTree(array: Array<BinaryTreeST<Int, Int>>, comparator: Comparator
     return result
 }
 
-fun drawBinaryTreeArray(array: Array<BinaryTreeST<Int, Int>>, delay: Long) {
+fun <K: Comparable<K>, V: Any> drawBinaryTreeArray(array: Array<BinaryTreeST<K, V>>, delay: Long) {
     array.forEach { binaryTreeST ->
         drawBinaryTree(binaryTreeST)
         sleep(delay)

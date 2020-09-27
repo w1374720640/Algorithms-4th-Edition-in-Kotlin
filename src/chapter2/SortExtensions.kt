@@ -30,7 +30,7 @@ val swapCallbackList = mutableListOf<SwapCallback>()
 /**
  * 所有排序函数都应该使用这个扩展函数交换数据
  */
-fun <T : Comparable<T>> Array<T>.swap(i: Int, j: Int) {
+fun <T> Array<T>.swap(i: Int, j: Int) {
     if (i == j) return
     swapCallbackList.forEach { callback ->
         callback.before(this, i, j)

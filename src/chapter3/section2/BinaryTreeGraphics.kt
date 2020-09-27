@@ -220,5 +220,5 @@ fun main() {
     for (i in array.indices) {
         binaryTreeST.put(array[i], i)
     }
-    drawBinaryTree(binaryTreeST)
+    drawBinaryTree(binaryTreeST, showSize = true)
 }
