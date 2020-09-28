@@ -165,7 +165,10 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
     private var nodeRadio = 0.0
 
     fun draw() {
-        if (root == null) return
+        if (root == null) {
+            StdDraw.clear()
+            return
+        }
         nodeRadio = 1.0 / (maxX - minX + 2) / 2
         StdDraw.clear()
         draw(root)
@@ -207,7 +210,6 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
 }
 
 fun <K : Comparable<K>, V : Any> drawBinaryTree(binaryTree: BinaryTreeST<K, V>, showKey: Boolean = true, showSize: Boolean = false) {
-    if (binaryTree.isEmpty()) return
     val graphics = BinaryTreeGraphics(binaryTree, true)
     graphics.showKey = showKey
     graphics.showSize = showSize
