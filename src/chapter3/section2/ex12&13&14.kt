@@ -2,7 +2,6 @@ package chapter3.section2
 
 import chapter3.section1.OrderedST
 import chapter3.section1.testOrderedST
-import edu.princeton.cs.algs4.Queue
 import edu.princeton.cs.algs4.Stack
 
 /**
@@ -139,30 +138,26 @@ class BinaryTreeNoCounterAndRecursionST<K : Comparable<K>, V : Any> : OrderedST<
         var index = 0
         //使用二叉树的非递归中序遍历查找
         val stack = Stack<Node<K, V>>()
-        stack.push(root!!)
-        var pushNextTime = true
+        addAllLeftNode(root!!, stack)
         while (!stack.isEmpty) {
-            if (pushNextTime) {
-                val node = stack.peek()
-                if (node.left == null) {
-                    pushNextTime = false
-                } else {
-                    stack.push(node.left!!)
-                    pushNextTime = true
-                }
-            } else {
-                val node = stack.pop()
-                if (index == k) return node.key
-                index++
-                if (node.right == null) {
-                    pushNextTime = false
-                } else {
-                    stack.push(node.right!!)
-                    pushNextTime = true
-                }
+            val node = stack.pop()
+            if (index == k) {
+                return node.key
+            }
+            index++
+            if (node.right != null) {
+                addAllLeftNode(node.right!!, stack)
             }
         }
         throw NoSuchElementException()
+    }
+
+    private fun addAllLeftNode(root: Node<K, V>, stack: Stack<Node<K, V>>) {
+        var node: Node<K, V>? = root
+        while (node != null) {
+            stack.push(node)
+            node = node.left
+        }
     }
 
     override fun deleteMin() {
@@ -306,7 +301,7 @@ class BinaryTreeNoCounterAndRecursionST<K : Comparable<K>, V : Any> : OrderedST<
                     node = node.right!!
                 }
                 else -> {
-                    var newNode: Node<K, V>?
+                    val newNode: Node<K, V>?
                     if (node.right == null) {
                         newNode = node.left
                     } else {
@@ -365,44 +360,58 @@ class BinaryTreeNoCounterAndRecursionST<K : Comparable<K>, V : Any> : OrderedST<
         return object : Iterable<K> {
             override fun iterator(): Iterator<K> {
                 return object : Iterator<K> {
-                    val queue = Queue<Node<K, V>>()
+                    val stack = Stack<Node<K, V>>()
 
                     init {
-                        val stack = Stack<Node<K, V>>()
-                        stack.push(root!!)
-                        var pushNextTime = true
-                        while (!stack.isEmpty) {
-                            if (pushNextTime) {
-                                val node = stack.peek()
-                                if (node.left == null) {
-                                    pushNextTime = false
-                                } else {
-                                    stack.push(node.left!!)
-                                    pushNextTime = true
+                        if (root != null) {
+                            addAllLeftNode(root!!)
+                        }
+                    }
+
+                    private fun addAllLeftNode(root: Node<K, V>) {
+                        when {
+                            root.key < low -> {
+                                var node = root.right
+                                while (node != null) {
+                                    when {
+                                        node.key < low -> node = node.right
+                                        node.key == low -> {
+                                            stack.push(node)
+                                            node = null
+                                        }
+                                        else -> {
+                                            if (node.key in low..high) {
+                                                stack.push(node)
+                                            }
+                                            node = node.left
+                                        }
+                                    }
                                 }
-                            } else {
-                                val node = stack.pop()
-                                if (node.key in low..high) {
-                                    queue.enqueue(node)
-                                }
-                                if (node.right == null) {
-                                    pushNextTime = false
-                                } else {
-                                    stack.push(node.right!!)
-                                    pushNextTime = true
+                            }
+                            root.key == low -> stack.push(root)
+                            else -> {
+                                var node: Node<K, V>? = root
+                                while (node != null) {
+                                    if (node.key in low..high) {
+                                        stack.push(node)
+                                    }
+                                    node = node.left
                                 }
                             }
                         }
-
                     }
 
                     override fun hasNext(): Boolean {
-                        return !queue.isEmpty
+                        return !stack.isEmpty
                     }
 
                     override fun next(): K {
-                        if (queue.isEmpty) throw NoSuchElementException()
-                        return queue.dequeue().key
+                        if (stack.isEmpty) throw NoSuchElementException()
+                        val node = stack.pop()
+                        if (node.right != null) {
+                            addAllLeftNode(node.right!!)
+                        }
+                        return node.key
                     }
 
                 }
@@ -419,42 +428,35 @@ class BinaryTreeNoCounterAndRecursionST<K : Comparable<K>, V : Any> : OrderedST<
         return object : Iterable<K> {
             override fun iterator(): Iterator<K> {
                 return object : Iterator<K> {
-                    val queue = Queue<Node<K, V>>()
+                    val stack = Stack<Node<K, V>>()
 
                     init {
-                        val stack = Stack<Node<K, V>>()
-                        stack.push(root!!)
-                        var pushNextTime = true
-                        while (!stack.isEmpty) {
-                            if (pushNextTime) {
-                                val node = stack.peek()
-                                if (node.left == null) {
-                                    pushNextTime = false
-                                } else {
-                                    stack.push(node.left!!)
-                                    pushNextTime = true
-                                }
-                            } else {
-                                val node = stack.pop()
-                                queue.enqueue(node)
-                                if (node.right == null) {
-                                    pushNextTime = false
-                                } else {
-                                    stack.push(node.right!!)
-                                    pushNextTime = true
-                                }
-                            }
+                        if (root != null) {
+                            addAllLeftNode(root!!)
+                        }
+                    }
+
+                    private fun addAllLeftNode(root: Node<K, V>) {
+                        var node: Node<K, V>? = root
+                        while (node != null) {
+                            stack.push(node)
+                            node = node.left
                         }
                     }
 
                     override fun hasNext(): Boolean {
-                        return !queue.isEmpty
+                        return !stack.isEmpty
                     }
 
                     override fun next(): K {
-                        if (queue.isEmpty) throw NoSuchElementException()
-                        return queue.dequeue().key
+                        if (stack.isEmpty) throw NoSuchElementException()
+                        val node = stack.pop()
+                        if (node.right != null) {
+                            addAllLeftNode(node.right!!)
+                        }
+                        return node.key
                     }
+
                 }
             }
         }
