@@ -13,7 +13,7 @@ fun <K : Comparable<K>, V : Any> BinaryTreeST<K, V>.height(): Int {
     return height(root!!)
 }
 
-fun <K : Comparable<K>, V : Any> BinaryTreeST<K, V>.height(node: BinaryTreeST.Node<K, V>): Int {
+fun <K : Comparable<K>, V : Any> height(node: BinaryTreeST.Node<K, V>): Int {
     var leftHeight = 0
     var rightHeight = 0
     if (node.left != null) {

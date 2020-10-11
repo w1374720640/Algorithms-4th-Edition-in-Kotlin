@@ -13,7 +13,7 @@ fun <K : Comparable<K>, V : Any> BinaryTreeST<K, V>.avgCompares(): Int {
     return compares(root!!) / size() + 1
 }
 
-private fun <K : Comparable<K>, V : Any> BinaryTreeST<K, V>.compares(node: BinaryTreeST.Node<K, V>): Int {
+private fun <K : Comparable<K>, V : Any> compares(node: BinaryTreeST.Node<K, V>): Int {
     var leftCompares = 0
     if (node.left != null) {
         leftCompares = compares(node.left!!)
