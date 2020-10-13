@@ -63,7 +63,7 @@ fun main() {
         val missAverageDiff = averageDiff(missArray, missAverage)
         val missStandardDeviation = standardDeviation(missArray, missAverage)
 
-        println("size=$size expectAverage=${st.avgCompares()} ex35=${formatDouble(1.39 * log2(size.toDouble()) - 1.85, 2)}")
+        println("size=$size expectAverage=${formatDouble(st.avgComparesDouble(), 2)} ex35=${formatDouble(1.39 * log2(size.toDouble()) - 1.85, 2)}")
         println("hit : ActualAverage=${formatDouble(hitAverage, 2)} AverageDiff=${formatDouble(hitAverageDiff, 2)} StandardDeviation=${formatDouble(hitStandardDeviation, 2)}")
         println("miss: ActualAverage=${formatDouble(missAverage, 2)} AverageDiff=${formatDouble(missAverageDiff, 2)} StandardDeviation=${formatDouble(missStandardDeviation, 2)}")
         println()
