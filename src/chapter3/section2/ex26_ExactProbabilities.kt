@@ -28,7 +28,7 @@ fun ex26_ExactProbabilities(N: Int, delay: Long) {
     binaryTreeST.keys().forEach { tree ->
         drawBinaryTree(tree)
         val count = binaryTreeST.get(tree) ?: 1
-        StdDraw.textLeft(0.02, 0.98, "${count}/$total = ${formatDouble(count.toDouble() / total, 3)}")
+        StdDraw.textLeft(0.02, 0.98, "${count}/$total = ${formatDouble(count.toDouble() / total * 100, 2)}%")
         sleep(delay)
     }
 }
@@ -69,6 +69,6 @@ class ComparableBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>(),
 
 fun main() {
     val N = 5
-    val delay = 2000L
+    val delay = 1000L
     ex26_ExactProbabilities(N, delay)
 }

@@ -7,9 +7,18 @@ package chapter3.section2
  * 注意：这项检查也能保证数据结构中不存在环，因此这的确是一颗二叉树
  */
 fun <K : Comparable<K>> isBinaryTree(node: BinaryTreeST.Node<K, *>): Boolean {
-    val leftIsTree = if (node.left == null) true else isBinaryTree(node.left!!)
+    val leftIsTree = when {
+        node.left == null -> true
+        //防止子树中有环
+        node.count <= node.left!!.count -> false
+        else -> isBinaryTree(node.left!!)
+    }
     if (!leftIsTree) return false
-    val rightIsTree = if (node.right == null) true else isBinaryTree(node.right!!)
+    val rightIsTree = when {
+        node.right == null -> true
+        node.count <= node.right!!.count -> false
+        else -> isBinaryTree(node.right!!)
+    }
     if (!rightIsTree) return false
     val leftCount = node.left?.count ?: 0
     val rightCount = node.right?.count ?: 0
@@ -24,6 +33,13 @@ fun main() {
     }
     println(isBinaryTree(binaryTreeST.root!!))
 
+    val rightCount = binaryTreeST.root?.right?.count!!
+    //计数器值错误
     binaryTreeST.root?.right?.count = 2
+    println(isBinaryTree(binaryTreeST.root!!))
+
+    binaryTreeST.root?.right?.count = rightCount
+    //有环
+    binaryTreeST.root?.right?.right = binaryTreeST.root?.right
     println(isBinaryTree(binaryTreeST.root!!))
 }

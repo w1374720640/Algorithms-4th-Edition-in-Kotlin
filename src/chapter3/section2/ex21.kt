@@ -11,7 +11,7 @@ fun <K: Comparable<K>, V: Any> BinaryTreeST<K, V>.randomKey(): K {
 }
 
 fun main() {
-    val size = 10_0000
+    val size = 1_0000
     val times = 100_0000
 
     val binaryTreeST = BinaryTreeST<Int, Int>()
@@ -26,5 +26,6 @@ fun main() {
         result[binaryTreeST.randomKey()]++
     }
     println("expect=${times / size}")
+    //打印每个索引出现的次数
     println(result.joinToString(limit = 100))
 }

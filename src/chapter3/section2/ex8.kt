@@ -10,16 +10,22 @@ package chapter3.section2
  */
 fun optCompares(N: Int): Int {
     if (N <= 0) return 0
+    //第i层的结点数量
     var compares = 0
+    //当前二叉树的总结点数
     var count = 0
+    //结点的层级，等于命中查找需要的比较次数
     var i = 1
     while (true) {
+        //增加一层后，总结点数量为原结点数量的两倍加一
         val maxCount = count * 2 + 1
         if (maxCount >= N) {
+            //最后一层未填满或刚好填满
             compares += (N - count) * i
             count = maxCount
             break
         } else {
+            //最后一层填满后仍然后剩余
             compares += (maxCount - count) * i
             count = maxCount
             i++
