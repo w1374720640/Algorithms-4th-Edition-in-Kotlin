@@ -108,6 +108,8 @@ fun randomBoolean() = StdRandom.bernoulli()//以相等概率返回true或false
 fun randomBoolean(p: Double) = StdRandom.bernoulli(p)//以指定概率（true的概率）返回true或false
 fun Array<out Any>.shuffle() = StdRandom.shuffle(this)//随机打乱数组
 fun Array<out Any>.shuffle(low: Int, high: Int) = StdRandom.shuffle(this, low, high)//打乱[low,high)范围内的数据
+fun IntArray.shuffle() = StdRandom.shuffle(this)
+fun DoubleArray.shuffle() = StdRandom.shuffle(this)
 
 /**
  * 对可能抛出异常的代码用try{}catch(){}包裹
