@@ -2,6 +2,7 @@ package chapter3.section2
 
 import chapter3.section1.testOrderedST
 import edu.princeton.cs.algs4.Stack
+import extensions.setSeed
 import extensions.shuffle
 
 /**
@@ -117,11 +118,12 @@ class NoRecursionKeysBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, 
 fun main() {
     testOrderedST(NoRecursionKeysBinaryTreeST())
 
+    setSeed(10)
     val size = 10
     val array = Array(size) { it }
     array.shuffle()
     val st = NoRecursionKeysBinaryTreeST<Int, Int>()
     array.forEach { st.put(it, 0) }
-    println(st.keys().joinToString())
+    println(st.keys(4, 22).joinToString())
     drawBinaryTree(st)
 }

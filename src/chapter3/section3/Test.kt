@@ -6,6 +6,7 @@ import extensions.shuffle
 
 /**
  * 红黑树的特性一：红链接均为左链接
+ * （红黑树本身没有这个特性，但是这里的实现默认红链接为左链接，也可以用右链接实现，但是整个实现中要统一）
  */
 fun <K : Comparable<K>, V : Any> allRedLinksAreLeftLinks(bst: RedBlackBST<K, V>): Boolean {
     if (bst.isEmpty()) return true

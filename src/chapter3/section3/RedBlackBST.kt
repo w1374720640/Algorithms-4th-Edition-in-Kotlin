@@ -2,8 +2,9 @@ package chapter3.section3
 
 import chapter3.section1.OrderedST
 import chapter3.section1.testOrderedST
+import chapter3.section2.BinaryTreeST
 import edu.princeton.cs.algs4.Queue
-import extensions.random
+import extensions.shuffle
 
 /**
  * 基于红黑树实现的有序符号表
@@ -22,7 +23,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
                                                 var count: Int = 1,
                                                 var color: Boolean = RED)
 
-    open fun Node<K, V>?.isRed(): Boolean {
+    protected open fun Node<K, V>?.isRed(): Boolean {
         if (this == null) return false
         return color == RED
     }
@@ -30,6 +31,10 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     var root: Node<K, V>? = null
         protected set
 
+    /**
+     * 左旋，不改变有序性和完美平衡
+     * 用于将右侧的红色链接调换到左侧，红色链接逆时针旋转，返回右子结点
+     */
     protected open fun rotateLeft(node: Node<K, V>): Node<K, V> {
         require(node.right != null && node.right.isRed())
         val x = node.right!!
@@ -42,6 +47,10 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return x
     }
 
+    /**
+     * 右旋，不改变有序性和完美平衡
+     * 用于将左侧的红色链接调换到右侧，红色链接顺时针旋转，返回左子结点
+     */
     protected open fun rotateRight(node: Node<K, V>): Node<K, V> {
         require(node.left != null && node.left.isRed())
         val x = node.left!!
@@ -54,6 +63,11 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return x
     }
 
+    /**
+     * 翻转根节点和左右子结点的颜色，不改变有序性和完美平衡
+     * 要求根结点为红色，左右子结点都为黑色，或根结点为黑色，左右子结点为红色
+     * 和正文中给出的代码不同
+     */
     protected open fun flipColors(node: Node<K, V>) {
         require(node.left != null && node.right != null)
         require((!node.isRed() && node.left.isRed() && node.right.isRed())
@@ -72,6 +86,9 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         }
     }
 
+    /**
+     * 先在对应位置插入红色结点，再递归向上平衡红黑树
+     */
     protected open fun put(node: Node<K, V>?, key: K, value: V): Node<K, V> {
         if (node == null) return Node(key, value)
         when {
@@ -89,14 +106,18 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return h
     }
 
-    //练习3.3.39中给出的答案少了一个flipColors()操作
+    /**
+     * 让左子结点变为红色，不改变有序性和完美平衡
+     * 和rotateLeft()方法的前置条件不同，在删除结点时将2-3树临时变更为2-3-4树
+     * 练习3.3.39中给出的答案少了一个flipColors()操作
+     */
     protected open fun moveRedLeft(node: Node<K, V>): Node<K, V> {
         require(node.isRed() && !node.left.isRed() && !node.left?.left.isRed())
-        //假设结点h为红色，h.left和h.left.left都是黑色
-        //将h.left或者h.left的子结点之一变红
         var h = node
+        //父结点与左右子结点组成4-结点
         flipColors(h)
         if (h.right?.left.isRed()) {
+            //左子结点与右子结点的左子结点组成3-结点
             h.right = rotateRight(h.right!!)
             h = rotateLeft(h)
             flipColors(h)
@@ -104,18 +125,26 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         return h
     }
 
-    //练习3.3.40中给出的答案少了一个flipColors()也就算了，还多了一个取反操作，应该为if(isRed(h.left.left))
+    /**
+     * 让右子结点变为红色，不改变有序性和完美平衡
+     * 练习3.3.40中给出的答案少了一个flipColors()也就算了，还多了一个取反操作，应该为if(isRed(h.left.left))
+     */
     protected open fun moveRedRight(node: Node<K, V>): Node<K, V> {
         require(node.isRed() && !node.right.isRed() && !node.right?.left.isRed())
         var h = node
+        //父结点与左右子结点组成4-结点
         flipColors(h)
         if (h.left?.left.isRed()) {
+            //父结点与右子结点组成3-结点
             h = rotateRight(h)
             flipColors(h)
         }
         return h
     }
 
+    /**
+     * 删除结点后向上递归调整平衡
+     */
     protected open fun balance(node: Node<K, V>): Node<K, V> {
         var h = node
         if (h.right.isRed()) h = rotateLeft(h)
@@ -151,6 +180,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
 
     protected open fun deleteMax(node: Node<K, V>): Node<K, V>? {
         var h = node
+        //因为正常的红黑树红色链接只可能在左侧，所以deleteMin()方法没有这行代码
         if (h.left.isRed()) h = rotateRight(h)
         if (h.right == null) return null
         if (!h.right.isRed() && !h.right?.left.isRed()) h = moveRedRight(h)
@@ -160,7 +190,6 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
 
     override fun delete(key: K) {
         if (!contains(key)) throw NoSuchElementException()
-
         if (!root!!.left.isRed() && !root!!.right.isRed()) root!!.color = RED
         root = delete(root!!, key)
         if (!isEmpty()) root!!.color = BLACK
@@ -176,9 +205,9 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
             if (key == h.key && h.right == null) return null
             if (!h.right.isRed() && !h.right?.left.isRed()) h = moveRedRight(h)
             if (key == h.key) {
-                val x = get(h.right!!, min(h.right!!).key)!!
-                h.value = x.value
-                h.key = x.key
+                val rightMinNode = get(h.right!!, min(h.right!!).key)!!
+                h.value = rightMinNode.value
+                h.key = rightMinNode.key
                 h.right = deleteMin(h.right!!)
             } else {
                 h.right = delete(h.right!!, key)
@@ -186,7 +215,6 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         }
         return balance(h)
     }
-
 
 
 //-------------------------- 以下代码和BinaryTreeST中完全相同 ------------------------------------//
@@ -367,49 +395,21 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
     override fun keys(low: K, high: K): Iterable<K> {
-        return object : Iterable<K> {
-            override fun iterator(): Iterator<K> {
-                return object : Iterator<K> {
-                    val queue = Queue<Node<K, V>>()
+        val queue = Queue<K>()
+        addToQueue(root, queue, low, high)
+        return queue
+    }
 
-                    init {
-                        if (root != null) {
-                            addToQueue(root!!)
-                        }
-                    }
-
-                    private fun addToQueue(node: Node<K, V>) {
-                        when {
-                            node.key == low -> {
-                                queue.enqueue(node)
-                                if (node.right != null) {
-                                    addToQueue(node.right!!)
-                                }
-                            }
-                            node.key == high -> queue.enqueue(node)
-                            node.key > low && node.key < high -> {
-                                if (node.left != null) {
-                                    addToQueue(node.left!!)
-                                }
-                                queue.enqueue(node)
-                                if (node.right != null) {
-                                    addToQueue(node.right!!)
-                                }
-                            }
-                        }
-                    }
-
-                    override fun hasNext(): Boolean {
-                        return !queue.isEmpty
-                    }
-
-                    override fun next(): K {
-                        if (queue.isEmpty) throw NoSuchElementException()
-                        return queue.dequeue().key
-                    }
-                }
-            }
-
+    private fun addToQueue(node: Node<K, V>?, queue: Queue<K>, low: K, high: K) {
+        if (node == null) return
+        if (node.key > low) {
+            addToQueue(node.left, queue, low, high)
+        }
+        if (node.key in low..high) {
+            queue.enqueue(node.key)
+        }
+        if (node.key < high) {
+            addToQueue(node.right, queue, low, high)
         }
     }
 
@@ -426,10 +426,11 @@ fun main() {
     testOrderedST(RedBlackBST())
     testRedBlackBST(RedBlackBST())
 
-    val array = IntArray(20) { random(100) }
+    val array = IntArray(20) { it }
+    array.shuffle()
     val binaryTreeST = RedBlackBST<Int, Int>()
-    for (i in array.indices) {
-        binaryTreeST.put(array[i], i)
+    array.forEach {
+        binaryTreeST.put(it, 0)
     }
     drawRedBlackBST(binaryTreeST)
 }

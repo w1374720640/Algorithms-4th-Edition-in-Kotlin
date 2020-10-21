@@ -300,49 +300,21 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
     override fun keys(low: K, high: K): Iterable<K> {
-        return object : Iterable<K> {
-            override fun iterator(): Iterator<K> {
-                return object : Iterator<K> {
-                    val queue = Queue<Node<K, V>>()
+        val queue = Queue<K>()
+        addToQueue(root, queue, low, high)
+        return queue
+    }
 
-                    init {
-                        if (root != null) {
-                            addToQueue(root!!)
-                        }
-                    }
-
-                    private fun addToQueue(node: Node<K, V>) {
-                        when {
-                            node.key == low -> {
-                                queue.enqueue(node)
-                                if (node.right != null) {
-                                    addToQueue(node.right!!)
-                                }
-                            }
-                            node.key == high -> queue.enqueue(node)
-                            node.key > low && node.key < high -> {
-                                if (node.left != null) {
-                                    addToQueue(node.left!!)
-                                }
-                                queue.enqueue(node)
-                                if (node.right != null) {
-                                    addToQueue(node.right!!)
-                                }
-                            }
-                        }
-                    }
-
-                    override fun hasNext(): Boolean {
-                        return !queue.isEmpty
-                    }
-
-                    override fun next(): K {
-                        if (queue.isEmpty) throw NoSuchElementException()
-                        return queue.dequeue().key
-                    }
-                }
-            }
-
+    private fun addToQueue(node: Node<K, V>?, queue: Queue<K>, low: K, high: K) {
+        if (node == null) return
+        if (node.key > low) {
+            addToQueue(node.left, queue, low, high)
+        }
+        if (node.key in low..high) {
+            queue.enqueue(node.key)
+        }
+        if (node.key < high) {
+            addToQueue(node.right, queue, low, high)
         }
     }
 

@@ -8,6 +8,7 @@ import java.awt.Color
  * 绘制红黑树的图形，参考二叉查找树绘制类 BinaryTreeGraphics
  * 区别是可以绘制红色结点，且可以选择以2-3查找树的形式绘制红黑树
  * 2-3查找树比普通二叉查找树更扁平
+ * 2-3查找树只显示结构，不显示额外信息
  */
 class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
 
@@ -17,11 +18,9 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
                                            var left: Node<K, V>? = null,
                                            var right: Node<K, V>? = null)
 
-    //是否在结点中间显示key
-    var showKey = false
-
-    //是否在结点上方显示每个子树的大小
-    var showSize = false
+    var showKey = false //是否在结点中间显示key
+    var showSize = false //是否在结点上方显示每个子树的大小
+    var showFlatView = false //是否显示更扁平的2-3查找树
     val size = bst.size()
 
     private val rootX = getNodeSize(bst.root!!.left)
@@ -98,7 +97,7 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
 
     private var nodeRadio = 0.0 //结点圆的半径
 
-    fun draw(showFlatView: Boolean) {
+    fun draw() {
         if (root == null || flatRoot == null) {
             StdDraw.clear()
             return
@@ -107,9 +106,17 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
         if (showFlatView) {
             StdDraw.setCanvasSize((CANVAS_DEFAULT_SIZE * (2 + FLAT_X_EXPEND_RATIO)).toInt(), CANVAS_DEFAULT_SIZE)
             StdDraw.setXscale(0.0, (2 + FLAT_X_EXPEND_RATIO))
+
+            StdDraw.setPenColor(Color.BLACK)
+            StdDraw.textLeft(0.02, 0.98, "红黑树")
+
             draw(root)
+
             StdDraw.setPenColor(Color.LIGHT_GRAY)
             StdDraw.line(1.0, 0.0, 1.0, 1.0)
+            StdDraw.setPenColor(Color.BLACK)
+            StdDraw.textLeft(1.02, 0.98, "2-3树")
+
             drawFlatView(flatRoot)
         } else {
             StdDraw.setCanvasSize()
@@ -146,29 +153,36 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
     }
 
     private fun drawFlatView(node: Node<K, V>) {
-        if (node.left != null) {
-            StdDraw.setPenColor(if (node.left?.originNode.isRed()) Color.RED else Color.BLACK)
+        StdDraw.setPenColor(Color.BLACK)
+        if (node.left != null && !node.left?.originNode.isRed()) {
             StdDraw.line(convertFlatX(node), convertFlatY(node), convertFlatX(node.left!!), convertFlatY(node.left!!))
         }
         if (node.right != null) {
-            StdDraw.setPenColor(if (node.right?.originNode.isRed()) Color.RED else Color.BLACK)
             StdDraw.line(convertFlatX(node), convertFlatY(node), convertFlatX(node.right!!), convertFlatY(node.right!!))
         }
-        StdDraw.setPenColor(Color.WHITE)
-        StdDraw.filledCircle(convertFlatX(node), convertFlatY(node), nodeRadio)
-        StdDraw.setPenColor(if (node.originNode.isRed()) Color.RED else Color.BLACK)
-        StdDraw.circle(convertFlatX(node), convertFlatY(node), nodeRadio)
-        if (showKey) {
-            StdDraw.text(convertFlatX(node), convertFlatY(node), node.originNode.key.toString())
-        }
-        if (showSize) {
-            StdDraw.text(convertFlatX(node), convertFlatY(node) + nodeRadio + 0.02, node.originNode.count.toString())
-        }
+
         if (node.left != null) {
             drawFlatView(node.left!!)
         }
         if (node.right != null) {
             drawFlatView(node.right!!)
+        }
+
+        StdDraw.setPenColor(Color.WHITE)
+        StdDraw.filledCircle(convertFlatX(node), convertFlatY(node), nodeRadio)
+        StdDraw.setPenColor(Color.BLACK)
+        StdDraw.circle(convertFlatX(node), convertFlatY(node), nodeRadio)
+
+        if (node.left?.originNode.isRed()) {
+            val leftX = convertFlatX(node.left!!)
+            val leftY = convertFlatY(node.left!!)
+            val x = convertFlatX(node)
+            val y = convertFlatY(node)
+            StdDraw.setPenColor(Color.WHITE)
+            StdDraw.filledRectangle((leftX + x) / 2, (leftY + y) / 2, (x - leftX) / 2, nodeRadio)
+            StdDraw.setPenColor(Color.BLACK)
+            StdDraw.line(leftX, leftY + nodeRadio, x, y + nodeRadio)
+            StdDraw.line(leftX, leftY - nodeRadio, x, y - nodeRadio)
         }
     }
 
@@ -189,14 +203,15 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
     }
 }
 
-fun <K : Comparable<K>, V : Any> drawRedBlackBST(binaryTree: RedBlackBST<K, V>,
+fun <K : Comparable<K>, V : Any> drawRedBlackBST(bst: RedBlackBST<K, V>,
                                                  showKey: Boolean = true,
                                                  showSize: Boolean = false,
                                                  showFlatView: Boolean = true) {
-    val graphics = RedBlackBSTGraphics(binaryTree)
+    val graphics = RedBlackBSTGraphics(bst)
     graphics.showKey = showKey
     graphics.showSize = showSize
-    graphics.draw(showFlatView)
+    graphics.showFlatView = showFlatView
+    graphics.draw()
 }
 
 fun main() {
