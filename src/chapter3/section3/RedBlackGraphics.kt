@@ -22,7 +22,7 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
     var showFlatView = false //是否显示更扁平的2-3查找树
     val size = bst.size()
 
-    private val rootX = getNodeSize(bst.root!!.left)
+    private val rootX = if (size == 0) 0 else getNodeSize(bst.root!!.left)
     val root = if (size == 0) null else Node(bst.root!!, rootX, 1)
     var minX = rootX
     var maxX = rootX
@@ -92,6 +92,9 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
     companion object {
         private const val CANVAS_DEFAULT_SIZE = 512
         private const val FLAT_X_EXPEND_RATIO = 0.4 //扁平的二叉树水平方向扩大倍数
+
+        //只有当画板的大小和需要的大小不同时才重新初始化画板
+        var canvasWidth = CANVAS_DEFAULT_SIZE
     }
 
     private var nodeRadio = 0.0 //结点圆的半径
@@ -103,8 +106,13 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
         }
         nodeRadio = 1.0 / (maxX - minX + 2) / 2
         if (showFlatView) {
-            StdDraw.setCanvasSize((CANVAS_DEFAULT_SIZE * (2 + FLAT_X_EXPEND_RATIO)).toInt(), CANVAS_DEFAULT_SIZE)
-            StdDraw.setXscale(0.0, (2 + FLAT_X_EXPEND_RATIO))
+            if (canvasWidth == (CANVAS_DEFAULT_SIZE * (2 + FLAT_X_EXPEND_RATIO)).toInt()) {
+                StdDraw.clear()
+            } else {
+                StdDraw.setCanvasSize((CANVAS_DEFAULT_SIZE * (2 + FLAT_X_EXPEND_RATIO)).toInt(), CANVAS_DEFAULT_SIZE)
+                StdDraw.setXscale(0.0, (2 + FLAT_X_EXPEND_RATIO))
+                canvasWidth = (CANVAS_DEFAULT_SIZE * (2 + FLAT_X_EXPEND_RATIO)).toInt()
+            }
 
             StdDraw.setPenColor(Color.BLACK)
             StdDraw.textLeft(0.02, 0.98, "红黑树")
@@ -118,8 +126,13 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
 
             drawFlatView(flatRoot)
         } else {
-            StdDraw.setCanvasSize()
-            StdDraw.setXscale()
+            if (canvasWidth == CANVAS_DEFAULT_SIZE) {
+                StdDraw.clear()
+            } else {
+                StdDraw.setCanvasSize()
+                StdDraw.setXscale()
+                canvasWidth = CANVAS_DEFAULT_SIZE
+            }
             draw(root)
         }
     }
