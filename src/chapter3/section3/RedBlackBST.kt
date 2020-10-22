@@ -2,7 +2,6 @@ package chapter3.section3
 
 import chapter3.section1.OrderedST
 import chapter3.section1.testOrderedST
-import chapter3.section2.BinaryTreeST
 import edu.princeton.cs.algs4.Queue
 import extensions.shuffle
 

@@ -2,7 +2,7 @@ package chapter3.section3
 
 import chapter2.sleep
 import chapter3.section1.testOrderedST
-import edu.princeton.cs.algs4.Queue
+import edu.princeton.cs.algs4.Stack
 import edu.princeton.cs.algs4.StdDraw
 import extensions.random
 import extensions.shuffle
@@ -30,23 +30,27 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
         }
     }
 
-    //使用自定义方法而不是重写hashCode()方法，因为重写hashCode()方法时需要对应修改equals方法
+    /**
+     * 使用自定义方法而不是重写hashCode()方法，因为重写hashCode()方法时需要对应修改equals方法
+     * 可以使用前序遍历或后序遍历，但不能使用中序遍历，因为元素相同结构不同的二叉树中序遍历结果相同
+     */
     fun hash(): Int {
+        if (isEmpty()) return 1
         var code = 0
-        val queue = Queue<Node<K, V>>()
-        addToQueue(root, queue)
-        queue.forEach {
+        val stack = Stack<Node<K, V>>()
+        stack.push(root)
+        while (!stack.isEmpty) {
+            val node = stack.pop()
             //使用每个结点的key和color两个参数计算hashCode，其他参数在图形上不显示，所以不参与计算
-            code = ((code * 31 + it.key.hashCode()) * 31 + if (it.color) 1 else 2) * 31
+            code = ((code * 31 + node.key.hashCode()) * 31 + if (node.color) 1 else 2) * 31
+            if (node.right != null) {
+                stack.push(node.right)
+            }
+            if (node.left != null) {
+                stack.push(node.left)
+            }
         }
         return code
-    }
-
-    private fun addToQueue(node: Node<K, V>?, queue: Queue<Node<K, V>>) {
-        if (node == null) return
-        addToQueue(node.left, queue)
-        queue.enqueue(node)
-        addToQueue(node.right, queue)
     }
 
     fun moveRedLeft(node: Node<K, V>, action: (Node<K, V>) -> Unit) {
@@ -106,6 +110,11 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
     }
 
     override fun put(key: K, value: V) {
+        if (showProcess) {
+            StdDraw.setPenColor()
+            StdDraw.textLeft(0.02, 0.98, "put() key=${key}")
+            sleep(delay)
+        }
         if (root == null) {
             root = Node(key, value, color = BLACK)
             draw()
@@ -164,6 +173,11 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
 
     override fun deleteMin() {
         if (isEmpty()) throw NoSuchElementException()
+        if (showProcess) {
+            StdDraw.setPenColor()
+            StdDraw.textLeft(0.02, 0.98, "deleteMin() min=${min()}")
+            sleep(delay)
+        }
         if (!root?.left.isRed() && !root?.right.isRed()) {
             root!!.color = RED
             draw()
@@ -203,6 +217,11 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
 
     override fun deleteMax() {
         if (isEmpty()) throw NoSuchElementException()
+        if (showProcess) {
+            StdDraw.setPenColor()
+            StdDraw.textLeft(0.02, 0.98, "deleteMax() max=${max()}")
+            sleep(delay)
+        }
         if (!root!!.left.isRed() && !root!!.right.isRed()) {
             root!!.color = RED
             draw()
@@ -246,6 +265,11 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
 
     override fun delete(key: K) {
         if (!contains(key)) throw NoSuchElementException()
+        if (showProcess) {
+            StdDraw.setPenColor()
+            StdDraw.textLeft(0.02, 0.98, "delete() key=$key")
+            sleep(delay)
+        }
         if (!root!!.left.isRed() && !root!!.right.isRed()) {
             root!!.color = RED
             draw()
@@ -323,27 +347,12 @@ fun main() {
     val array = IntArray(10) { it }
     array.shuffle()
     for (i in array.indices) {
-        StdDraw.setPenColor()
-        StdDraw.textLeft(0.02, 0.98, "put() key=${array[i]}")
-        sleep(bst.delay)
         bst.put(array[i], 0)
     }
-
-    StdDraw.setPenColor()
-    StdDraw.textLeft(0.02, 0.98, "deleteMin() min=${bst.min()}")
-    sleep(bst.delay)
     bst.deleteMin()
-
-    StdDraw.setPenColor()
-    StdDraw.textLeft(0.02, 0.98, "deleteMax() max=${bst.max()}")
-    sleep(bst.delay)
     bst.deleteMax()
-
     while (!bst.isEmpty()) {
-        StdDraw.setPenColor()
         val key = bst.select(random(bst.size()))
-        StdDraw.textLeft(0.02, 0.98, "delete() key=$key")
-        sleep(bst.delay)
         bst.delete(key)
     }
 
