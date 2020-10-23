@@ -1,7 +1,5 @@
 package chapter3.section3
 
-import edu.princeton.cs.algs4.StdDraw
-
 /**
  * 在我们的标准索引测试用例中插入键P并画出插入的过程中每次变换（颜色转换或旋转）后的红黑树
  *
@@ -17,6 +15,5 @@ fun main() {
     bst.showProcess = true
     bst.draw()
     bst.put('P', 0)
-    StdDraw.setPenColor()
-    StdDraw.textLeft(0.02, 0.98, "end")
+    bst.drawText("end")
 }

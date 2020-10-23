@@ -19,14 +19,35 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
     var delay = 1000L
     var lastHashCode = 0
         private set
+    var showFlatView = true
 
     fun draw() {
         //必须和上次图形不同时才绘制绘制图形
         if (showProcess && hash() != lastHashCode) {
             //绘图程序未实现绘制4-结点的功能，只绘制红黑树，不绘制2-3树
-            drawRedBlackBST(this, showFlatView = false)
+            drawRedBlackBST(this, showFlatView = showFlatView)
             sleep(delay)
             lastHashCode = hash()
+        }
+    }
+
+    fun drawText(text: String) {
+        if (showProcess) {
+            if (showFlatView) {
+                if (RedBlackBSTGraphics.canvasWidth != (RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE * (2 + RedBlackBSTGraphics.FLAT_X_EXPEND_RATIO)).toInt()) {
+                    StdDraw.setCanvasSize((RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE * (2 + RedBlackBSTGraphics.FLAT_X_EXPEND_RATIO)).toInt(), RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE)
+                    StdDraw.setXscale(0.0, (2 + RedBlackBSTGraphics.FLAT_X_EXPEND_RATIO))
+                    RedBlackBSTGraphics.canvasWidth = (RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE * (2 + RedBlackBSTGraphics.FLAT_X_EXPEND_RATIO)).toInt()
+                }
+            } else {
+                if (RedBlackBSTGraphics.canvasWidth != RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE) {
+                    StdDraw.setCanvasSize()
+                    StdDraw.setXscale()
+                    RedBlackBSTGraphics.canvasWidth = RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE
+                }
+            }
+            StdDraw.setPenColor()
+            StdDraw.textLeft(0.02, 0.94, text)
         }
     }
 
@@ -111,8 +132,7 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
 
     override fun put(key: K, value: V) {
         if (showProcess) {
-            StdDraw.setPenColor()
-            StdDraw.textLeft(0.02, 0.98, "put() key=${key}")
+            drawText("put() key=${key}")
             sleep(delay)
         }
         if (root == null) {
@@ -174,8 +194,7 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
     override fun deleteMin() {
         if (isEmpty()) throw NoSuchElementException()
         if (showProcess) {
-            StdDraw.setPenColor()
-            StdDraw.textLeft(0.02, 0.98, "deleteMin() min=${min()}")
+            drawText("deleteMin() min=${min()}")
             sleep(delay)
         }
         if (!root?.left.isRed() && !root?.right.isRed()) {
@@ -218,8 +237,7 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
     override fun deleteMax() {
         if (isEmpty()) throw NoSuchElementException()
         if (showProcess) {
-            StdDraw.setPenColor()
-            StdDraw.textLeft(0.02, 0.98, "deleteMax() max=${max()}")
+            drawText("deleteMax() max=${max()}")
             sleep(delay)
         }
         if (!root!!.left.isRed() && !root!!.right.isRed()) {
@@ -266,8 +284,7 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
     override fun delete(key: K) {
         if (!contains(key)) throw NoSuchElementException()
         if (showProcess) {
-            StdDraw.setPenColor()
-            StdDraw.textLeft(0.02, 0.98, "delete() key=$key")
+            drawText("delete() key=$key")
             sleep(delay)
         }
         if (!root!!.left.isRed() && !root!!.right.isRed()) {
@@ -356,6 +373,5 @@ fun main() {
         bst.delete(key)
     }
 
-    StdDraw.setPenColor()
-    StdDraw.textLeft(0.02, 0.98, "end")
+    bst.drawText("end")
 }

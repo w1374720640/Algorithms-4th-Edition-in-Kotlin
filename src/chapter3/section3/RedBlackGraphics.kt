@@ -90,8 +90,8 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
     }
 
     companion object {
-        private const val CANVAS_DEFAULT_SIZE = 512
-        private const val FLAT_X_EXPEND_RATIO = 0.4 //扁平的二叉树水平方向扩大倍数
+        const val CANVAS_DEFAULT_SIZE = 512
+        const val FLAT_X_EXPEND_RATIO = 0.4 //扁平的二叉树水平方向扩大倍数
 
         //只有当画板的大小和需要的大小不同时才重新初始化画板
         var canvasWidth = CANVAS_DEFAULT_SIZE
@@ -165,12 +165,19 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
     }
 
     private fun drawFlatView(node: Node<K, V>) {
+        val x = convertFlatX(node)
+        val y = convertFlatY(node)
+        val leftX = if (node.left == null) 0.0 else convertFlatX(node.left!!)
+        val leftY = if (node.left == null) 0.0 else convertFlatY(node.left!!)
+        val rightX = if (node.right == null) 0.0 else convertFlatX(node.right!!)
+        val rightY = if (node.right == null) 0.0 else convertFlatY(node.right!!)
+
         StdDraw.setPenColor(Color.BLACK)
         if (node.left != null && !node.left?.originNode.isRed()) {
-            StdDraw.line(convertFlatX(node), convertFlatY(node), convertFlatX(node.left!!), convertFlatY(node.left!!))
+            StdDraw.line(x, y, leftX, leftY)
         }
         if (node.right != null) {
-            StdDraw.line(convertFlatX(node), convertFlatY(node), convertFlatX(node.right!!), convertFlatY(node.right!!))
+            StdDraw.line(x, y, rightX, rightY)
         }
 
         if (node.left != null) {
@@ -181,15 +188,11 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
         }
 
         StdDraw.setPenColor(Color.WHITE)
-        StdDraw.filledCircle(convertFlatX(node), convertFlatY(node), nodeRadio)
+        StdDraw.filledCircle(x, y, nodeRadio)
         StdDraw.setPenColor(Color.BLACK)
-        StdDraw.circle(convertFlatX(node), convertFlatY(node), nodeRadio)
+        StdDraw.circle(x, y, nodeRadio)
 
         if (node.left?.originNode.isRed()) {
-            val leftX = convertFlatX(node.left!!)
-            val leftY = convertFlatY(node.left!!)
-            val x = convertFlatX(node)
-            val y = convertFlatY(node)
             StdDraw.setPenColor(Color.WHITE)
             StdDraw.filledRectangle((leftX + x) / 2, (leftY + y) / 2, (x - leftX) / 2, nodeRadio)
             StdDraw.setPenColor(Color.BLACK)
@@ -200,9 +203,20 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
                 StdDraw.text(leftX, leftY, node.left!!.originNode.key.toString())
             }
         }
+        if (node.right?.originNode.isRed()) {
+            StdDraw.setPenColor(Color.WHITE)
+            StdDraw.filledRectangle((rightX + x) / 2, (rightY + y) / 2, (rightX - x) / 2, nodeRadio)
+            StdDraw.setPenColor(Color.BLACK)
+            StdDraw.line(rightX, rightY + nodeRadio, x, y + nodeRadio)
+            StdDraw.line(rightX, rightY - nodeRadio, x, y - nodeRadio)
+            //需要重新绘制右子结点的文字
+            if (showKey) {
+                StdDraw.text(rightX, rightY, node.right!!.originNode.key.toString())
+            }
+        }
         //只显示key，不显示大小
         if (showKey) {
-            StdDraw.text(convertFlatX(node), convertFlatY(node), node.originNode.key.toString())
+            StdDraw.text(x, y, node.originNode.key.toString())
         }
     }
 

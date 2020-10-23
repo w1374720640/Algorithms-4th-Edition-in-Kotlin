@@ -1,7 +1,5 @@
 package chapter3.section3
 
-import edu.princeton.cs.algs4.StdDraw
-
 /**
  * 向右图所示的红黑树（黑色加粗部分的链接为红色）中插入n并画出结果
  * （图中只显示了插入是的查找路径，你的解答中只需包含这些结点即可）
@@ -13,10 +11,10 @@ fun main() {
     structureBST(bst)
     bst.showProcess = true
     bst.delay = 2000
+    bst.showFlatView = false
     bst.draw()
     bst.put('n', 0)
-    StdDraw.setPenColor()
-    StdDraw.textLeft(0.02, 0.98, "end")
+    bst.drawText("end")
 }
 
 private fun structureBST(bst: RedBlackBST<Char, Int>) {

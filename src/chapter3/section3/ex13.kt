@@ -5,7 +5,7 @@ package chapter3.section3
  */
 fun main() {
     val bst = RedBlackBST<Int, Int>()
-    val array = IntArray(100){it}
+    val array = IntArray(100) { it }
     var result = true
     var preHeight = 0
     array.forEach {
