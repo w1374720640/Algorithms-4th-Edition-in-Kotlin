@@ -17,7 +17,7 @@ fun ex3() {
         array.forEach {
             bst.put(it, 0)
         }
-        if (bst.height() == 2) {
+        if (bst.blackHeight() == 2) {
             println(array.joinToString())
             count++
         }
@@ -25,7 +25,10 @@ fun ex3() {
     println("list.size()=${list.size} count=$count")
 }
 
-fun <K : Comparable<K>> RedBlackBST<K, *>.height(): Int {
+/**
+ * 红黑树的黑色结点高度，等同于2-3树的高度
+ */
+fun <K : Comparable<K>> RedBlackBST<K, *>.blackHeight(): Int {
     var blackCount = 0
     var node = root
     while (node != null) {
@@ -35,8 +38,27 @@ fun <K : Comparable<K>> RedBlackBST<K, *>.height(): Int {
         //红黑树完美黑色平衡，所以所有路径上的黑色结点数量相等
         node = node.left
     }
-    //如果树只有一个红色结点，则高度为1，否则树的高度等于某一条路径上的黑色结点数量
-    return if (blackCount == 0 && !isEmpty()) 1 else blackCount
+    return blackCount
+}
+
+/**
+ * 红黑树的实际高度
+ */
+fun <K : Comparable<K>> RedBlackBST<K, *>.height(): Int {
+    if (isEmpty()) return 0
+    return height(root!!)
+}
+
+fun <K : Comparable<K>, V : Any> height(node: RedBlackBST.Node<K, V>): Int {
+    var leftHeight = 0
+    var rightHeight = 0
+    if (node.left != null) {
+        leftHeight = height(node.left!!)
+    }
+    if (node.right != null) {
+        rightHeight = height(node.right!!)
+    }
+    return maxOf(leftHeight, rightHeight) + 1
 }
 
 fun main() {
