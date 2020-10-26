@@ -42,7 +42,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         node.color = RED
         x.left = node
         x.count = node.count
-        node.count = size(node.left) + size(node.right) + 1
+        resize(node)
         return x
     }
 
@@ -58,7 +58,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         node.color = RED
         x.right = node
         x.count = node.count
-        node.count = size(node.left) + size(node.right) + 1
+        resize(node)
         return x
     }
 
@@ -74,6 +74,10 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         node.left!!.color = !node.left!!.color
         node.right!!.color = !node.right!!.color
         node.color = !node.color
+    }
+
+    protected open fun resize(node: Node<K, V>) {
+        node.count = size(node.left) + size(node.right) + 1
     }
 
     override fun put(key: K, value: V) {
@@ -101,7 +105,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         if (h.left.isRed() && h.left?.left.isRed()) h = rotateRight(h)
         if (h.left.isRed() && h.right.isRed()) flipColors(h)
 
-        h.count = size(h.left) + size(h.right) + 1
+        resize(h)
         return h
     }
 
@@ -116,7 +120,8 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         //父结点与左右子结点组成4-结点
         flipColors(h)
         if (h.right?.left.isRed()) {
-            //左子结点与右子结点的左子结点组成3-结点
+            //如果右结点的左子结点为红色，则组成的是5-结点而不是4-结点，需要变换
+            //父结点与左子结点组成3-结点，右子结点的左子结点替代原父结点的位置
             h.right = rotateRight(h.right!!)
             h = rotateLeft(h)
             flipColors(h)
@@ -134,7 +139,8 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         //父结点与左右子结点组成4-结点
         flipColors(h)
         if (h.left?.left.isRed()) {
-            //父结点与右子结点组成3-结点
+            //如果左子结点的左子结点为红色，则组成的是5-结点而不是4-结点，需要变换
+            //父结点与右子结点组成3-结点，左子结点替代原父结点的位置
             h = rotateRight(h)
             flipColors(h)
         }
@@ -151,7 +157,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         if (h.left.isRed() && h.left?.left.isRed()) h = rotateRight(h)
         if (h.left.isRed() && h.right.isRed()) flipColors(h)
 
-        h.count = size(h.left) + size(h.right) + 1
+        resize(h)
         return h
     }
 
@@ -427,9 +433,9 @@ fun main() {
 
     val array = IntArray(20) { it }
     array.shuffle()
-    val binaryTreeST = RedBlackBST<Int, Int>()
+    val bst = RedBlackBST<Int, Int>()
     array.forEach {
-        binaryTreeST.put(it, 0)
+        bst.put(it, 0)
     }
-    drawRedBlackBST(binaryTreeST)
+    drawRedBlackBST(bst)
 }

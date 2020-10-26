@@ -126,10 +126,6 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
         action(h)
     }
 
-    private fun resize(node: Node<K, V>) {
-        node.count = size(node.left) + size(node.right) + 1
-    }
-
     override fun put(key: K, value: V) {
         if (showProcess) {
             drawText("put() key=${key}")
