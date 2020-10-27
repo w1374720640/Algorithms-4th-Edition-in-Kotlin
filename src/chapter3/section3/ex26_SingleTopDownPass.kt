@@ -9,6 +9,7 @@ import extensions.shuffle
  *
  * 解：沿查找路径向下的过程中通过旋转和颜色翻转保证下一个查找点不是4-结点，
  * 这样插入后再经过旋转就可以得到3-结点或4-结点（不需要颜色翻转）
+ * 对父结点或父结点的父结点进行旋转最多只会得到4-结点，不需要继续向上配平
  */
 open class SingleTopDownPass234Tree<K : Comparable<K>, V : Any> : TopDown234Tree<K, V>() {
 

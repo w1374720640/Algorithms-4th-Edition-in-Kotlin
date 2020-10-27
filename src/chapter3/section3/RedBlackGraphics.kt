@@ -8,6 +8,7 @@ import java.awt.Color
  * 绘制红黑树的图形，参考二叉查找树绘制类 BinaryTreeGraphics
  * 区别是可以绘制红色结点，且可以选择以2-3查找树的形式绘制红黑树
  * 2-3查找树比普通二叉查找树更扁平
+ * （也可以用来绘制2-3-4查找树）
  */
 class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
 
