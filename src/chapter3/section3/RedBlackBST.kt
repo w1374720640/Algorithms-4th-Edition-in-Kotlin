@@ -15,12 +15,12 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
         const val BLACK = false
     }
 
-    open class Node<K : Comparable<K>, V : Any>(var key: K,
-                                                var value: V,
-                                                var left: Node<K, V>? = null,
-                                                var right: Node<K, V>? = null,
-                                                var count: Int = 1,
-                                                var color: Boolean = RED)
+    open class Node<K, V>(var key: K,
+                          var value: V,
+                          var left: Node<K, V>? = null,
+                          var right: Node<K, V>? = null,
+                          var count: Int = 1,
+                          var color: Boolean = RED)
 
     protected open fun Node<K, V>?.isRed(): Boolean {
         if (this == null) return false
@@ -28,7 +28,6 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
     var root: Node<K, V>? = null
-        protected set
 
     /**
      * 左旋，不改变有序性和完美平衡

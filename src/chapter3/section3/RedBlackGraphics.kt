@@ -12,11 +12,11 @@ import java.awt.Color
  */
 class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
 
-    class Node<K : Comparable<K>, V : Any>(val originNode: RedBlackBST.Node<K, V>,
-                                           var x: Int,
-                                           val y: Int,
-                                           var left: Node<K, V>? = null,
-                                           var right: Node<K, V>? = null)
+    class Node<K, V>(val originNode: RedBlackBST.Node<K, V>,
+                     var x: Int,
+                     val y: Int,
+                     var left: Node<K, V>? = null,
+                     var right: Node<K, V>? = null)
 
     var showKey = false //是否在结点中间显示key
     var showSize = false //是否在结点上方显示每个子树的大小

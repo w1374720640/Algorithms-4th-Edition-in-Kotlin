@@ -31,7 +31,6 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
     var root: Node<K, V>? = null
-        protected set
 
     override fun min(): K {
         if (isEmpty()) throw NoSuchElementException()
