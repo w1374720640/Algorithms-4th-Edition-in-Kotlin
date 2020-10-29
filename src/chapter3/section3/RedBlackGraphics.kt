@@ -1,7 +1,7 @@
 package chapter3.section3
 
 import edu.princeton.cs.algs4.StdDraw
-import extensions.random
+import extensions.shuffle
 import java.awt.Color
 
 /**
@@ -65,6 +65,9 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
         }
     }
 
+    /**
+     * 构造2-3树
+     */
     private fun addFlatChildNode(parentNode: Node<K, V>, parentIndex: Int) {
         val leftOriginNode = parentNode.originNode.left
         if (leftOriginNode != null) {
@@ -250,10 +253,11 @@ fun <K : Comparable<K>, V : Any> drawRedBlackBST(bst: RedBlackBST<K, V>,
 }
 
 fun main() {
-    val array = IntArray(20) { random(100) }
-    val binaryTreeST = RedBlackBST<Int, Int>()
-    for (i in array.indices) {
-        binaryTreeST.put(array[i], i)
+    val array = IntArray(20) { it }
+    array.shuffle()
+    val bst = RedBlackBST<Int, Int>()
+    array.forEach {
+        bst.put(it, 0)
     }
-    drawRedBlackBST(binaryTreeST, showSize = true)
+    drawRedBlackBST(bst)
 }

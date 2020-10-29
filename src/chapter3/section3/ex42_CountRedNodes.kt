@@ -9,7 +9,7 @@ import extensions.shuffle
  * 编写一段程序，统计给定的红黑树中红色结点所占的比例
  * 对于N=10⁴、10⁵和10⁶，用你的程序统计至少100棵随机构造的大小为N的红黑树并得出一个猜想
  */
-fun ex43_CountRedNodes(N: Int, times: Int): Double {
+fun ex42_CountRedNodes(N: Int, times: Int): Double {
     require(N > 0 && times > 0)
     var redNum = 0L
     repeat(times) {
@@ -48,7 +48,7 @@ fun main() {
     var N = 10000
     val times = 100
     repeat(5) {
-        val redRatio = ex43_CountRedNodes(N, times)
+        val redRatio = ex42_CountRedNodes(N, times)
         println("N=$N times=$times ratio=${formatDouble(redRatio, 4)}")
         N *= 2
     }

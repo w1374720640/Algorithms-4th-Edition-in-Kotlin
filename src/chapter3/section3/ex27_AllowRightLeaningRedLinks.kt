@@ -27,6 +27,7 @@ class AllowRightLeaningRedLinksTree<K : Comparable<K>, V : Any> : TopDown234Tree
             else -> h.value = value
         }
 
+        //连续的两个红色结点，通过旋转将红色结点放到左右两侧
         if (h.left.isRed() && h.left?.right.isRed()) h.left = rotateLeft(h.left!!)
         if (h.left.isRed() && h.left?.left.isRed()) h = rotateRight(h)
         if (h.right.isRed() && h.right?.left.isRed()) h.right = rotateRight(h.right!!)

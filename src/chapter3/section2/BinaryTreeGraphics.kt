@@ -1,7 +1,7 @@
 package chapter3.section2
 
 import edu.princeton.cs.algs4.StdDraw
-import extensions.random
+import extensions.shuffle
 import java.awt.Color
 
 /**
@@ -217,10 +217,11 @@ fun <K : Comparable<K>, V : Any> drawBinaryTree(binaryTree: BinaryTreeST<K, V>, 
 }
 
 fun main() {
-    val array = IntArray(20) { random(100) }
+    val array = IntArray(20) { it }
+    array.shuffle()
     val binaryTreeST = BinaryTreeST<Int, Int>()
-    for (i in array.indices) {
-        binaryTreeST.put(array[i], i)
+    array.forEach {
+        binaryTreeST.put(it, 0)
     }
-    drawBinaryTree(binaryTreeST, showSize = true)
+    drawBinaryTree(binaryTreeST)
 }
