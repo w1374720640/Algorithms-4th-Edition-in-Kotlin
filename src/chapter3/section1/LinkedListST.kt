@@ -12,18 +12,7 @@ open class LinkedListST<K : Any, V : Any> : ST<K, V> {
     protected var first: Node<K, V>? = null
     protected var size = 0
 
-    class Node<K : Any, V : Any>(val key: K, var value: V, var next: Node<K, V>? = null) {
-        override fun equals(other: Any?): Boolean {
-            if (other == null) return false
-            if (this === other) return true
-            if (other !is Node<*, *>) return false
-            return key == other.key
-        }
-
-        override fun hashCode(): Int {
-            return key.hashCode()
-        }
-    }
+    class Node<K : Any, V : Any>(val key: K, var value: V, var next: Node<K, V>? = null)
 
     override fun put(key: K, value: V) {
         if (first == null) {
