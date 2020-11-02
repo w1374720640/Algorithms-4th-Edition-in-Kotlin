@@ -78,9 +78,13 @@ open class SeparateChainingHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
         return queue
     }
 
-    open fun joinToString(): String {
+    open fun joinToString(limit: Int = 100): String {
         val stringBuilder = StringBuilder("m=${m} n=${n}")
         for (i in stArray.indices) {
+            if (i >= limit) {
+                stringBuilder.append("\n...")
+                break
+            }
             stringBuilder.append("\n")
                     .append("i=$i ")
                     .append(stArray[i].keys().joinToString())

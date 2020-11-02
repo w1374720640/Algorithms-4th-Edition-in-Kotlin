@@ -8,20 +8,20 @@ import edu.princeton.cs.algs4.Queue
  * 基于线性探测的符号表
  * 保持使用率在1/8到1/2之间
  */
-class LinearProbingHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
-    private var n = 0
-    private var keys = arrayOfNulls<Any>(m)
-    private var values = arrayOfNulls<Any>(m)
+open class LinearProbingHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
+    protected var n = 0
+    protected var keys = arrayOfNulls<Any>(m)
+    protected var values = arrayOfNulls<Any>(m)
 
     init {
         require(m > 0)
     }
 
-    private fun hash(key: K): Int {
+    protected open fun hash(key: K): Int {
         return (key.hashCode() and 0x7fffffff) % m
     }
 
-    private fun resize(size: Int) {
+    protected open fun resize(size: Int) {
         val newST = LinearProbingHashST<K, V>(size)
         for (i in keys.indices) {
             if (keys[i] != null) {
@@ -121,6 +121,22 @@ class LinearProbingHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
             }
         }
         return queue
+    }
+
+    open fun joinToString(limit: Int = 100): String {
+        val stringBuilder = StringBuilder("m=${m} n=${n}")
+        for (i in keys.indices) {
+            if (i >= limit) {
+                stringBuilder.append(" ...")
+                break
+            }
+            if (keys[i] == null) {
+                stringBuilder.append(" _") //使用下划线替代null
+            } else {
+                stringBuilder.append(" ${keys[i].toString()}")
+            }
+        }
+        return stringBuilder.toString()
     }
 }
 
