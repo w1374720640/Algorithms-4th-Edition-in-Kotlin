@@ -8,16 +8,19 @@ import edu.princeton.cs.algs4.Queue
  * 基于线性探测的符号表
  * 保持使用率在1/8到1/2之间
  */
-open class LinearProbingHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
-    protected var n = 0
-    protected var keys = arrayOfNulls<Any>(m)
-    protected var values = arrayOfNulls<Any>(m)
-
+open class LinearProbingHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
     init {
         require(m > 0)
     }
 
-    protected open fun hash(key: K): Int {
+    var m: Int = m
+        protected set
+    var n = 0
+        protected set
+    protected var keys = arrayOfNulls<Any>(m)
+    protected var values = arrayOfNulls<Any>(m)
+
+    open fun hash(key: K): Int {
         return (key.hashCode() and 0x7fffffff) % m
     }
 

@@ -10,15 +10,18 @@ import java.lang.StringBuilder
  * 基于拉链法的散列表
  * 保持拉链中的每个链表平均长度在2到8之间
  */
-open class SeparateChainingHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
-    protected var n = 0 //n为键值对总数，m为散列表大小
-    protected var stArray = Array(m) { LinkedListST<K, V>() }
-
+open class SeparateChainingHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
     init {
         require(m > 0)
     }
 
-    protected open fun hash(key: K): Int {
+    var m: Int = m
+        protected set
+    var n = 0
+        protected set
+    protected var stArray = Array(m) { LinkedListST<K, V>() }
+
+    open fun hash(key: K): Int {
         return (key.hashCode() and 0x7fffffff) % m
     }
 

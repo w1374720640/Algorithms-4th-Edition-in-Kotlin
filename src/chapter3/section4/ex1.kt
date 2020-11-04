@@ -9,7 +9,7 @@ package chapter3.section4
 fun main() {
     val st = object : SeparateChainingHashST<Char, Int>(5) {
         override fun hash(key: Char): Int {
-            return (11 * key.hashCode()) % m
+            return ((11 * key.hashCode()) and 0x7fffffff) % m
         }
     }
     "EASYQUESTION".forEach {
