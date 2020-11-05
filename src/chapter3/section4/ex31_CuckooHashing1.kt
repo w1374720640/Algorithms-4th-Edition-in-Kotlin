@@ -4,7 +4,7 @@ import chapter3.section1.ST
 import chapter3.section1.testST
 import edu.princeton.cs.algs4.Queue
 import extensions.random
-import extensions.setSeed
+import extensions.spendTimeMillis
 import kotlin.math.log2
 import kotlin.math.pow
 
@@ -23,11 +23,13 @@ import kotlin.math.pow
  * 散列函数中先用key的原始hashCode和一个大整数异或，两个散列函数使用不同的大整数
  * 然后再根据练习3.4.18以及答疑中的方法，先和一个大素数取余，再和m取余
  *
- * BUG：无论选择什么样的散列函数，都可能导致死循环，暂时的解决方法是直接扩大数组容量，会导致数组快速膨胀
- * 还有一种方法，当出现死循环时，重新生成新的散列函数，将所有的键重新插入，但是对于大量数据找到合适的散列函数耗时仍然太长
+ * 无论选择什么样的散列函数，都可能因为hash冲突导致死循环，这里的解决方法是直接扩大数组容量，但是会导致数组快速膨胀
+ * 另一种实现方式见[CuckooHashST2]，更节省内存，但是运行稍慢
+ * 还有一种方法，当出现死循环时，重新生成新的散列函数，将所有的键重新插入
+ * 但是对于大量数据（经测试，大于三百万时）找到合适的散列函数耗时太长(非线性增长），无法接受
  * 参考：https://github.com/reneargento/algorithms-sedgewick-wayne/blob/master/src/chapter3/section4/Exercise31_CuckooHashing.java
  */
-class CuckooHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
+class CuckooHashST1<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
     init {
         require(m > 0)
     }
@@ -50,6 +52,7 @@ class CuckooHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
     private var values2 = arrayOfNulls<Any>(m)
 
     fun hash1(key: K): Int {
+        //0x2e7bb6b1为随机生成的一个大整数
         var t = (key.hashCode() xor 0x2e7bb6b1) and 0x7fffffff
         val logM = log2(m.toDouble()).toInt()
         if (logM < 26) {
@@ -81,7 +84,7 @@ class CuckooHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
 
     @Suppress("UNCHECKED_CAST")
     private fun resize(size: Int) {
-        val newST = CuckooHashST<K, V>(size)
+        val newST = CuckooHashST1<K, V>(size)
         for (i in keys1.indices) {
             if (keys1[i] != null) {
                 newST.put(keys1[i] as K, values1[i] as V)
@@ -140,7 +143,6 @@ class CuckooHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
                     values1[i] = value
                     putTable2(oldKey, oldValue, recursionDepth + 1)
                 } else {
-                    //FIXME 这里会导致数组快速膨胀
                     resize(m * 2)
                     put(key, value)
                 }
@@ -166,7 +168,6 @@ class CuckooHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
                     values2[i] = value
                     putTable1(oldKey, oldValue, recursionDepth + 1)
                 } else {
-                    //FIXME 这里会导致数组快速膨胀
                     resize(m * 2)
                     put(key, value)
                 }
@@ -237,17 +238,23 @@ class CuckooHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
     }
 }
 
-private fun testRandomKey() {
-    setSeed(1000)
-    val size = 10000
-    val st = CuckooHashST<Int, Int>()
-    repeat(size) {
-        st.put(random(Int.MAX_VALUE), 0)
+private fun testRandomKey(size: Int) {
+    val array = IntArray(size) { random(Int.MAX_VALUE) }
+    val st = CuckooHashST1<Int, Int>()
+    array.forEach {
+        st.put(it, it)
+    }
+    array.forEach {
+        check(st.get(it) == it)
     }
     println("random key test succeed.")
+    println("n1=${st.n1} n2=${st.n2} array.size()=${st.m}")
 }
 
 fun main() {
-    testST(CuckooHashST())
-    testRandomKey()
+    testST(CuckooHashST1())
+    val time = spendTimeMillis {
+        testRandomKey(100_0000)
+    }
+    println("spend $time ms")
 }
