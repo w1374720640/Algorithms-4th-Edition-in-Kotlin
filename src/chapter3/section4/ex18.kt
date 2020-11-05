@@ -18,6 +18,7 @@ class SpecifyAverageSearchNumSeparateChainingHashST<K : Any, V : Any>(val averag
     override fun hash(key: K): Int {
         var t = key.hashCode() and 0x7fffffff
         val logM = log2(m.toDouble()).toInt()
+        //已经很大的m不需要再先用素数取余
         if (logM < 26) {
             t %= primes(logM)
         }

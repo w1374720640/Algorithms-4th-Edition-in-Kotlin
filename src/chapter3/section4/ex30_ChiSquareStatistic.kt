@@ -16,6 +16,7 @@ import kotlin.math.sqrt
  * 解：c为一个小常数，大小等于N/M（向下取整）
  * 随机生成N个键插入到Hash表中，计算卡方值，判断是否在 M - sqrt(M) 和 M + sqrt(M) 之间
  * 重复多次，计算卡方值在范围内的实际概率，与期望概率 1 - 1/c 对比
+ * 卡方值越小，数据分布越均匀
  */
 fun <K : Any, V : Any> SeparateChainingHashST<K, V>.chiSquareStatistic(): Double {
     val array = IntArray(m)
