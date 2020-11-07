@@ -63,8 +63,8 @@ private val ayay: Transform = { array, first, second ->
     array[second] = array[second] - 31
 }
 
-// 这里需要注意，由于kotlin的bug，lambda类型的变量如果名称忽略大小写后相等，编译时会抛出异常
-// 这里如果用ayay和AYay两个变量，会抛出异常，加下划线区分
+// 这里需要注意，由于windows平台文件系统不区分大小写，只有大小写不同的文件写入时会相互覆盖，所以需要加下划线区分
+// 参考https://discuss.kotliner.cn/t/topic/1119/10
 private val AYay_: Transform = { array, first, second ->
     array[first] = array[first] + 1
     array[second] = array[second] - 31

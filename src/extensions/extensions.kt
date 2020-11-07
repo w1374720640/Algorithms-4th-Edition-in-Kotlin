@@ -22,12 +22,12 @@ fun format(local: Locale, format: String, vararg args: Any) = String.format(loca
  * 格式化Double值，可以指定小数点精度、长度以及是否左对齐，长度和是否左对齐参数可以省略，用默认值
  */
 fun formatDouble(value: Double, decimal: Int, length: Int = -1, alignLeft: Boolean = false): String {
-    require(decimal > 0)
+    require(decimal >= 0)
     return format("%${if (alignLeft) "-" else ""}${if (length > 0) length.toString() else ""}.${decimal}f", value)
 }
 
 fun formatFloat(value: Float, decimal: Int, length: Int = -1, alignLeft: Boolean = false): String {
-    require(decimal > 0)
+    require(decimal >= 0)
     return format("%${if (alignLeft) "-" else ""}${if (length > 0) length.toString() else ""}.${decimal}f", value)
 }
 
