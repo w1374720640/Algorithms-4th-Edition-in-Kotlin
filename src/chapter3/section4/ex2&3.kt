@@ -16,8 +16,8 @@ class RecordNumHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
     //num表示插入该键值对时散列表中元素的数量
     class Node<K : Any, V : Any>(val key: K, var value: V, var num: Int, var next: Node<K, V>? = null)
 
-    protected var n = 0 //n为键值对总数，m为散列表大小
-    protected var stRootArray = arrayOfNulls<Node<K, V>>(m)
+    private var n = 0 //n为键值对总数，m为散列表大小
+    private var stRootArray = arrayOfNulls<Node<K, V>>(m)
 
     init {
         require(m > 0)
@@ -36,7 +36,6 @@ class RecordNumHashST<K : Any, V : Any>(var m: Int = 4) : ST<K, V> {
                 node = node.next
             }
         }
-        n = newHashST.n
         m = newHashST.m
         stRootArray = newHashST.stRootArray
     }

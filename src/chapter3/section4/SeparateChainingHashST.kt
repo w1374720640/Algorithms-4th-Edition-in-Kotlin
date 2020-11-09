@@ -32,7 +32,6 @@ open class SeparateChainingHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
                 newHashST.put(it, st.get(it)!!)
             }
         }
-        n = newHashST.n
         m = newHashST.m
         stArray = newHashST.stArray
     }
@@ -40,8 +39,11 @@ open class SeparateChainingHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
     override fun put(key: K, value: V) {
         if (n >= 8 * m) resize(2 * m)
         val st = stArray[hash(key)]
-        if (!st.contains(key)) n++
+        val beforeSize = st.size()
         st.put(key, value)
+        if (st.size() > beforeSize) {
+            n++
+        }
     }
 
     override fun get(key: K): V? {
