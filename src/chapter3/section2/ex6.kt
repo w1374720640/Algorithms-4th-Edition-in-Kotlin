@@ -8,12 +8,12 @@ import extensions.random
  * 实现两种方案：一种使用递归（用时为线性级别，所需空间和树高度成正比）
  * 一种模仿size()在每个结点种添加一个变量（所需空间为线性级别，查询耗时为常数）
  */
-fun <K : Comparable<K>, V : Any> BinaryTreeST<K, V>.height(): Int {
+fun <K : Comparable<K>, V : Any> BinarySearchTree<K, V>.height(): Int {
     if (isEmpty()) return 0
     return height(root!!)
 }
 
-fun <K : Comparable<K>, V : Any> height(node: BinaryTreeST.Node<K, V>): Int {
+fun <K : Comparable<K>, V : Any> height(node: BinarySearchTree.Node<K, V>): Int {
     var leftHeight = 0
     var rightHeight = 0
     if (node.left != null) {
@@ -26,10 +26,10 @@ fun <K : Comparable<K>, V : Any> height(node: BinaryTreeST.Node<K, V>): Int {
 }
 
 /**
- * 继承BinaryTreeST和BinaryTreeST.Node，在put方法种将所有结点替换为HeightNode
+ * 继承BinarySearchTree和BinarySearchTree.Node，在put方法种将所有结点替换为HeightNode
  * 在put、deleteMin、deleteMax、delete方法中重新计算路径上子树的高度
  */
-class BinaryTreeHeightST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
+class BinarySearchTreeHeight<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>() {
     class HeightNode<K : Comparable<K>, V : Any>(key: K,
                                                  value: V,
                                                  left: Node<K, V>? = null,
@@ -110,11 +110,11 @@ class BinaryTreeHeightST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
 }
 
 fun main() {
-    testOrderedST(BinaryTreeHeightST())
+    testOrderedST(BinarySearchTreeHeight())
 
     val array = Array(100) { random(10000) }
-    val st1 = BinaryTreeST<Int, Int>()
-    val st2 = BinaryTreeHeightST<Int, Int>()
+    val st1 = BinarySearchTree<Int, Int>()
+    val st2 = BinarySearchTreeHeight<Int, Int>()
     array.forEach {
         st1.put(it, 0)
         st2.put(it, 0)

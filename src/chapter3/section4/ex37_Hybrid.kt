@@ -8,7 +8,7 @@ import extensions.spendTimeMillis
 
 /**
  * 混合使用
- * 用实验研究在SeparateChainingHashST中使用RedBlackBST代替LinkedListST来处理碰撞的性能
+ * 用实验研究在SeparateChainingHashST中使用RedBlackBST代替SequentialSearchST来处理碰撞的性能
  * 这种方案的优点是即使散列函数很糟糕它仍然能够保证对数级别的性能，缺点是需要维护两种不同的符号表实现
  * 实际效果如何呢？
  */

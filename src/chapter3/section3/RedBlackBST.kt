@@ -221,7 +221,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
 
-//-------------------------- 以下代码和BinaryTreeST中完全相同 ------------------------------------//
+//-------------------------- 以下代码和BinarySearchTree中完全相同 ------------------------------------//
 
     override fun min(): K {
         if (isEmpty()) throw NoSuchElementException()

@@ -30,7 +30,7 @@ fun main() {
             Time("09:37:44") to "Phoenix"
     )
     inputArray.shuffle()
-    val orderedST = ArrayOrderedST<Time, String>()
+    val orderedST = BinarySearchST<Time, String>()
     inputArray.forEach {
         orderedST.put(it.first, it.second)
     }

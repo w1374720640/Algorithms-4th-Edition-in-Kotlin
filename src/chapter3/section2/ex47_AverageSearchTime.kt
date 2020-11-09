@@ -7,7 +7,7 @@ import kotlin.math.log2
 
 /**
  * 平均查找耗时
- * 用实验研究和计算在一颗由N个随机结点构造的二叉树中到达任意结点的平均路径长度（内部路径长度除以N再加1）的平均差和标准差
+ * 用实验研究和计算在一颗由N个随机结点构造的二叉查找树中到达任意结点的平均路径长度（内部路径长度除以N再加1）的平均差和标准差
  * 对于100到10000之间的每个N重复实验1000遍
  * 将结果绘制成和图3.2.14相似的一张Tufte图，并画上函数1.39lgN-1.85的曲线（请见练习3.2.35和练习3.2.39）
  *
@@ -22,7 +22,7 @@ fun main() {
     for (N in min..max) {
         val array = pointList[N - min]
         repeat(repeatTimes) {
-            val st = BinaryTreeST<Int, Int>()
+            val st = BinarySearchTree<Int, Int>()
             repeat(N) {
                 st.put(random(Int.MAX_VALUE), 0)
             }

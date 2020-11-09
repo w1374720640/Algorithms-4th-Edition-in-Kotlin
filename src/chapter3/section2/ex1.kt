@@ -5,14 +5,14 @@ package chapter3.section2
  * 画出生成的二叉查找树
  * 构造这颗树需要多少次比较？
  *
- * 解：使用BinaryTreeGraphics类绘制二叉树图形
+ * 解：使用BSTGraphics类绘制二叉查找树图形
  * 构造这棵树需要 E(0) + A(1) + S(1) + Y(2) + Q(2) + U(3) + E(1) + S(2) + T(4) + I(3) + O(4) + N(5) = 28次比较
  */
 fun main() {
     val charArray = "EASYQUESTION".toCharArray()
-    val binaryTreeST = BinaryTreeST<Char, Int>()
+    val bst = BinarySearchTree<Char, Int>()
     for (i in charArray.indices) {
-        binaryTreeST.put(charArray[i], i)
+        bst.put(charArray[i], i)
     }
-    drawBinaryTree(binaryTreeST)
+    drawBST(bst)
 }

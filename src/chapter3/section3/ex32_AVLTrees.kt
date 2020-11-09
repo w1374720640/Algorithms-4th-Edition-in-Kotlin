@@ -2,8 +2,8 @@ package chapter3.section3
 
 import chapter3.section1.OrderedST
 import chapter3.section1.testOrderedST
-import chapter3.section2.BinaryTreeST
-import chapter3.section2.drawBinaryTree
+import chapter3.section2.BinarySearchTree
+import chapter3.section2.drawBST
 import edu.princeton.cs.algs4.Queue
 import edu.princeton.cs.algs4.Stack
 import extensions.random
@@ -174,7 +174,7 @@ class AVLTree<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
 
-    //-------------------------- 以下代码和BinaryTreeST中完全相同 ------------------------------------//
+    //-------------------------- 以下代码和BinarySearchTree中完全相同 ------------------------------------//
 
     override fun min(): K {
         if (isEmpty()) throw NoSuchElementException()
@@ -445,13 +445,13 @@ fun testAVLTree(avlTree: AVLTree<Int, Int>) {
 /**
  * 为了绘制AVL树的图形，必须先将AVL树转换成对应结构的普通二叉查找树
  */
-fun <K : Comparable<K>, V : Any> AVLTree<K, V>.adapterToBinaryTreeST(): BinaryTreeST<K, V> {
-    val bst = BinaryTreeST<K, V>()
+fun <K : Comparable<K>, V : Any> AVLTree<K, V>.adapterToBST(): BinarySearchTree<K, V> {
+    val bst = BinarySearchTree<K, V>()
     if (this.isEmpty()) return bst
     val avlStack = Stack<AVLTree.Node<K, V>>()
-    val bstStack = Stack<BinaryTreeST.Node<K, V>>()
+    val bstStack = Stack<BinarySearchTree.Node<K, V>>()
     avlStack.push(this.root!!)
-    val binaryTreeRoot = BinaryTreeST.Node(root!!.key, root!!.value, count = root!!.count)
+    val binaryTreeRoot = BinarySearchTree.Node(root!!.key, root!!.value, count = root!!.count)
     bst.root = binaryTreeRoot
     bstStack.push(binaryTreeRoot)
 
@@ -459,13 +459,13 @@ fun <K : Comparable<K>, V : Any> AVLTree<K, V>.adapterToBinaryTreeST(): BinaryTr
         val avlNode = avlStack.pop()
         val bstNode = bstStack.pop()
         if (avlNode.right != null) {
-            val bstRightNode = BinaryTreeST.Node(avlNode.right!!.key, avlNode.right!!.value, count = avlNode.right!!.count)
+            val bstRightNode = BinarySearchTree.Node(avlNode.right!!.key, avlNode.right!!.value, count = avlNode.right!!.count)
             bstNode.right = bstRightNode
             avlStack.push(avlNode.right)
             bstStack.push(bstRightNode)
         }
         if (avlNode.left != null) {
-            val bstLeftNode = BinaryTreeST.Node(avlNode.left!!.key, avlNode.left!!.value, count = avlNode.left!!.count)
+            val bstLeftNode = BinarySearchTree.Node(avlNode.left!!.key, avlNode.left!!.value, count = avlNode.left!!.count)
             bstNode.left = bstLeftNode
             avlStack.push(avlNode.left)
             bstStack.push(bstLeftNode)
@@ -485,6 +485,6 @@ fun main() {
     repeat(10) {
         avlTree.delete(avlTree.select(random(avlTree.size())))
     }
-    val bst = avlTree.adapterToBinaryTreeST()
-    drawBinaryTree(bst, showKey = false)
+    val bst = avlTree.adapterToBST()
+    drawBST(bst, showKey = false)
 }

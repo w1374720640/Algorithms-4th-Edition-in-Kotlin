@@ -9,7 +9,7 @@ import extensions.spendTimeMillis
  * 缓存
  * 修改二叉查找树的实现，将最近访问的结点Node保存在一个变量中，这样get()或put()再次访问同一个键时就只需要常数时间了
  */
-class CacheBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
+class CacheBinarySearchTree<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>() {
     private var recentNode: Node<K, V>? = null
 
     override fun get(key: K): V? {
@@ -49,14 +49,14 @@ class CacheBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
 }
 
 fun main() {
-    testOrderedST(CacheBinaryTreeST())
+    testOrderedST(CacheBinarySearchTree())
 
     val time1 = spendTimeMillis {
-        frequencyCounter(In("./data/tale.txt"), 0, BinaryTreeST())
+        frequencyCounter(In("./data/tale.txt"), 0, BinarySearchTree())
     }
     println("$time1 ms")
     val time2 = spendTimeMillis {
-        frequencyCounter(In("./data/tale.txt"), 0, CacheBinaryTreeST())
+        frequencyCounter(In("./data/tale.txt"), 0, CacheBinarySearchTree())
     }
     println("$time2 ms")
 }

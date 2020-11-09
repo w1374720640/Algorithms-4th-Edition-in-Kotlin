@@ -66,8 +66,8 @@ fun main() {
     val minLength = readInt("minLength=")
     //  ./data/tinyTale.txt  ./data/tale.txt
     val path = readString("path=")
-    val counter1 = frequencyCounter(In(path), minLength, LinkedListST())
-    println("LinkedListST: ${counter1.first} ${counter1.second}")
-    val counter2 = frequencyCounter(In(path), minLength, ArrayOrderedST())
-    println("ArrayOrderedST: ${counter2.first} ${counter2.second}")
+    val counter1 = frequencyCounter(In(path), minLength, SequentialSearchST())
+    println("SequentialSearchST: ${counter1.first} ${counter1.second}")
+    val counter2 = frequencyCounter(In(path), minLength, BinarySearchST())
+    println("BinarySearchST: ${counter2.first} ${counter2.second}")
 }

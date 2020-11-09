@@ -8,17 +8,17 @@ import chapter3.section1.testOrderedST
  * 实现两种方案：一种使用递归（用时为线性级别，所需空间和树高成正比）
  * 一种模仿size()在每个结点中添加一个变量（所需空间为线性级别，查询耗时为常数）
  */
-fun <K : Comparable<K>, V : Any> BinaryTreeST<K, V>.avgCompares(): Int {
+fun <K : Comparable<K>, V : Any> BinarySearchTree<K, V>.avgCompares(): Int {
     if (isEmpty()) return 0
     return compares(root!!) / size() + 1
 }
 
-fun <K : Comparable<K>, V : Any> BinaryTreeST<K, V>.avgComparesDouble(): Double {
+fun <K : Comparable<K>, V : Any> BinarySearchTree<K, V>.avgComparesDouble(): Double {
     if (isEmpty()) return 0.0
     return compares(root!!) / size().toDouble() + 1
 }
 
-private fun <K : Comparable<K>, V : Any> compares(node: BinaryTreeST.Node<K, V>): Int {
+private fun <K : Comparable<K>, V : Any> compares(node: BinarySearchTree.Node<K, V>): Int {
     var leftCompares = 0
     if (node.left != null) {
         leftCompares = compares(node.left!!)
@@ -30,7 +30,7 @@ private fun <K : Comparable<K>, V : Any> compares(node: BinaryTreeST.Node<K, V>)
     return leftCompares + rightCompares + node.count - 1
 }
 
-class BinaryTreeComparesST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
+class BinarySearchTreeCompares<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>() {
     class ComparesNode<K : Comparable<K>, V : Any>(key: K,
                                                    value: V,
                                                    left: Node<K, V>? = null,
@@ -112,7 +112,7 @@ class BinaryTreeComparesST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
 }
 
 fun main() {
-    testOrderedST(BinaryTreeComparesST())
+    testOrderedST(BinarySearchTreeCompares())
 
     val checkArray = arrayOf(
             arrayOf(2, 1, 3) to 1,
@@ -120,8 +120,8 @@ fun main() {
             arrayOf(5, 2, 7, 1, 3, 4, 6, 8, 9, 10) to 3
     )
     checkArray.forEach { pair ->
-        val st1 = BinaryTreeST<Int, Int>()
-        val st2 = BinaryTreeComparesST<Int, Int>()
+        val st1 = BinarySearchTree<Int, Int>()
+        val st2 = BinarySearchTreeCompares<Int, Int>()
         pair.first.forEach {
             st1.put(it, 0)
             st2.put(it, 0)

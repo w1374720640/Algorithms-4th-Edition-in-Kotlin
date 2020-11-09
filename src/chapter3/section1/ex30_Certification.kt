@@ -1,10 +1,10 @@
 package chapter3.section1
 
 /**
- * 向ArrayOrderedST中加入断言（assert）语句，在每次插入和删除数据后检查算法的有效性和数据结构的完整性
+ * 向BinarySearchST中加入断言（assert）语句，在每次插入和删除数据后检查算法的有效性和数据结构的完整性
  * 例如，对于每个索引必有i==rank(select(i))且数组应该总是有序的
  */
-class CertificationArrayOrderedST<K: Comparable<K>, V: Any> : ArrayOrderedST<K, V>() {
+class CertificationBinarySearchST<K: Comparable<K>, V: Any> : BinarySearchST<K, V>() {
 
     override fun put(key: K, value: V) {
         super.put(key, value)
@@ -31,5 +31,5 @@ class CertificationArrayOrderedST<K: Comparable<K>, V: Any> : ArrayOrderedST<K, 
 }
 
 fun main() {
-    testOrderedST(CertificationArrayOrderedST())
+    testOrderedST(CertificationBinarySearchST())
 }

@@ -9,35 +9,35 @@ package chapter3.section2
  * 在我的实现中isOrdered()和hasNoDuplicates()方法的顺序并不重要
  * hasNoDuplicates()不通过则isOrdered()也无法通过
  */
-fun <K : Comparable<K>> isBST(node: BinaryTreeST.Node<K, *>): Boolean {
+fun <K : Comparable<K>> isBST(node: BinarySearchTree.Node<K, *>): Boolean {
     if (!isBinaryTree(node)) return false
     if (!isOrdered(node, minNode(node).key, maxNode(node).key)) return false
     if (!hasNoDuplicates(node)) return false
     return true
 }
 
-fun <K : Comparable<K>> minNode(node: BinaryTreeST.Node<K, *>): BinaryTreeST.Node<K, *> {
+fun <K : Comparable<K>> minNode(node: BinarySearchTree.Node<K, *>): BinarySearchTree.Node<K, *> {
     return if (node.left == null) node else minNode(node.left!!)
 }
 
-fun <K : Comparable<K>> maxNode(node: BinaryTreeST.Node<K, *>): BinaryTreeST.Node<K, *> {
+fun <K : Comparable<K>> maxNode(node: BinarySearchTree.Node<K, *>): BinarySearchTree.Node<K, *> {
     return if (node.right == null) node else maxNode(node.right!!)
 }
 
 fun main() {
     val charArray = "EASYQUESTION".toCharArray()
-    val binaryTreeST = BinaryTreeST<Char, Int>()
+    val bst = BinarySearchTree<Char, Int>()
     for (i in charArray.indices) {
-        binaryTreeST.put(charArray[i], i)
+        bst.put(charArray[i], i)
     }
-    println(isBST(binaryTreeST.root!!))
+    println(isBST(bst.root!!))
 
-    val node = BinaryTreeST.Node(5, 0)
-    node.left = BinaryTreeST.Node(2, 0)
-    node.left!!.left = BinaryTreeST.Node(1, 0)
-    node.left!!.right = BinaryTreeST.Node(4, 0)
-    node.right = BinaryTreeST.Node(8, 0)
-    node.right!!.left = BinaryTreeST.Node(7, 0)
-    node.right!!.right = BinaryTreeST.Node(9, 0)
+    val node = BinarySearchTree.Node(5, 0)
+    node.left = BinarySearchTree.Node(2, 0)
+    node.left!!.left = BinarySearchTree.Node(1, 0)
+    node.left!!.right = BinarySearchTree.Node(4, 0)
+    node.right = BinarySearchTree.Node(8, 0)
+    node.right!!.left = BinarySearchTree.Node(7, 0)
+    node.right!!.right = BinarySearchTree.Node(9, 0)
     println(isBST(node))
 }

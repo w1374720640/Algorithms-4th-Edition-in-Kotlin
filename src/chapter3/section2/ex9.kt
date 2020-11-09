@@ -9,8 +9,8 @@ import chapter2.swap
  *
  * 解：对于N个不同的键，有N!种插入顺序，可以构造出N!个二叉查找树，
  * 但是构造的二叉查找树中会有结构相同的树，需要剔除结构相同的树
- * 自定义二叉树的比较器，从根节点开始依次比较每个结点，只有当结点结构相同、键相同时才认为二叉树相同，
- * 对二叉树组成的数组排序，然后去除重复的二叉树
+ * 自定义二叉查找树的比较器，从根节点开始依次比较每个结点，只有当结点结构相同、键相同时才认为二叉查找树相同，
+ * 对二叉查找树组成的数组排序，然后去除重复的二叉查找树
  * 数组中删除重复元素可以参考练习2.5.4
  */
 fun ex9(N: Int, delay: Long) {
@@ -19,16 +19,16 @@ fun ex9(N: Int, delay: Long) {
     allBinaryTree.sortWith(comparator)
     val array = dedupBinaryTree(allBinaryTree, comparator)
     println("N: $N   number of binary trees: ${array.size}")
-    drawBinaryTreeArray(array, delay)
+    drawBSTArray(array, delay)
 }
 
-fun createAllBinaryTree(N: Int): Array<BinaryTreeST<Int, Int>> {
+fun createAllBinaryTree(N: Int): Array<BinarySearchTree<Int, Int>> {
     val array = Array(N) { it + 1 }
     val list = ArrayList<Array<Int>>()
     fullArray(array, 0, list)
     check(list.size == factorial(N).toInt())
     return Array(list.size) { index ->
-        BinaryTreeST<Int, Int>().apply {
+        BinarySearchTree<Int, Int>().apply {
             list[index].forEach { key ->
                 put(key, 0)
             }
@@ -57,12 +57,12 @@ fun <T> fullArray(array: Array<T>, start: Int, list: ArrayList<Array<T>>) {
     }
 }
 
-class BinaryTreeComparator : Comparator<BinaryTreeST<Int, Int>> {
-    override fun compare(o1: BinaryTreeST<Int, Int>, o2: BinaryTreeST<Int, Int>): Int {
+class BinaryTreeComparator : Comparator<BinarySearchTree<Int, Int>> {
+    override fun compare(o1: BinarySearchTree<Int, Int>, o2: BinarySearchTree<Int, Int>): Int {
         return compare(o1.root, o2.root)
     }
 
-    fun compare(node1: BinaryTreeST.Node<Int, Int>?, node2: BinaryTreeST.Node<Int, Int>?): Int {
+    fun compare(node1: BinarySearchTree.Node<Int, Int>?, node2: BinarySearchTree.Node<Int, Int>?): Int {
         if (node1 == null && node2 == null) return 0
         if (node1 == null) return -1
         if (node2 == null) return 1
@@ -77,7 +77,7 @@ class BinaryTreeComparator : Comparator<BinaryTreeST<Int, Int>> {
 /**
  * 去除重复元素
  */
-fun dedupBinaryTree(array: Array<BinaryTreeST<Int, Int>>, comparator: Comparator<BinaryTreeST<Int, Int>>): Array<BinaryTreeST<Int, Int>> {
+fun dedupBinaryTree(array: Array<BinarySearchTree<Int, Int>>, comparator: Comparator<BinarySearchTree<Int, Int>>): Array<BinarySearchTree<Int, Int>> {
     var delCount = 0
     for (i in 1 until array.size) {
         if (comparator.compare(array[i], array[i - 1]) == 0) {
@@ -99,9 +99,9 @@ fun dedupBinaryTree(array: Array<BinaryTreeST<Int, Int>>, comparator: Comparator
     return result
 }
 
-fun <K: Comparable<K>, V: Any> drawBinaryTreeArray(array: Array<BinaryTreeST<K, V>>, delay: Long) {
-    array.forEach { binaryTreeST ->
-        drawBinaryTree(binaryTreeST)
+fun <K: Comparable<K>, V: Any> drawBSTArray(array: Array<BinarySearchTree<K, V>>, delay: Long) {
+    array.forEach { bst ->
+        drawBST(bst)
         sleep(delay)
     }
 }

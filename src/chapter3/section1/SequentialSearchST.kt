@@ -8,7 +8,7 @@ import extensions.safeCall
 /**
  * 基于链表的无序符号表
  */
-open class LinkedListST<K : Any, V : Any> : ST<K, V> {
+open class SequentialSearchST<K : Any, V : Any> : ST<K, V> {
     protected var first: Node<K, V>? = null
     protected var size = 0
 
@@ -102,10 +102,10 @@ open class LinkedListST<K : Any, V : Any> : ST<K, V> {
 }
 
 fun main() {
-    testST(LinkedListST())
+    testST(SequentialSearchST())
 
     inputPrompt()
-    val st = LinkedListST<String, String>()
+    val st = SequentialSearchST<String, String>()
     println("Please input commands:")
     println("0: exit, 1: put, 2: get, 3: delete, 4: contains, 5: isEmpty, 6: size, 7: keys")
     while (true) {

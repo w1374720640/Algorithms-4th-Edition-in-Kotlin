@@ -27,5 +27,5 @@ fun main() {
     inputPrompt()
     val minLength = readInt("minLength=")
     val path = "./data/tale.txt"
-    ex9(In(path), minLength, ArrayOrderedST())
+    ex9(In(path), minLength, BinarySearchST())
 }

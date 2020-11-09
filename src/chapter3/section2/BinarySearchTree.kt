@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.Queue
 /**
  * 基于二叉查找树实现的有序符号表
  */
-open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
+open class BinarySearchTree<K : Comparable<K>, V : Any> : OrderedST<K, V> {
 
     open class Node<K : Comparable<K>, V : Any>(val key: K,
                                                 var value: V,
@@ -327,5 +327,5 @@ open class BinaryTreeST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
 }
 
 fun main() {
-    testOrderedST(BinaryTreeST())
+    testOrderedST(BinarySearchTree())
 }

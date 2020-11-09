@@ -8,7 +8,7 @@ import chapter2.sleep
  * 用这些键给出构造最坏情况下的树的其他5种排序
  *
  * 解：远不止6种情况，列出可能的5种情况
- * 最坏情况二叉树高度为N
+ * 最坏情况二叉查找树高度为N
  */
 fun ex2(): Array<CharArray> {
     return arrayOf(
@@ -23,11 +23,11 @@ fun ex2(): Array<CharArray> {
 fun main() {
     val array = ex2()
     array.forEach {
-        val binaryTreeST = BinaryTreeST<Char, Int>()
+        val bst = BinarySearchTree<Char, Int>()
         for (i in it.indices) {
-            binaryTreeST.put(it[i], i)
+            bst.put(it[i], i)
         }
-        drawBinaryTree(binaryTreeST)
+        drawBST(bst)
         sleep(5000)
     }
 }

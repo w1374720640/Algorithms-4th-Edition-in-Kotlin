@@ -9,10 +9,10 @@ import extensions.shuffle
  * （即按每个结点到根结点的距离的顺序，同一层的结点应该按从左至右的顺序）
  * 提示：使用队列Queue
  *
- * 解：二叉树的广度优先遍历，参考BinaryTreeTraversal文件中的breadthFirstTraversal()方法
+ * 解：二叉查找树的广度优先遍历，参考BinaryTreeTraversal文件中的breadthFirstTraversal()方法
  */
-fun <K : Comparable<K>> printLevel(root: BinaryTreeST.Node<K, *>) {
-    val queue = Queue<BinaryTreeST.Node<K, *>>()
+fun <K : Comparable<K>> printLevel(root: BinarySearchTree.Node<K, *>) {
+    val queue = Queue<BinarySearchTree.Node<K, *>>()
     queue.enqueue(root)
     while (!queue.isEmpty) {
         val node = queue.dequeue()
@@ -28,11 +28,11 @@ fun <K : Comparable<K>> printLevel(root: BinaryTreeST.Node<K, *>) {
 
 fun main() {
     val size = 10
-    val binaryTreeST = BinaryTreeST<Int, Int>()
+    val bst = BinarySearchTree<Int, Int>()
     val array = Array(size) { it }
     array.shuffle()
-    array.forEach { binaryTreeST.put(it, 0) }
-    drawBinaryTree(binaryTreeST)
+    array.forEach { bst.put(it, 0) }
+    drawBST(bst)
 
-    printLevel(binaryTreeST.root!!)
+    printLevel(bst.root!!)
 }

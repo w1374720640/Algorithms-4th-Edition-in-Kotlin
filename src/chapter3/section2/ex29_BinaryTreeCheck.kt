@@ -6,7 +6,7 @@ package chapter3.section2
  * 如果以该结点为根的子树中的结点总数和计数器的值N相符则返回true，否则返回false
  * 注意：这项检查也能保证数据结构中不存在环，因此这的确是一颗二叉树
  */
-fun <K : Comparable<K>> isBinaryTree(node: BinaryTreeST.Node<K, *>): Boolean {
+fun <K : Comparable<K>> isBinaryTree(node: BinarySearchTree.Node<K, *>): Boolean {
     val leftIsTree = when {
         node.left == null -> true
         //防止子树中有环
@@ -27,19 +27,19 @@ fun <K : Comparable<K>> isBinaryTree(node: BinaryTreeST.Node<K, *>): Boolean {
 
 fun main() {
     val charArray = "EASYQUESTION".toCharArray()
-    val binaryTreeST = BinaryTreeST<Char, Int>()
+    val bst = BinarySearchTree<Char, Int>()
     for (i in charArray.indices) {
-        binaryTreeST.put(charArray[i], i)
+        bst.put(charArray[i], i)
     }
-    println(isBinaryTree(binaryTreeST.root!!))
+    println(isBinaryTree(bst.root!!))
 
-    val rightCount = binaryTreeST.root?.right?.count!!
+    val rightCount = bst.root?.right?.count!!
     //计数器值错误
-    binaryTreeST.root?.right?.count = 2
-    println(isBinaryTree(binaryTreeST.root!!))
+    bst.root?.right?.count = 2
+    println(isBinaryTree(bst.root!!))
 
-    binaryTreeST.root?.right?.count = rightCount
+    bst.root?.right?.count = rightCount
     //有环
-    binaryTreeST.root?.right?.right = binaryTreeST.root?.right
-    println(isBinaryTree(binaryTreeST.root!!))
+    bst.root?.right?.right = bst.root?.right
+    println(isBinaryTree(bst.root!!))
 }

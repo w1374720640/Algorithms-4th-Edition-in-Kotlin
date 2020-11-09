@@ -4,10 +4,10 @@ import extensions.spendTimeMillis
 
 /**
  * 有序的插入
- * 修改ArrayOrderedST，使得插入一个比当前所有键都大的键只需要常数时间
+ * 修改BinarySearchST，使得插入一个比当前所有键都大的键只需要常数时间
  * 这样在构造符号表时有序的使用put()插入键值对就只需要线性时间了
  */
-class OrderedInsertionsST<K : Comparable<K>, V : Any> : ArrayOrderedST<K, V>() {
+class OrderedInsertionsST<K : Comparable<K>, V : Any> : BinarySearchST<K, V>() {
     override fun put(key: K, value: V) {
         when {
             !isEmpty() && key > max() -> {
@@ -33,7 +33,7 @@ fun main() {
     //递增的key
     val keys = Array(size) { it }
     val time1 = spendTimeMillis {
-        val st = ArrayOrderedST<Int, String>()
+        val st = BinarySearchST<Int, String>()
         keys.forEach {
             st.put(it, "")
         }

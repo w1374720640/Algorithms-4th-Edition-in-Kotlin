@@ -5,7 +5,7 @@ import extensions.readString
 
 fun main() {
     inputPrompt()
-    val st = LinkedListST<String, String>()
+    val st = SequentialSearchST<String, String>()
     st.put("A+", "4.33")
     st.put("A", "4.00")
     st.put("A-", "3.67")

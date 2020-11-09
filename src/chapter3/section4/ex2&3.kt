@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.Queue
 import extensions.random
 
 /**
- * 3.4.2 重新实现SeparateChainingHashST，直接使用LinkedListST中链表部分的代码
+ * 3.4.2 重新实现SeparateChainingHashST，直接使用SequentialSearchST中链表部分的代码
  * 3.4.3 修改你为上一道练习给出的实现，为每个键值对添加一个整型变量，将其值设为插入该键值对时散列表中元素的数量
  * 实现一个方法，将该变量的值大于给定整数k的键（及其相应的值）全部删除
  * 注意：这个额外的功能在为编译器实现符号表时很有用

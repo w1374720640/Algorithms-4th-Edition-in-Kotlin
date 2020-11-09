@@ -39,7 +39,7 @@ fun ex19(input: In, minLength: Int, st: ST<String, Int>): Queue<String> {
 }
 
 fun main() {
-    val queue = ex19(In("./data/tinyTale.txt"), 0, ArrayOrderedST())
+    val queue = ex19(In("./data/tinyTale.txt"), 0, BinarySearchST())
     while (!queue.isEmpty) {
         println(queue.dequeue())
     }

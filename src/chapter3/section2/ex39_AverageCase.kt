@@ -14,7 +14,7 @@ import kotlin.math.sqrt
  * 将你的实验结果和练习3.2.35给出的计算平均比较次数的公式进行对比
  *
  * 解：利用练习3.2.7可以计算一颗给定的树中的一次随机命中查找平均所需要的比较次数
- * 通过重写BinaryTreeST的get()方法统计实际的比较次数
+ * 通过重写BinarySearchTree的get()方法统计实际的比较次数
  * 构造二叉查找树时，只插入偶数，查找时，偶数为命中查找，奇数为未命中查找
  * 平均差是将各个元素与平均值求差后取绝对值，再除以总数
  * 标准差是将各个元素与平均值求差后平方，再除以总数，再开根号。相对于平均差，通过平方给较大的偏差更大的惩罚
@@ -26,7 +26,7 @@ fun main() {
     repeat(3) {
         val input = Array(size) { it * 2 }
         input.shuffle()
-        val st = NumOfComparisonsBinaryTreeST<Int, Int>()
+        val st = NumOfComparisonsBST<Int, Int>()
         input.forEach { st.put(it, 0) }
 
         //命中key的实际比较次数
@@ -75,7 +75,7 @@ fun main() {
 /**
  * 可以统计每次查找比较次数的二叉查找树
  */
-class NumOfComparisonsBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
+class NumOfComparisonsBST<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>() {
     var numOfComparisons = 0
 
     fun getNumOfComparisons(key: K): Int {

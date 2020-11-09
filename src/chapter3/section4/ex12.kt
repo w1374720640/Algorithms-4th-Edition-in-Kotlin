@@ -1,6 +1,6 @@
 package chapter3.section4
 
-import chapter3.section1.LinkedListST
+import chapter3.section1.SequentialSearchST
 import chapter3.section2.fullArray
 
 /**
@@ -31,7 +31,7 @@ fun main() {
     //对指定数组全排列
     fullArray(array, 0, list)
 
-    val options = LinkedListST<String, Int>()
+    val options = SequentialSearchST<String, Int>()
     options.put("EFGACBD", 0)
     options.put("CEBGFDA", 1)
     options.put("BDFACEG", 2)

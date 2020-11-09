@@ -18,7 +18,7 @@ import extensions.formatStringLength
  * 因为是有序符号表，所以直接按顺序遍历符号表即可按字典顺序打印表格
  */
 fun ex26_sortByFrequency(array: Array<String>, dictionary: ST<String, Int>) {
-    val st = ArrayOrderedST<String, Int>()
+    val st = BinarySearchST<String, Int>()
     array.forEach {
         if (dictionary.contains(it)) {
             val count = st.get(it)
@@ -51,7 +51,7 @@ fun ex26_sortByFrequency(array: Array<String>, dictionary: ST<String, Int>) {
 }
 
 fun ex26_sortByDictionaryOrder(array: Array<String>, dictionary: ST<String, Int>) {
-    val st = ArrayOrderedST<Int, String>()
+    val st = BinarySearchST<Int, String>()
     array.forEach {
         if (dictionary.contains(it)) {
             st.put(dictionary.get(it)!!, it)
@@ -66,7 +66,7 @@ fun main() {
     val input = In("./data/tinyTale.txt")
     val allString = input.readAllStrings()
     //会按照字母顺序将键排序
-    val dictionary = ArrayOrderedST<String, Int>()
+    val dictionary = BinarySearchST<String, Int>()
     allString.forEach {
         dictionary.put(it, 0)
     }

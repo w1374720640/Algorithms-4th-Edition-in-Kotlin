@@ -11,7 +11,7 @@ fun main() {
     repeat(6) {
         var count = 0
         repeat(times) {
-            val st = ArrayOrderedST<Int, Int>()
+            val st = BinarySearchST<Int, Int>()
             val array = Array(size) { random(1000) }
             array.forEach {
                 st.put(it, 0)

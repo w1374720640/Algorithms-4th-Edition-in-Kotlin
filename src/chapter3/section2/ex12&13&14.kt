@@ -112,7 +112,7 @@ class BinaryTreeNoCounterAndRecursionST<K : Comparable<K>, V : Any> : OrderedST<
     }
 
     /**
-     * 使用二叉树的非递归前序遍历确定某个结点及所有子结点的大小
+     * 使用二叉查找树的非递归前序遍历确定某个结点及所有子结点的大小
      */
     fun size(node: Node<K, V>?): Int {
         if (node == null) return 0
@@ -136,7 +136,7 @@ class BinaryTreeNoCounterAndRecursionST<K : Comparable<K>, V : Any> : OrderedST<
     override fun select(k: Int): K {
         if (isEmpty()) throw NoSuchElementException()
         var index = 0
-        //使用二叉树的非递归中序遍历查找
+        //使用二叉查找树的非递归中序遍历查找
         val stack = Stack<Node<K, V>>()
         addAllLeftNode(root!!, stack)
         while (!stack.isEmpty) {

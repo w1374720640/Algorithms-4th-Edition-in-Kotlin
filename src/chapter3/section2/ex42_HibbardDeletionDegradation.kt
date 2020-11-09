@@ -19,8 +19,8 @@ import kotlin.math.sqrt
  */
 fun ex42_HibbardDeletionDegradation(N: Int) {
     require(N > 0)
-    val st = BinaryTreeST<Int, Int>()
-    val nonHibbardST = NonHibbardBinaryTreeST<Int, Int>()
+    val st = BinarySearchTree<Int, Int>()
+    val nonHibbardST = NonHibbardBinarySearchTree<Int, Int>()
 
     repeat(N) {
         val value = random(Int.MAX_VALUE)
@@ -55,7 +55,7 @@ fun ex42_HibbardDeletionDegradation(N: Int) {
     println()
 }
 
-class NonHibbardBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
+class NonHibbardBinarySearchTree<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>() {
 
     override fun delete(node: Node<K, V>, key: K): Node<K, V>? {
         when {
@@ -106,7 +106,7 @@ class NonHibbardBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() 
 }
 
 fun main() {
-    testOrderedST(NonHibbardBinaryTreeST())
+    testOrderedST(NonHibbardBinarySearchTree())
 
     var N = 1000
     repeat(4) {

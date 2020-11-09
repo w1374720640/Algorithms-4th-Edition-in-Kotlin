@@ -53,7 +53,7 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
 
     /**
      * 使用自定义方法而不是重写hashCode()方法，因为重写hashCode()方法时需要对应修改equals方法
-     * 可以使用前序遍历或后序遍历，但不能使用中序遍历，因为元素相同、结构不同的二叉树，中序遍历结果相同
+     * 可以使用前序遍历或后序遍历，但不能使用中序遍历，因为元素相同、结构不同的二叉查找树，中序遍历结果相同
      */
     fun hash(): Int {
         if (isEmpty()) return 1

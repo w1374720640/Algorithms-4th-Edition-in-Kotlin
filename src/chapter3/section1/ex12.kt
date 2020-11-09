@@ -3,10 +3,10 @@ package chapter3.section1
 import chapter2.section2.topDownMergeSort
 
 /**
- * 修改ArrayOrderedST，用一个Item对象的数组而非两个平行数组来保存键和值
+ * 修改BinarySearchST，用一个Item对象的数组而非两个平行数组来保存键和值
  * 添加一个构造函数，接受一个Item的数组为参数并将其归并排序
  */
-class OneArrayOrderedST<K : Comparable<K>, V : Any>() : OrderedST<K, V> {
+class OneBinarySearchST<K : Comparable<K>, V : Any>() : OrderedST<K, V> {
     class Item<K : Comparable<K>, V : Any>(val key: K, var value: V) : Comparable<Item<K, V>> {
         override fun compareTo(other: Item<K, V>): Int {
             return key.compareTo(other.key)
@@ -237,5 +237,5 @@ class OneArrayOrderedST<K : Comparable<K>, V : Any>() : OrderedST<K, V> {
 }
 
 fun main() {
-    testOrderedST(OneArrayOrderedST())
+    testOrderedST(OneBinarySearchST())
 }

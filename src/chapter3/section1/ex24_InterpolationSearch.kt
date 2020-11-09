@@ -9,12 +9,12 @@ import extensions.spendTimeMillis
  * 编写一个二分查找来模拟查字典的行为，例如当单词的首字母在字母表的开头时，我们也会在字典的前半部分进行查找
  * 具体来说，假设klo为符号表的第一个键，khi为符号表的最后一个键，当要查找kx时，
  * 先和 ((kx-klo)/(khi-klo))*(hi-lo)+lo 进行比较，而非取中间值，
- * 用SearchCompare调用FrequencyCounter来比较你的实现和ArrayOrderedST的性能
+ * 用SearchCompare调用FrequencyCounter来比较你的实现和BinarySearchST的性能
  *
- * 解：继承ArrayOrderedST类，重写rank()方法，在用二分法查找时，不使用中间元素对比，按比例查找对应位置的元素
+ * 解：继承BinarySearchST类，重写rank()方法，在用二分法查找时，不使用中间元素对比，按比例查找对应位置的元素
  * 原书中的公式为kx的在符号表中的相对位置，还需要转换成具体索引才能使用
  */
-class InterpolationSearch<V : Any> : ArrayOrderedST<Int, V>() {
+class InterpolationSearch<V : Any> : BinarySearchST<Int, V>() {
     override fun rank(key: Int): Int {
         var start = 0
         var end = size - 1
@@ -53,9 +53,9 @@ fun main() {
     val array = Array(size) { random(maxRange) }
     var result1: Pair<Int, Int>? = null
     val time1 = spendTimeMillis {
-        result1 = frequencyCounter(array.copyOf(), ArrayOrderedST())
+        result1 = frequencyCounter(array.copyOf(), BinarySearchST())
     }
-    println("ArrayOrderedST      maxFrequency:[${result1!!.first}, ${result1!!.second}] time=$time1 ms")
+    println("BinarySearchST      maxFrequency:[${result1!!.first}, ${result1!!.second}] time=$time1 ms")
     var result2: Pair<Int, Int>? = null
     val time2 = spendTimeMillis {
         result2 = frequencyCounter(array.copyOf(), InterpolationSearch())

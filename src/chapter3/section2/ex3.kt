@@ -18,11 +18,11 @@ fun ex3(): Array<CharArray> {
 fun main() {
     val array = ex3()
     array.forEach {
-        val binaryTreeST = BinaryTreeST<Char, Int>()
+        val bst = BinarySearchTree<Char, Int>()
         for (i in it.indices) {
-            binaryTreeST.put(it[i], i)
+            bst.put(it[i], i)
         }
-        drawBinaryTree(binaryTreeST)
+        drawBST(bst)
         sleep(3000)
     }
 }

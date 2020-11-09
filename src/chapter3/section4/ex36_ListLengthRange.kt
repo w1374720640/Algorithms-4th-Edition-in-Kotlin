@@ -1,6 +1,6 @@
 package chapter3.section4
 
-import chapter3.section1.LinkedListST
+import chapter3.section1.SequentialSearchST
 import extensions.random
 
 /**
@@ -14,14 +14,14 @@ fun main() {
         override fun resize(size: Int) {
         }
 
-        fun getLinkedListSTArray(): Array<LinkedListST<Int, Int>> {
+        fun getSequentialSearchSTArray(): Array<SequentialSearchST<Int, Int>> {
             return stArray
         }
     }
     repeat(N) {
         st.put(random(Int.MAX_VALUE), 0)
     }
-    val stArray = st.getLinkedListSTArray()
+    val stArray = st.getSequentialSearchSTArray()
     var minST = stArray[0]
     var maxST = stArray[0]
     stArray.forEach {

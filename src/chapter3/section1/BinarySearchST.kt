@@ -8,7 +8,7 @@ import extensions.safeCall
 /**
  * 基于数组的有序符号表
  */
-open class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
+open class BinarySearchST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     protected var keys = Array<Comparable<K>?>(4) { null }
     protected var values = Array<Any?>(4) { null }
     protected var size = 0
@@ -244,10 +244,10 @@ open class ArrayOrderedST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
 }
 
 fun main() {
-    testOrderedST(ArrayOrderedST())
+    testOrderedST(BinarySearchST())
 
     inputPrompt()
-    val st = ArrayOrderedST<String, String>()
+    val st = BinarySearchST<String, String>()
     println("Please input commands:")
     val tips = "0: exit, 1: put, 2: get, 3: delete, 4: contains, 5: isEmpty, 6: size, 7: keys\n" +
             "10: min, 11: max, 12: floor, 13: ceiling, 14: rank, 15: select, 16: deleteMin, 17: deleteMax\n" +

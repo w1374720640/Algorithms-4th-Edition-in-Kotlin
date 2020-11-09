@@ -1,8 +1,8 @@
 package chapter3.section3
 
 import chapter2.sleep
-import chapter3.section2.BinaryTreeST
-import chapter3.section2.drawBinaryTree
+import chapter3.section2.BinarySearchTree
+import chapter3.section2.drawBST
 import extensions.shuffle
 
 /**
@@ -17,14 +17,14 @@ fun main() {
         val array = IntArray(16){it}
         array.shuffle()
         val redBlackBST = RedBlackBST<Int, Int>()
-        val binaryTreeST = BinaryTreeST<Int, Int>()
+        val bst = BinarySearchTree<Int, Int>()
         array.forEach {
             redBlackBST.put(it, 0)
-            binaryTreeST.put(it, 0)
+            bst.put(it, 0)
         }
         drawRedBlackBST(redBlackBST, showKey = false, showFlatView = false)
         sleep(delay)
-        drawBinaryTree(binaryTreeST, showKey = false)
+        drawBST(bst, showKey = false)
         sleep(delay)
     }
 }

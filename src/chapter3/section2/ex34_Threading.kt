@@ -18,7 +18,7 @@ import extensions.shuffle
  * deleteMin()、deleteMax()和delete()方法需要修改被删除结点 前趋结点的后继结点和后继结点的前趋结点
  * 注意：next()和prev()方法运行时间为对数级而不是常数，因为根据key查找结点的方法是对数级
  */
-class ThreadedST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
+class ThreadedST<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>() {
 
     class ThreadedNode<K : Comparable<K>, V : Any>(
             key: K,
@@ -28,7 +28,7 @@ class ThreadedST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
             count: Int = 1,
             var pred: Node<K, V>? = null, //前趋结点
             var succ: Node<K, V>? = null //后继结点
-    ) : BinaryTreeST.Node<K, V>(key, value, left, right, count)
+    ) : BinarySearchTree.Node<K, V>(key, value, left, right, count)
 
     //强制类型转换的封装方法
     private fun Node<K, V>.transform(): ThreadedNode<K, V> {

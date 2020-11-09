@@ -8,9 +8,9 @@ import extensions.shuffle
  * 迭代器
  * 能否实现一个非递归版本的keys()方法，其使用的额外空间和树的高度成正比（和查找范围内的键的多少无关）？
  *
- * 解：使用二叉树的非递归中序遍历实现
+ * 解：使用二叉查找树的非递归中序遍历实现
  */
-class NoRecursionKeysBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, V>() {
+class NoRecursionKeysBST<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>() {
     override fun keys(low: K, high: K): Iterable<K> {
         return object : Iterable<K> {
             override fun iterator(): Iterator<K> {
@@ -115,13 +115,13 @@ class NoRecursionKeysBinaryTreeST<K : Comparable<K>, V : Any> : BinaryTreeST<K, 
 }
 
 fun main() {
-    testOrderedST(NoRecursionKeysBinaryTreeST())
+    testOrderedST(NoRecursionKeysBST())
 
     val size = 10
     val array = Array(size) { it }
     array.shuffle()
-    val st = NoRecursionKeysBinaryTreeST<Int, Int>()
+    val st = NoRecursionKeysBST<Int, Int>()
     array.forEach { st.put(it, 0) }
     println(st.keys().joinToString())
-    drawBinaryTree(st)
+    drawBST(st)
 }

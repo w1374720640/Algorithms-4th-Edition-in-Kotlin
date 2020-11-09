@@ -1,6 +1,6 @@
 package chapter3.section4
 
-import chapter3.section1.LinkedListST
+import chapter3.section1.SequentialSearchST
 import chapter3.section1.ST
 import chapter3.section1.testST
 import edu.princeton.cs.algs4.Queue
@@ -19,7 +19,7 @@ open class SeparateChainingHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
         protected set
     var n = 0
         protected set
-    protected var stArray = Array(m) { LinkedListST<K, V>() }
+    protected var stArray = Array(m) { SequentialSearchST<K, V>() }
 
     open fun hash(key: K): Int {
         return (key.hashCode() and 0x7fffffff) % m

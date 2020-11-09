@@ -13,7 +13,7 @@ import extensions.spendTimeMillis
  * 比较你的程序和标准实现的性能
  *
  * 解：用三个数组无法保存键对应的值，另加一个数组保存键对应的值，顺序和键数组顺序相同，下面的过程省略值数组
- * 假设二叉树的结构如下所示
+ * 假设二叉查找树的结构如下所示
  *                      A
  *       B                   C
  *   D          E
@@ -22,7 +22,7 @@ import extensions.spendTimeMillis
  * 键数组    ： A  B  C  D  E  F  G
  * 左链接数组： 1  3  -1 -1 5  -1 -1
  * 右链接数组： 2  4  -1 -1 6  -1 -1
- * 二叉树的根节点为键数组的第一个值A，左链接数组和右链接数组的内容表示相应位置键的左右子结点索引，-1表示无相应子结点
+ * 二叉查找树的根节点为键数组的第一个值A，左链接数组和右链接数组的内容表示相应位置键的左右子结点索引，-1表示无相应子结点
  *
  * 查找G结点的过程：先和根结点A比较，小于A，找到A的左子结点，索引为1的结点B，和B比较，大于B
  *     找到B的右子结点，索引为4的结点E，和E比较，大于E，找到E的右子结点，索引为6的结点G，和G相等，更新G结点
@@ -45,13 +45,13 @@ import extensions.spendTimeMillis
  * 键数组    ： A  B  C  H  E  G                    键数组    ： A  F  C  H  E  G
  * 左链接数组： 1  -1 -1 -1 -1 -1        ->         左链接数组： 1  -1 -1 -1 -1 -1
  * 右链接数组： 2  4  3  -1 5  -1                   右链接数组： 2  4  3  -1 5  -1
- * 此时二叉树的结构如下
+ * 此时二叉查找树的结构如下
  *                    A
  *       F                 C
  *            E              H
  *                G
  */
-class ArrayBinaryTreeST<K : Comparable<K>, V : Any>(private val maxSize: Int) : OrderedST<K, V> {
+class ArrayBinarySearchTree<K : Comparable<K>, V : Any>(private val maxSize: Int) : OrderedST<K, V> {
     private val keys = arrayOfNulls<Comparable<K>>(maxSize)
     private val values = arrayOfNulls<Any>(maxSize)
     private val leftIndexList = IntArray(maxSize) { -1 }
@@ -613,14 +613,14 @@ class ArrayBinaryTreeST<K : Comparable<K>, V : Any>(private val maxSize: Int) : 
 }
 
 fun main() {
-    testOrderedST(ArrayBinaryTreeST(10))
+    testOrderedST(ArrayBinarySearchTree(10))
 
     var size = 10000
     repeat(8) {
         val array = IntArray(size) { it }
         StdRandom.shuffle(array)
-        val stdST = BinaryTreeST<Int, Int>()
-        val arrayST = ArrayBinaryTreeST<Int, Int>(size)
+        val stdST = BinarySearchTree<Int, Int>()
+        val arrayST = ArrayBinarySearchTree<Int, Int>(size)
 
         val stdPutTime = spendTimeMillis {
             array.forEach {

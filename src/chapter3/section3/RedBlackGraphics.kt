@@ -5,7 +5,7 @@ import extensions.shuffle
 import java.awt.Color
 
 /**
- * 绘制红黑树的图形，参考二叉查找树绘制类 BinaryTreeGraphics
+ * 绘制红黑树的图形，参考二叉查找树绘制类 BSTGraphics
  * 区别是可以绘制红色结点，且可以选择以2-3查找树的形式绘制红黑树
  * 2-3查找树比普通二叉查找树更扁平
  * （也可以用来绘制2-3-4查找树）
@@ -42,7 +42,7 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
     }
 
     /**
-     * 线性时间复杂度构造二叉树（需要结点中记录当前结点及所有子结点的数量）
+     * 线性时间复杂度构造二叉查找树（需要结点中记录当前结点及所有子结点的数量）
      */
     private fun addChildNode(parentNode: Node<K, V>, parentIndex: Int) {
         val leftOriginNode = parentNode.originNode.left
@@ -95,7 +95,7 @@ class RedBlackBSTGraphics<K : Comparable<K>, V : Any>(bst: RedBlackBST<K, V>) {
 
     companion object {
         const val CANVAS_DEFAULT_SIZE = 512
-        const val FLAT_X_EXPEND_RATIO = 0.4 //扁平的二叉树水平方向扩大倍数
+        const val FLAT_X_EXPEND_RATIO = 0.4 //扁平的二叉查找树水平方向扩大倍数
 
         //只有当画板的大小和需要的大小不同时才重新初始化画板
         var canvasWidth = CANVAS_DEFAULT_SIZE

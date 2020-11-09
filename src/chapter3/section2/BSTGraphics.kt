@@ -5,9 +5,9 @@ import extensions.shuffle
 import java.awt.Color
 
 /**
- * 绘制二叉树的图形
- * 标准的二叉树图形所有结点在x轴上的投影应该连续且间距相等，一个结点左子树的所有结点在x轴的投影都在该结点左侧
- * 理想情况下，根结点在x轴的投影在所有投影的中点，所有结点组成完全二叉树，树的深度为lgN+1
+ * 绘制二叉查找树的图形
+ * 标准的二叉查找树图形所有结点在x轴上的投影应该连续且间距相等，一个结点左子树的所有结点在x轴的投影都在该结点左侧
+ * 理想情况下，根结点在x轴的投影在所有投影的中点，所有结点组成完全二叉查找树，树的深度为lgN+1
  * 最坏情况下，根节点在所有投影的最左侧或最右侧，其他结点最多只有一个子结点，树的深度为N
  * 创建一个虚拟的二维坐标，左上角为原点，水平向右为x轴正方向，垂直向下为y轴正方向
  * 根结点的坐标固定为(N,1)，其他结点的x坐标范围为[1,2N]，y坐标范围为[1,N]
@@ -26,14 +26,14 @@ import java.awt.Color
  * 2、当每个结点记录了子树的大小时，可以使用子树的大小直接计算正确的位置，时间复杂度O(N)：
  * 插入左子结点时，左子结点的索引 leftIndex = parentIndex - leftNode.right.count - 1
  * 插入右子结点时，右子结点的索引 rightIndex = parentIndex + rightNode.left.count + 1
- * 遍历二叉树即可插入所有结点
+ * 遍历二叉查找树即可插入所有结点
  * （这种方法使用长度为N的数组即可实现，但为了和方式1保持一致，仍然使用长度为2N+1的数组）
  *
  * 记录x坐标和y坐标的边界值，绘制时对坐标转换使图形居中，从根节点依次绘制
  */
-class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<K, V>, useLinearAlgorithm: Boolean) {
+class BSTGraphics<K : Comparable<K>, V : Any>(bst: BinarySearchTree<K, V>, useLinearAlgorithm: Boolean) {
 
-    class Node<K : Comparable<K>, V : Any>(val originNode: BinaryTreeST.Node<K, V>,
+    class Node<K : Comparable<K>, V : Any>(val originNode: BinarySearchTree.Node<K, V>,
                                            var x: Int,
                                            val y: Int,
                                            var left: Node<K, V>? = null,
@@ -44,11 +44,11 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
 
     //是否在结点上方显示每个子树的大小
     var showSize = false
-    val size = binaryTreeST.size()
+    val size = bst.size()
     val array = arrayOfNulls<Node<K, V>>(size * 2 + 1)
 
     //根结点坐标固定为(size,1)
-    val root = if (size == 0) null else Node(binaryTreeST.root!!, size, 1)
+    val root = if (size == 0) null else Node(bst.root!!, size, 1)
     var minX = size
     var maxX = size
     var maxY = 1
@@ -65,7 +65,7 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
     }
 
     /**
-     * 线性时间复杂度构造二叉树（需要结点中记录当前结点及所有子结点的数量）
+     * 线性时间复杂度构造二叉查找树（需要结点中记录当前结点及所有子结点的数量）
      */
     private fun addChildNodeLinear(parentNode: Node<K, V>, parentIndex: Int) {
         val leftOriginNode = parentNode.originNode.left
@@ -88,12 +88,12 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
         }
     }
 
-    private fun getNodeSize(node: BinaryTreeST.Node<K, V>?): Int {
+    private fun getNodeSize(node: BinarySearchTree.Node<K, V>?): Int {
         return node?.count ?: 0
     }
 
     /**
-     * 平方级复杂度构造二叉树（更通用，适用于结点中没有记录子树大小的情况）
+     * 平方级复杂度构造二叉查找树（更通用，适用于结点中没有记录子树大小的情况）
      */
     private fun addChildNodeSquare(node: Node<K, V>) {
         if (node.originNode.left != null) {
@@ -209,8 +209,8 @@ class BinaryTreeGraphics<K : Comparable<K>, V : Any>(binaryTreeST: BinaryTreeST<
     }
 }
 
-fun <K : Comparable<K>, V : Any> drawBinaryTree(binaryTree: BinaryTreeST<K, V>, showKey: Boolean = true, showSize: Boolean = false) {
-    val graphics = BinaryTreeGraphics(binaryTree, true)
+fun <K : Comparable<K>, V : Any> drawBST(bst: BinarySearchTree<K, V>, showKey: Boolean = true, showSize: Boolean = false) {
+    val graphics = BSTGraphics(bst, true)
     graphics.showKey = showKey
     graphics.showSize = showSize
     graphics.draw()
@@ -219,9 +219,9 @@ fun <K : Comparable<K>, V : Any> drawBinaryTree(binaryTree: BinaryTreeST<K, V>, 
 fun main() {
     val array = IntArray(20) { it }
     array.shuffle()
-    val binaryTreeST = BinaryTreeST<Int, Int>()
+    val bst = BinarySearchTree<Int, Int>()
     array.forEach {
-        binaryTreeST.put(it, 0)
+        bst.put(it, 0)
     }
-    drawBinaryTree(binaryTreeST)
+    drawBST(bst)
 }

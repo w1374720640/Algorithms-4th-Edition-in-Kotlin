@@ -16,7 +16,7 @@ fun main() {
     repeat(3) {
         var height = 0.0
         repeat(repeatTimes) {
-            val st = BinaryTreeHeightST<Int, Int>()
+            val st = BinarySearchTreeHeight<Int, Int>()
             val array = IntArray(size) { it }
             StdRandom.shuffle(array)
             array.forEach { st.put(it, 0) }

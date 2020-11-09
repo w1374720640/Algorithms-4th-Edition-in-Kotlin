@@ -5,22 +5,22 @@ import edu.princeton.cs.algs4.Stack
 import extensions.shuffle
 
 /**
- * 通过各种方式遍历二叉树
+ * 通过各种方式遍历二叉查找树
  * 前序、中序、后序的递归与非递归实现
- * 广度优先的二叉树遍历（层次遍历）
+ * 广度优先的二叉查找树遍历（层次遍历）
  */
 
 /**
  * 递归实现的前序遍历
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.preorderTraversal(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.preorderTraversal(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
     preorderTraversal(root!!, list)
     return list
 }
 
-private fun <K : Comparable<K>> preorderTraversal(node: BinaryTreeST.Node<K, *>, list: ArrayList<K>) {
+private fun <K : Comparable<K>> preorderTraversal(node: BinarySearchTree.Node<K, *>, list: ArrayList<K>) {
     list.add(node.key)
     if (node.left != null) {
         preorderTraversal(node.left!!, list)
@@ -33,14 +33,14 @@ private fun <K : Comparable<K>> preorderTraversal(node: BinaryTreeST.Node<K, *>,
 /**
  * 递归实现的中序遍历
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.inorderTraversal(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.inorderTraversal(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
     inorderTraversal(root!!, list)
     return list
 }
 
-private fun <K : Comparable<K>> inorderTraversal(node: BinaryTreeST.Node<K, *>, list: ArrayList<K>) {
+private fun <K : Comparable<K>> inorderTraversal(node: BinarySearchTree.Node<K, *>, list: ArrayList<K>) {
     if (node.left != null) {
         inorderTraversal(node.left!!, list)
     }
@@ -53,14 +53,14 @@ private fun <K : Comparable<K>> inorderTraversal(node: BinaryTreeST.Node<K, *>, 
 /**
  * 递归实现的后序遍历
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.postorderTraversal(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversal(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
     postorderTraversal(root!!, list)
     return list
 }
 
-private fun <K : Comparable<K>> postorderTraversal(node: BinaryTreeST.Node<K, *>, list: ArrayList<K>) {
+private fun <K : Comparable<K>> postorderTraversal(node: BinarySearchTree.Node<K, *>, list: ArrayList<K>) {
     if (node.left != null) {
         postorderTraversal(node.left!!, list)
     }
@@ -73,10 +73,10 @@ private fun <K : Comparable<K>> postorderTraversal(node: BinaryTreeST.Node<K, *>
 /**
  * 非递归实现的前序遍历
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.preorderTraversalNonRecursive(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.preorderTraversalNonRecursive(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
-    val stack = Stack<BinaryTreeST.Node<K, *>>()
+    val stack = Stack<BinarySearchTree.Node<K, *>>()
     stack.push(root!!)
     while (!stack.isEmpty) {
         val node = stack.pop()
@@ -97,10 +97,10 @@ fun <K : Comparable<K>> BinaryTreeST<K, *>.preorderTraversalNonRecursive(): List
  * 从栈中弹出结点时，如果结点的右子结点为空，则直接弹出该结点，
  * 否则弹出该结点后，需要以该结点的右子结点为根节点，将所有左子结点依次加入栈中
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.inorderTraversalNonRecursive(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.inorderTraversalNonRecursive(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
-    val stack = Stack<BinaryTreeST.Node<K, *>>()
+    val stack = Stack<BinarySearchTree.Node<K, *>>()
     addAllLeftNode(root!!, stack)
     while (!stack.isEmpty) {
         val node = stack.pop()
@@ -112,8 +112,8 @@ fun <K : Comparable<K>> BinaryTreeST<K, *>.inorderTraversalNonRecursive(): List<
     return list
 }
 
-private fun <K : Comparable<K>> addAllLeftNode(root: BinaryTreeST.Node<K, *>, stack: Stack<BinaryTreeST.Node<K, *>>) {
-    var node: BinaryTreeST.Node<K, *>? = root
+private fun <K : Comparable<K>> addAllLeftNode(root: BinarySearchTree.Node<K, *>, stack: Stack<BinarySearchTree.Node<K, *>>) {
+    var node: BinarySearchTree.Node<K, *>? = root
     while (node != null) {
         stack.push(node)
         node = node.left
@@ -128,11 +128,11 @@ private fun <K : Comparable<K>> addAllLeftNode(root: BinaryTreeST.Node<K, *>, st
  * 需要注意，为了防止重复添加一个结点的右子结点造成死循环，需要记录最后添加的结点，
  * 当最后添加的结点和该结点的右子结点相同时，说明该结点的所有右子结点都已经添加，可以直接返回
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.postorderTraversalNonRecursive1(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversalNonRecursive1(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
-    val stack = Stack<BinaryTreeST.Node<K, *>>()
-    var lastAddNode: BinaryTreeST.Node<K, *>? = null
+    val stack = Stack<BinarySearchTree.Node<K, *>>()
+    var lastAddNode: BinarySearchTree.Node<K, *>? = null
     addAllLeftNode(root!!, stack)
     while (!stack.isEmpty) {
         //中序直接pop，后序先peek再判断是否需要加入右子结点
@@ -150,13 +150,13 @@ fun <K : Comparable<K>> BinaryTreeST<K, *>.postorderTraversalNonRecursive1(): Li
 
 /**
  * 非递归实现的后序遍历
- * 修改前序遍历的非递归实现，以根-右-左的形式遍历二叉树
+ * 修改前序遍历的非递归实现，以根-右-左的形式遍历二叉查找树
  * 遍历完成后将列表数据前后颠倒，结果为左-右-根的形式
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.postorderTraversalNonRecursive2(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversalNonRecursive2(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
-    val stack = Stack<BinaryTreeST.Node<K, *>>()
+    val stack = Stack<BinarySearchTree.Node<K, *>>()
     stack.push(root!!)
     while (!stack.isEmpty) {
         val node = stack.pop()
@@ -177,12 +177,12 @@ fun <K : Comparable<K>> BinaryTreeST<K, *>.postorderTraversalNonRecursive2(): Li
 }
 
 /**
- * 广度优先的二叉树遍历
+ * 广度优先的二叉查找树遍历
  */
-fun <K : Comparable<K>> BinaryTreeST<K, *>.breadthFirstTraversal(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.breadthFirstTraversal(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
-    val queue = Queue<BinaryTreeST.Node<K, *>>()
+    val queue = Queue<BinarySearchTree.Node<K, *>>()
     queue.enqueue(root!!)
     while (!queue.isEmpty) {
         val node = queue.dequeue()
@@ -199,18 +199,18 @@ fun <K : Comparable<K>> BinaryTreeST<K, *>.breadthFirstTraversal(): List<K> {
 
 fun main() {
     val size = 10
-    val binaryTreeST = BinaryTreeST<Int, Int>()
+    val bst = BinarySearchTree<Int, Int>()
     val array = Array(size) { it }
     array.shuffle()
-    array.forEach { binaryTreeST.put(it, 0) }
-    drawBinaryTree(binaryTreeST)
+    array.forEach { bst.put(it, 0) }
+    drawBST(bst)
 
-    println("preorder : ${binaryTreeST.preorderTraversal().joinToString()}")
-    println("preorder : ${binaryTreeST.preorderTraversalNonRecursive().joinToString()}")
-    println("inorder  : ${binaryTreeST.inorderTraversal().joinToString()}")
-    println("inorder  : ${binaryTreeST.inorderTraversalNonRecursive().joinToString()}")
-    println("postorder: ${binaryTreeST.postorderTraversal().joinToString()}")
-    println("postorder: ${binaryTreeST.postorderTraversalNonRecursive1().joinToString()}")
-    println("postorder: ${binaryTreeST.postorderTraversalNonRecursive2().joinToString()}")
-    println("breadth  : ${binaryTreeST.breadthFirstTraversal().joinToString()}")
+    println("preorder : ${bst.preorderTraversal().joinToString()}")
+    println("preorder : ${bst.preorderTraversalNonRecursive().joinToString()}")
+    println("inorder  : ${bst.inorderTraversal().joinToString()}")
+    println("inorder  : ${bst.inorderTraversalNonRecursive().joinToString()}")
+    println("postorder: ${bst.postorderTraversal().joinToString()}")
+    println("postorder: ${bst.postorderTraversalNonRecursive1().joinToString()}")
+    println("postorder: ${bst.postorderTraversalNonRecursive2().joinToString()}")
+    println("breadth  : ${bst.breadthFirstTraversal().joinToString()}")
 }

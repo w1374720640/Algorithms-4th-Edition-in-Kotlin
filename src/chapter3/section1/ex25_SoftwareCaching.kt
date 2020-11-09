@@ -5,13 +5,13 @@ import extensions.spendTimeMillis
 
 /**
  * 为了提高查找效率，我们可以用一种叫缓存的技术手段，即将最近访问的键的位置保存在一个变量中
- * 修改LinkedListST和ArrayOrderedST来实现这个点子
+ * 修改SequentialSearchST和BinarySearchST来实现这个点子
  *
  * 解：书上要求将访问最频繁的键的位置保存在一个变量中，实际上是要求将最近访问的键保存在一个变量中
- * 对ArrayOrderedST来说很简单，在rank方法中保存最近访问的键，下次rank时，先检查最近访问的键是否有效
- * 对LinkedListST来说，在get和put方法中保存最近访问的键，下次在get和put方法中先检查最近访问的键是否匹配
+ * 对BinarySearchST来说很简单，在rank方法中保存最近访问的键，下次rank时，先检查最近访问的键是否有效
+ * 对SequentialSearchST来说，在get和put方法中保存最近访问的键，下次在get和put方法中先检查最近访问的键是否匹配
  */
-class CacheArrayOrderedST<K : Comparable<K>, V : Any> : ArrayOrderedST<K, V>() {
+class CacheBinarySearchST<K : Comparable<K>, V : Any> : BinarySearchST<K, V>() {
     private var recentIndex = -1
 
     override fun rank(key: K): Int {
@@ -23,7 +23,7 @@ class CacheArrayOrderedST<K : Comparable<K>, V : Any> : ArrayOrderedST<K, V>() {
     }
 }
 
-class CacheLinkedListST<K : Any, V : Any> : LinkedListST<K, V>() {
+class CacheSequentialSearchST<K : Any, V : Any> : SequentialSearchST<K, V>() {
     private var recentNode: Node<K, V>? = null
 
     override fun get(key: K): V? {
@@ -76,23 +76,23 @@ class CacheLinkedListST<K : Any, V : Any> : LinkedListST<K, V>() {
 }
 
 fun main() {
-    testOrderedST(CacheArrayOrderedST())
-    testST(CacheLinkedListST())
+    testOrderedST(CacheBinarySearchST())
+    testST(CacheSequentialSearchST())
 
     val time1 = spendTimeMillis {
-        frequencyCounter(In("./data/tale.txt"), 0, ArrayOrderedST())
+        frequencyCounter(In("./data/tale.txt"), 0, BinarySearchST())
     }
     println("$time1 ms")
     val time2 = spendTimeMillis {
-        frequencyCounter(In("./data/tale.txt"), 0, CacheArrayOrderedST())
+        frequencyCounter(In("./data/tale.txt"), 0, CacheBinarySearchST())
     }
     println("$time2 ms")
     val time3 = spendTimeMillis {
-        frequencyCounter(In("./data/tale.txt"), 7, LinkedListST())
+        frequencyCounter(In("./data/tale.txt"), 7, SequentialSearchST())
     }
     println("$time3 ms")
     val time4 = spendTimeMillis {
-        frequencyCounter(In("./data/tale.txt"), 7, CacheLinkedListST())
+        frequencyCounter(In("./data/tale.txt"), 7, CacheSequentialSearchST())
     }
     println("$time4 ms")
 }

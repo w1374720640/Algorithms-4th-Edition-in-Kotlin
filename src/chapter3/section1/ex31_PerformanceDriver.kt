@@ -41,7 +41,7 @@ fun main() {
             }
             allKeys.shuffle()
 
-            val st = ArrayOrderedST<String, Int>()
+            val st = BinarySearchST<String, Int>()
             keys.forEach {
                 st.put(it, 0)
             }
