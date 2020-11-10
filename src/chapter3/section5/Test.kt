@@ -122,3 +122,70 @@ fun testOrderedSET(orderedSET: OrderedSET<Int>) {
 
     println("OrderedSET check succeed.")
 }
+
+/**
+ * 测试可重复键符号表
+ */
+fun testDuplicateKeysST(st: DuplicateKeysST<Int, String>) {
+    require(st.isEmpty())
+    st.put(222, "aaa")
+    st.put(333, "bbb")
+    st.put(111, "ccc")
+
+    check(!st.isEmpty())
+    check(st.size() == 3)
+    check(st.contains(111))
+    check(st.get(222) == "aaa")
+    check(st.get(123) == null)
+
+    st.delete(222)
+    check(st.size() == 2)
+    check(st.get(222) == null)
+
+    st.put(444, "ddd")
+    st.put(111, "eee")
+    check(st.size() == 3)
+
+    // 键111对应多个值
+    check(st.get(111) == "ccc" || st.get(111) == "eee")
+    val iterator = st.getAllValues(111)?.iterator()
+    check(iterator != null)
+    var valueNum = 0
+    while (iterator.hasNext()) {
+        when (iterator.next()) {
+            "ccc", "eee" -> valueNum++
+            else -> throw IllegalStateException()
+        }
+    }
+    check(valueNum == 2)
+
+    val keys = st.keys()
+    var count = 0
+    keys.forEach {
+        when (it) {
+            111 -> {
+                count++
+            }
+            333 -> {
+                check(st.get(it) == "bbb")
+                count++
+            }
+            444 -> {
+                check(st.get(it) == "ddd")
+                count++
+            }
+            else -> {
+                throw IllegalStateException("Check failed.")
+            }
+        }
+    }
+    check(count == 3)
+
+    st.delete(111)
+    check(st.get(111) == null && st.getAllValues(111) == null)
+    st.delete(333)
+    st.delete(444)
+    check(st.isEmpty())
+
+    println("DuplicateKeysST check succeed.")
+}
