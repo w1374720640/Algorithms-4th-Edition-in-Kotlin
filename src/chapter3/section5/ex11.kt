@@ -17,6 +17,7 @@ import kotlin.NoSuchElementException
  * {1,1,1,2,2,3}的元素个数是6。
  * 多重集中的元素没有顺序分别，{1,1,1,2,2,3}和{1,1,2,1,2,3}是同一个多重集
  *
+ * 需要注意和[DuplicateKeysST]的区别，[DuplicateKeysST]是ST，同一个键对应多个值，MultiSET是SET，可以保存多个键
  * 参考练习3.5.2中[SequentialSearchSET]类的实现，区别是所有值相等的键通过链表链接到同一个结点中
  */
 class MultiSET<K : Any> : SET<K> {

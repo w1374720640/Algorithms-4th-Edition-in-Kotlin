@@ -189,3 +189,42 @@ fun testDuplicateKeysST(st: DuplicateKeysST<Int, String>) {
 
     println("DuplicateKeysST check succeed.")
 }
+
+
+fun testMathSET(createSET: () -> MathSET<Int>) {
+    val set = createSET()
+    testSET(set)
+
+    val a = intArrayOf(1, 3, 5, 7, 9)
+    val b = intArrayOf(0, 2, 4, 6, 8)
+    val c = IntArray(10) { it }
+    val setB = createSET()
+    val setC = createSET()
+    a.forEach { set.add(it) }
+    b.forEach { setB.add(it) }
+    c.forEach { setC.add(it) }
+
+    check(set.complement(setB).sameAs(setB))
+    check(set.complement(setC).sameAs(setB))
+    check(setB.complement(setC).sameAs(set))
+
+    check(set.union(setB).sameAs(setC))
+    check(set.union(setC).sameAs(setC))
+    check(setB.union(setC).sameAs(setC))
+
+    check(set.intersection(setB).isEmpty())
+    check(set.intersection(setC).sameAs(set))
+    check(setB.intersection(setC).sameAs(setB))
+
+    println("MathSET check succeed.")
+}
+
+fun <K : Any> SET<K>.sameAs(other: SET<K>): Boolean {
+    if (this.size() != other.size()) return false
+    this.keys().forEach {
+        if (!other.contains(it)) {
+            return false
+        }
+    }
+    return true
+}
