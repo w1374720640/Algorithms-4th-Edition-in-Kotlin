@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.Queue
  * 线性探测法中的延时删除
  * 为LinearProbingHashST添加一个delete()方法，在删除一个键值对时将其值设为null，
  * 并在调用resize()方法时将键值对从表中删除。
- * 这种方法的主要难点在于决定合适应该调用resize()方法。
+ * 这种方法的主要难点在于决定何时应该调用resize()方法。
  * 请注意：如果后来的put()方法为该键指定了一个新的值，你应该用新值将null覆盖掉。
  * 你的程序在决定扩张或者收缩数组时不但要考虑到数组的空元素，也要考虑到这种死掉的元素。
  */
@@ -30,8 +30,11 @@ class LazyDeleteLinearProbingHashST<K : Any, V : Any>(m: Int = 4) : LinearProbin
     }
 
     override fun put(key: K, value: V) {
-        //如果键的数量占满一半则扩容，包括有值的键和没有值的键
-        if (n + deleteNum >= m / 2) resize(m * 2)
+        //如果键占满一半则调整容量
+        if (n + deleteNum >= m / 2) {
+            // 只有当有值键比较多时才扩容，如果大部分都是空键，则容量不变
+            resize(if (n > deleteNum) m * 2 else m)
+        }
         var i = hash(key)
         while (true) {
             @Suppress("UNCHECKED_CAST")
