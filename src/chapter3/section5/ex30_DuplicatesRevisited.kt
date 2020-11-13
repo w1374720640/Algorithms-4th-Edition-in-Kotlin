@@ -1,7 +1,6 @@
 package chapter3.section5
 
 import chapter2.section5.ex31_Distinct
-import extensions.formatDouble
 import extensions.formatInt
 import extensions.random
 import extensions.spendTimeMillis

@@ -10,7 +10,7 @@ import edu.princeton.cs.algs4.Queue
  */
 class UniQueue<Item : Any> : Iterable<Item> {
     private val queue = Queue<Item>()
-    private val st = LinearProbingHashSET<Item>()
+    private val set = LinearProbingHashSET<Item>()
 
     fun size(): Int {
         return queue.size()
@@ -25,14 +25,14 @@ class UniQueue<Item : Any> : Iterable<Item> {
     }
 
     fun enqueue(item: Item) {
-        if (st.contains(item)) return
+        if (set.contains(item)) return
         queue.enqueue(item)
-        st.add(item)
+        set.add(item)
     }
 
     fun dequeue(): Item {
         val item = queue.dequeue()
-        st.delete(item)
+        set.delete(item)
         return item
     }
 

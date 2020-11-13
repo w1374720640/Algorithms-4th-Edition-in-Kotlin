@@ -29,10 +29,11 @@ class RandomAccessST<K : Any, V : Any> : ST<K, V> {
     }
 
     override fun delete(key: K) {
+        // 不支持删除指定键
         throw UnsupportedOperationException("Does not support deleting the specified key.")
     }
 
-    fun randomDelete(): K {
+    fun deleteRandomKey(): K {
         if (isEmpty()) throw NoSuchElementException()
         val key = pq.dequeue()
         st.delete(key)
@@ -62,6 +63,6 @@ fun main() {
         st.put(it, it)
     }
     repeat(10) {
-        println(st.randomDelete())
+        println(st.deleteRandomKey())
     }
 }
