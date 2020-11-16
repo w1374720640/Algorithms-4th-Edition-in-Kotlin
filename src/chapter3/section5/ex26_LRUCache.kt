@@ -16,20 +16,35 @@ import chapter3.section4.LinearProbingHashST
  * 和普通符号表的区别是：删除方法不接受参数，直接删除最近最少访问的元素
  */
 class LRUCache<K : Any, V : Any> {
+    class Node<K : Any, V : Any>(
+            key: K,
+            var value: V,
+            previous: Node<K, V>? = null,
+            next: Node<K, V>? = null
+    ) : DoubleNode<K>(key, previous = previous, next = next)
+
     private val linkedList = DoublyLinkedList<K>()
-    private val st = LinearProbingHashST<K, V>()
+    private val st = LinearProbingHashST<K, Node<K, V>>()
 
     fun get(key: K): V? {
-        val value = st.get(key)
-        if (value != null) {
-            linkedList.moveToFront(key)
+        val node = st.get(key)
+        if (node != null) {
+            linkedList.deleteNode(node)
+            linkedList.addNodeHeader(node)
         }
-        return value
+        return node?.value
     }
 
     fun put(key: K, value: V) {
-        st.put(key, value)
-        linkedList.moveToFront(key)
+        var node = st.get(key)
+        if (node == null) {
+            node = Node(key, value)
+            st.put(key, node)
+        } else {
+            node.value = value
+            linkedList.deleteNode(node)
+        }
+        linkedList.addNodeHeader(node)
     }
 
     fun delete() {
@@ -45,29 +60,34 @@ class LRUCache<K : Any, V : Any> {
             }
         }
     }
-}
 
-/**
- * 参考练习1.3.40单向链表的方法
- */
-fun <T> DoublyLinkedList<T>.moveToFront(value: T) {
-    if (isEmpty()) {
-        first = DoubleNode(value)
-        last = first
-        return
-    }
-    var node = first
-    while (node != null) {
-        if (node.item == value) {
-            node.previous?.next = node.next
-            node.next?.previous = node.previous
-            if (node == first) first = node.next
-            if (node == last) last = node.previous
-            break
+    private fun DoublyLinkedList<K>.deleteNode(node: Node<K, V>) {
+        val previous = node.previous
+        val next = node.next
+        if (previous == null) {
+            this.first = next
+        } else {
+            previous.next = next
         }
-        node = node.next
+        if (next == null) {
+            this.last = previous
+        } else {
+            next.previous = previous
+        }
+        node.previous = null
+        node.next = null
     }
-    addHeader(value)
+
+    private fun DoublyLinkedList<K>.addNodeHeader(node: Node<K, V>) {
+        node.next = this.first
+        if (this.first == null) {
+            this.first = node
+            this.last = node
+        } else {
+            this.first!!.previous = node
+            this.first = node
+        }
+    }
 }
 
 fun main() {
