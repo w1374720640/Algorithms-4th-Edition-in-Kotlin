@@ -73,4 +73,5 @@ fun main() {
     val path = "./data/tinyG.txt"
     val graph = Graph(In(path))
     println(graph.toString())
+    drawGraph(graph, pointRadius = 0.02, showIndex = true)
 }

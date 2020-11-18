@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.Bag
 import edu.princeton.cs.algs4.In
 
 /**
- * 找出一幅图中的所有连通分量
+ * 找出一幅图中的所有连通分量（深度优先）
  */
 class CC(graph: Graph) {
     private var count = 0

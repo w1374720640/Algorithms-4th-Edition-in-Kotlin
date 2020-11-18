@@ -8,16 +8,18 @@ import edu.princeton.cs.algs4.In
 import edu.princeton.cs.algs4.Point2D
 import edu.princeton.cs.algs4.StdDraw
 import extensions.random
+import kotlin.math.ceil
+import kotlin.math.sqrt
 
 /**
- * 绘制Graph数据结构的图形
- * 先用CC类找出连通分量的数量，每个连通分量占据独立的一块区域
+ * 绘制无向图[Graph]的图形
+ * 先用[CC]类找出连通分量的数量，每个连通分量占据独立的一块区域
  * 在对应区域内为每个分量中的顶点添加一个随机坐标，连接每条边
  *
  * 将矩形的绘图区域按给定比例切分，并保证每个区域都是矩形（尽量小的长宽比）：
  * 1、将每个连通分量按大小降序排序
  * 2、从第一个连通分量开始，将每个连通分量的大小相加，直到大于等于总数的一半
- * 3、将绘图区域按比例分为两半，如果x方向长度大于等于y方向长度，用垂直线分割，否则用水平线分割
+ * 3、将绘图区域按比例分为两半，如果宽度大于等于高度，用垂直线分割，否则用水平线分割
  * 4、用递归的方式将前半部分和后半部分在对应的区域内重复步骤2和步骤3，直到每个区域只有一个连通分量
  */
 class GraphGraphics(val graph: Graph) {
@@ -32,7 +34,7 @@ class GraphGraphics(val graph: Graph) {
         fun height() = top - bottom
     }
 
-    val cc = CC(graph)
+    private val cc = CC(graph)
     val count = cc.count() // 连通分量的数量
     private val bags = Array(count) { Bag<Int>() } // 连通分量所有顶点组成的数组
     private val areas = arrayOfNulls<Rect>(count) // 每个连通分量所对应的绘制区域
@@ -93,7 +95,7 @@ class GraphGraphics(val graph: Graph) {
     private val points = Array(count) { LinearProbingHashST<Int, Point2D>() } // 所有连通分量的顶点坐标
     var showSplitLine = false // 是否显示连通分量之间的分隔线
     var showIndex = false // 是否显示图的顶点名称
-    var padding = 0.05 // 每个连通分量绘制区域，边界不可绘制区域所占的百分比
+    var padding = 0.1 // 每个连通分量绘制区域，边界不可绘制区域所占的百分比
     var splitLineWidth = 0.002 // 连通分量之间分隔线宽度
     var pointRadius = 0.01 // 顶点半径
     var edgeWidth = 0.002 // 边的宽度
@@ -116,18 +118,36 @@ class GraphGraphics(val graph: Graph) {
             val bag = bags[i]
             val area = areas[i]!!
             val st = points[i]
+
+            // 为了让一个连通分量中的顶点尽可能均匀分布，同时不同顶点的x、y坐标不相等（相等时边的图形可能会重叠）
+            // 将每个绘制区域划分为 radix * radix 个相等的区域，每个点在有限范围内取随机值
+            val radix = getRadix(bag.size())
+            val width = area.width() / radix
+            val height = area.height() / radix
+            var j = 0
             bag.forEach {
-                val x = random(area.left + area.width() * padding, area.right - area.width() * padding)
-                val y = random(area.bottom + area.height() * padding, area.top - area.height() * padding)
+                val left = area.left + width * (j % radix)
+                val x = random(left + width * padding, left + width * (1 - 2 * padding))
+                val bottom = area.bottom + height * (j / radix)
+                val y = random(bottom + height * padding, bottom + height * (1 - 2 * padding))
                 st.put(it, Point2D(x, y))
+                j++
             }
         }
+    }
+
+    /**
+     * 获取大于等于根号num的最小整数
+     */
+    private fun getRadix(num: Int): Int {
+        return ceil(sqrt(num.toDouble())).toInt()
     }
 
     private fun drawSplitLine() {
         StdDraw.setPenRadius(splitLineWidth)
         StdDraw.setPenColor(StdDraw.LIGHT_GRAY)
         areas.forEach { area ->
+            // 不绘制整个画板的四条边界
             if (area!!.left != 0.0) {
                 StdDraw.line(area.left, area.top, area.left, area.bottom)
             }
@@ -184,7 +204,6 @@ class GraphGraphics(val graph: Graph) {
 
 /**
  * 绘制无向图的图形
- * 同一个连通分量内点的位置随机生成，可能会显示重叠，可以重新运行程序生成新的图形
  */
 fun drawGraph(graph: Graph,
               showSplitLine: Boolean = false,
