@@ -4,9 +4,8 @@ import edu.princeton.cs.algs4.In
 import edu.princeton.cs.algs4.Queue
 import edu.princeton.cs.algs4.Stack
 import extensions.readInt
-import java.lang.StringBuilder
 
-class BreadFirstPaths(graph: Graph, val s: Int): Paths(graph, s) {
+class BreadFirstPaths(graph: Graph, val s: Int) : Paths(graph, s) {
     init {
         require(s in 0 until graph.V)
     }

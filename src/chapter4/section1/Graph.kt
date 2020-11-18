@@ -2,8 +2,6 @@ package chapter4.section1
 
 import edu.princeton.cs.algs4.Bag
 import edu.princeton.cs.algs4.In
-import extensions.readInt
-import java.lang.StringBuilder
 
 /**
  * 无向图的API
@@ -27,7 +25,7 @@ class Graph {
      * 从标准输入流input读入一幅图
      */
     constructor(input: In) : this(input.readInt()) {
-        E = input.readInt()
+        val E = input.readInt()
         repeat(E) {
             addEdge(input.readInt(), input.readInt())
         }
@@ -39,6 +37,7 @@ class Graph {
     fun addEdge(v: Int, w: Int) {
         adj[v].add(w)
         adj[w].add(v)
+        E++
     }
 
     /**
