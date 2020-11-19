@@ -92,13 +92,22 @@ class GraphGraphics(val graph: Graph) {
         }
     }
 
+    companion object {
+        const val DEFAULT_SHOW_SPLIT_LINE = false
+        const val DEFAULT_SHOW_INDEX = false
+        const val DEFAULT_PADDING = 0.1
+        const val DEFAULT_SPLIT_LINE_WIDTH = 0.002
+        const val DEFAULT_POINT_RADIUS = 0.01
+        const val DEFAULT_EDGE_WIDTH = 0.002
+    }
+
     private val points = Array(count) { LinearProbingHashST<Int, Point2D>() } // 所有连通分量的顶点坐标
-    var showSplitLine = false // 是否显示连通分量之间的分隔线
-    var showIndex = false // 是否显示图的顶点名称
-    var padding = 0.1 // 每个连通分量绘制区域，边界不可绘制区域所占的百分比
-    var splitLineWidth = 0.002 // 连通分量之间分隔线宽度
-    var pointRadius = 0.01 // 顶点半径
-    var edgeWidth = 0.002 // 边的宽度
+    var showSplitLine = DEFAULT_SHOW_SPLIT_LINE // 是否显示连通分量之间的分隔线
+    var showIndex = DEFAULT_SHOW_INDEX // 是否显示图的顶点名称
+    var padding = DEFAULT_PADDING // 每个连通分量绘制区域，边界不可绘制区域所占的百分比
+    var splitLineWidth = DEFAULT_SPLIT_LINE_WIDTH // 连通分量之间分隔线宽度
+    var pointRadius = DEFAULT_POINT_RADIUS // 顶点半径
+    var edgeWidth = DEFAULT_EDGE_WIDTH // 边的宽度
 
     fun draw() {
         StdDraw.clear()
@@ -206,11 +215,11 @@ class GraphGraphics(val graph: Graph) {
  * 绘制无向图的图形
  */
 fun drawGraph(graph: Graph,
-              showSplitLine: Boolean = false,
-              showIndex: Boolean = false,
-              splitLineWidth: Double = 0.002,
-              pointRadius: Double = 0.01,
-              edgeWidth: Double = 0.002) {
+              showSplitLine: Boolean = GraphGraphics.DEFAULT_SHOW_SPLIT_LINE,
+              showIndex: Boolean = GraphGraphics.DEFAULT_SHOW_INDEX,
+              splitLineWidth: Double = GraphGraphics.DEFAULT_SPLIT_LINE_WIDTH,
+              pointRadius: Double = GraphGraphics.DEFAULT_POINT_RADIUS,
+              edgeWidth: Double = GraphGraphics.DEFAULT_EDGE_WIDTH) {
     val graphGraphics = GraphGraphics(graph)
     graphGraphics.showSplitLine = showSplitLine
     graphGraphics.showIndex = showIndex
@@ -223,7 +232,7 @@ fun drawGraph(graph: Graph,
 private fun showTinyGraph() {
     val path = "./data/tinyG.txt"
     val graph = Graph(In(path))
-    drawGraph(graph, pointRadius = 0.02, showIndex = true)
+    drawGraph(graph, pointRadius = GraphGraphics.DEFAULT_POINT_RADIUS * 2, showIndex = true)
 }
 
 private fun showMediumGraph() {
