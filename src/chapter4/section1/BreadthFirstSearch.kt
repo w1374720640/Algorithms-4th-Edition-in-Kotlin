@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.In
 import edu.princeton.cs.algs4.Queue
 import extensions.readInt
 
-class BreadFirstSearch(graph: Graph, s: Int) : Search(graph, s) {
+class BreadthFirstSearch(graph: Graph, s: Int) : Search(graph, s) {
     init {
         require(s in 0 until graph.V)
     }
@@ -40,7 +40,7 @@ fun main() {
     val path = "./data/tinyG.txt"
     val graph = Graph(In(path))
     val s = readInt("search with: ")
-    val search = BreadFirstSearch(graph, s)
+    val search = BreadthFirstSearch(graph, s)
     for (i in 0 until graph.V) {
         if (search.marked(i)) {
             print("$i ")

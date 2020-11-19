@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.Queue
 import edu.princeton.cs.algs4.Stack
 import extensions.readInt
 
-class BreadFirstPaths(graph: Graph, val s: Int) : Paths(graph, s) {
+class BreadthFirstPaths(graph: Graph, val s: Int) : Paths(graph, s) {
     init {
         require(s in 0 until graph.V)
     }
@@ -49,7 +49,7 @@ fun main() {
     val path = "./data/tinyG.txt"
     val graph = Graph(In(path))
     val s = readInt("path with: ")
-    val search = BreadFirstPaths(graph, s)
+    val search = BreadthFirstPaths(graph, s)
     for (v in 0 until graph.V) {
         val stringBuilder = StringBuilder()
                 .append(s)

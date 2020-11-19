@@ -13,7 +13,7 @@ import kotlin.math.sqrt
 
 /**
  * 绘制无向图[Graph]的图形
- * 先用[CC]类找出连通分量的数量，每个连通分量占据独立的一块区域
+ * 先用[BreadthFirstCC]类找出连通分量的数量，每个连通分量占据独立的一块区域
  * 在对应区域内为每个分量中的顶点添加一个随机坐标，连接每条边
  *
  * 将矩形的绘图区域按给定比例切分，并保证每个区域都是矩形（尽量小的长宽比）：
@@ -34,7 +34,7 @@ class GraphGraphics(val graph: Graph) {
         fun height() = top - bottom
     }
 
-    private val cc = CC(graph)
+    private val cc = BreadthFirstCC(graph)
     val count = cc.count() // 连通分量的数量
     private val bags = Array(count) { Bag<Int>() } // 连通分量所有顶点组成的数组
     private val areas = arrayOfNulls<Rect>(count) // 每个连通分量所对应的绘制区域

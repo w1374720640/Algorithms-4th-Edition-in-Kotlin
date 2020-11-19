@@ -6,12 +6,12 @@ import edu.princeton.cs.algs4.In
 /**
  * 无向图的API
  */
-class Graph {
+open class Graph {
     var V: Int
-        private set
+        protected set
     var E: Int = 0
-        private set
-    private val adj: Array<Bag<Int>>
+        protected set
+    protected val adj: Array<Bag<Int>>
 
     /**
      * 创建一个含有V个顶点但不含有边的图
@@ -34,7 +34,7 @@ class Graph {
     /**
      * 向图中添加一条边v-w
      */
-    fun addEdge(v: Int, w: Int) {
+    open fun addEdge(v: Int, w: Int) {
         adj[v].add(w)
         adj[w].add(v)
         E++
@@ -43,7 +43,7 @@ class Graph {
     /**
      * 和v相邻的所有顶点
      */
-    fun adj(v: Int): Iterable<Int> {
+    open fun adj(v: Int): Iterable<Int> {
         return adj[v]
     }
 
