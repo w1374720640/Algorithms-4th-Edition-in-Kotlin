@@ -13,13 +13,15 @@ class BreadthFirstCC(graph: Graph) : CC(graph) {
         val queue = Queue<Int>()
         for (i in 0 until graph.V) {
             if (!marked[i]) {
+                marked[i] = true
+                ids[i] = count
                 queue.enqueue(i)
                 while (!queue.isEmpty) {
                     val v = queue.dequeue()
-                    marked[v] = true
-                    ids[v] = count
                     graph.adj(v).forEach { w ->
                         if (!marked[w]) {
+                            marked[w] = true
+                            ids[w] = count
                             queue.enqueue(w)
                         }
                     }

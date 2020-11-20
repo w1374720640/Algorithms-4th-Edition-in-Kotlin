@@ -15,14 +15,15 @@ class BreadthFirstPaths(graph: Graph, val s: Int) : Paths(graph, s) {
 
     init {
         val queue = Queue<Int>()
+        marked[s] = true
         queue.enqueue(s)
         while (!queue.isEmpty) {
             val v = queue.dequeue()
-            marked[v] = true
-            graph.adj(v).forEach {
-                if (!marked[it]) {
-                    edgeTo[it] = v
-                    queue.enqueue(it)
+            graph.adj(v).forEach { w ->
+                if (!marked[w]) {
+                    marked[w] = true
+                    edgeTo[w] = v
+                    queue.enqueue(w)
                 }
             }
         }

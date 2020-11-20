@@ -14,14 +14,15 @@ class BreadthFirstSearch(graph: Graph, s: Int) : Search(graph, s) {
 
     init {
         val queue = Queue<Int>()
+        marked[s] = true
         queue.enqueue(s)
         while (!queue.isEmpty) {
             val v = queue.dequeue()
-            marked[v] = true
             count++
-            graph.adj(v).forEach {
-                if (!marked[it]) {
-                    queue.enqueue(it)
+            graph.adj(v).forEach { w ->
+                if (!marked[w]) {
+                    marked[w] = true
+                    queue.enqueue(w)
                 }
             }
         }

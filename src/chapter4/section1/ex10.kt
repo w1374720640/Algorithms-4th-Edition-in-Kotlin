@@ -11,22 +11,16 @@ package chapter4.section1
  * 若找到的顶点数量和连通图总顶点数不等，说明至少有一个相邻点与其他相邻点只能通过顶点[s]连通，删除顶点[s]会导致连通图分裂
  */
 fun ex10(graph: Graph, s: Int): Boolean {
+    require(s in 0 until graph.V)
     val iterable = graph.adj(s)
-    var i = 0
-    var iterator = iterable.iterator()
-    while (iterator.hasNext()) {
-        i++
-        iterator.next()
-    }
-    if (i <= 1) return true
+    if (iterable.count() <= 1) return true
 
     val marked = BooleanArray(graph.V)
     marked[s] = true
-    i = 1
+    var i = 1
 
-    iterator = iterable.iterator()
     // 任意选择一个相邻顶点开始深度优先遍历
-    val v = iterator.next()
+    val v = iterable.first()
     i += dfs(graph, marked, v)
     val search = DepthFirstSearch(graph, s)
     return i == search.count()
