@@ -11,7 +11,7 @@ open class Graph {
         protected set
     var E: Int = 0
         protected set
-    protected val adj: Array<Bag<Int>>
+    protected var adj: Array<Bag<Int>>
 
     /**
      * 创建一个含有V个顶点但不含有边的图
