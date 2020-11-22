@@ -9,66 +9,64 @@ import edu.princeton.cs.algs4.In
  *
  * 解：用练习4.1.13中的distTo方法找到给定点到顶点v的最短距离，遍历所有顶点，最大值就是离心率
  * 根据离心率、直径、半径、中点的定义，图应该是一个所有顶点都连通的图
+ * 在构造函数中预处理所有的顶点，时间复杂度为O(N*(N+E))，调用其他方法的时间复杂度为O(1)
  */
 class GraphProperties(val graph: Graph) {
+    private val eccentricities = IntArray(graph.V)
+    private var diameter = 0
+    private var radius = Int.MAX_VALUE
+    private var center = 0
+
+    init {
+        val cc = BreadthFirstCC(graph)
+        require(cc.count() == 1) { "The graph should be a graph with all vertices connected." }
+
+        for (v in 0 until graph.V) {
+            val paths = DistToBreadFirstPaths(graph, v)
+            var max = 0
+            for (i in 0 until graph.V) {
+                val distance = paths.distTo(i)
+                if (distance > max) {
+                    max = distance
+                }
+            }
+            if (max > diameter) {
+                diameter = max
+            }
+            if (max < radius) {
+                radius = max
+                center = v
+            }
+            eccentricities[v] = max
+        }
+    }
 
     /**
      * v的离心率
      */
     fun eccentricity(v: Int): Int {
-        val paths = DistToBreadFirstPaths(graph, v)
-        var max = 0
-        for (i in 0 until graph.V) {
-            val distance = paths.distTo(i)
-            if (distance > max) {
-                max = distance
-            }
-        }
-        return max
+        return eccentricities[v]
     }
 
     /**
      * G的直径
      */
     fun diameter(): Int {
-        var max = 0
-        for (i in 0 until graph.V) {
-            val eccentricity = eccentricity(i)
-            if (eccentricity > max) {
-                max = eccentricity
-            }
-        }
-        return max
+        return diameter
     }
 
     /**
      * G的半径
      */
     fun radius(): Int {
-        var min = Int.MAX_VALUE
-        for (i in 0 until graph.V) {
-            val eccentricity = eccentricity(i)
-            if (eccentricity < min) {
-                min = eccentricity
-            }
-        }
-        return min
+        return radius
     }
 
     /**
      * G的某个中点
      */
     fun center(): Int {
-        var min = Int.MAX_VALUE
-        var minIndex = 0
-        for (i in 0 until graph.V) {
-            val eccentricity = eccentricity(i)
-            if (eccentricity < min) {
-                min = eccentricity
-                minIndex = i
-            }
-        }
-        return minIndex
+        return center
     }
 }
 

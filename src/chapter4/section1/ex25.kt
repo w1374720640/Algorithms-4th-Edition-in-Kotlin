@@ -5,21 +5,21 @@ import edu.princeton.cs.algs4.StdIn
 import extensions.inputPrompt
 
 /**
- * 间隔的度数
+ * 编写一个类似于DegreesOfSeparation的SymbolGraph用例，使用深度优先搜索代替广度优先搜索来查找两个演员之间的路径
+ *
+ * 解：深度优先搜索时，手动维护一个栈而不是用递归，防止栈溢出
  */
-class DegreesOfSeparation(stream: String, sp: String, name: String) {
+class DFSDegreesOfSeparation(stream: String, sp: String, val name: String) {
     private val sg = SymbolGraph(stream, sp)
 
     init {
         require(sg.contains(name))
     }
 
-    private val paths = DistToBreadFirstPaths(sg.G(), sg.index(name))
+    private val paths = StackDepthFirstPaths(sg.G(), sg.index(name))
 
     fun degrees(s: String): Int {
-        // 不相连的人用最大的Int值表示（无穷大只能用浮点型数据表示）
         if (!sg.contains(s)) return Int.MAX_VALUE
-        // 需要注意，路径长度除以2才是真正的间隔度数
         return if (paths.hasPathTo(sg.index(s))) paths.distTo(sg.index(s)) / 2 else Int.MAX_VALUE
     }
 
@@ -45,7 +45,7 @@ class DegreesOfSeparation(stream: String, sp: String, name: String) {
 
 fun main() {
     inputPrompt()
-    val degreesOfSeparation = DegreesOfSeparation("./data/movies.txt", "/", "Bacon, Kevin")
+    val degreesOfSeparation = DFSDegreesOfSeparation("./data/movies.txt", "/", "Bacon, Kevin")
     while (StdIn.hasNextLine()) {
         val line = StdIn.readLine()
         degreesOfSeparation.printPath(line)
