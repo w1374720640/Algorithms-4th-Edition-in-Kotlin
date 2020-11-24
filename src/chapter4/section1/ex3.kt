@@ -1,6 +1,7 @@
 package chapter4.section1
 
 import chapter3.section5.LinearProbingHashSET
+import chapter3.section5.SET
 import edu.princeton.cs.algs4.In
 
 /**
@@ -12,17 +13,22 @@ import edu.princeton.cs.algs4.In
  * 因为一条边会被遍历两次，所以用一个新的数据结构对边去重
  */
 fun Graph.copy(): Graph {
-    val set = LinearProbingHashSET<Edge>()
+    val set = getEdgeSet()
     val graph = Graph(V)
+    set.keys().forEach {
+        graph.addEdge(it.small, it.large)
+    }
+    return graph
+}
+
+fun Graph.getEdgeSet(): SET<Edge> {
+    val set = LinearProbingHashSET<Edge>()
     for (v in 0 until V) {
         adj(v).forEach {
             set.add(Edge(v, it))
         }
     }
-    set.keys().forEach {
-        graph.addEdge(it.small, it.large)
-    }
-    return graph
+    return set
 }
 
 /**
