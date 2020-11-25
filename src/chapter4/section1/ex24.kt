@@ -11,7 +11,7 @@ import java.util.regex.Pattern
 /**
  * 修改DegreesOfSeparation，从命令行接受一个整型参数y，忽略上映年数超过y的电影
  *
- * 解：重写[DegreesOfSeparation]类，通过传入筛选条件，忽略不符合条件的顶点
+ * 解：重写[DegreesOfSeparation]类，通过传入筛选条件[filter]，忽略不符合条件的顶点
  */
 class FilterDegreesOfSeparation(stream: String, sp: String, val name: String, val filter: (String) -> Boolean) {
     private val sg = SymbolGraph(stream, sp)

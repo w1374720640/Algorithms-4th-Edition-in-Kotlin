@@ -17,11 +17,11 @@ import extensions.inputPrompt
 class IterateOnceSymbolGraph(fileName: String, delim: String) {
     private val st = LinearProbingHashST<String, Int>()
     private val names = LinearProbingHashST<Int, String>()
-    private val edges = ArrayList<Edge>()
     private var V: Int = 0
     private val graph: Graph
 
     init {
+        val edges = ArrayList<Edge>()
         val input = In(fileName)
         while (input.hasNextLine()) {
             val line = input.readLine()

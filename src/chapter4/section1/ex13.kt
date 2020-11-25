@@ -8,7 +8,7 @@ import edu.princeton.cs.algs4.Stack
  * 为BreadthFirstPaths的API添加并实现一个方法distTo()，返回从起点到给定的顶点的最短路径的长度
  * 它所需的时间应该为常数
  *
- * 解：如果需要常数的时间，需要额外添加一个数组
+ * 解：使用额外数组记录每个点到起始点的距离
  */
 class DistToBreadFirstPaths(graph: Graph, val s: Int) : Paths(graph, s) {
     init {

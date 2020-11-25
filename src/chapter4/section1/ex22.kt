@@ -41,7 +41,7 @@ class BaconHistogram {
         }
     }
 
-    private val bst = RedBlackBST<Int, Int>()
+    private val bst = RedBlackBST<Int, Int>() // 记录Kevin Bacon数和数量的对应关系
     private var maxActorNum = 0 // 记录所有Kevin Bacon数中最多的演员数量
 
     init {
@@ -55,29 +55,31 @@ class BaconHistogram {
         bst.put(degrees, 1)
         degrees++
 
-        while (!inputStack.isEmpty || !outputStack.isEmpty) {
-            var count = 0
-            while (!inputStack.isEmpty) {
-                val v = inputStack.pop()
-                graph.adj(v).forEach { w ->
-                    if (!marked[w]) {
-                        marked[w] = true
-                        outputStack.push(w)
-                        count++
-                    }
+        var count = 0
+        while (!inputStack.isEmpty) {
+            val v = inputStack.pop()
+            graph.adj(v).forEach { w ->
+                if (!marked[w]) {
+                    marked[w] = true
+                    outputStack.push(w)
+                    count++
                 }
             }
-            if (isActor) {
-                bst.put(degrees, count)
-                degrees++
+            if (inputStack.isEmpty) {
+                if (isActor) {
+                    bst.put(degrees, count)
+                    degrees++
+                }
+                isActor = !isActor
+                count = 0
+
+                val temp = inputStack
+                inputStack = outputStack
+                outputStack = temp
             }
-            isActor = !isActor
-            val temp = inputStack
-            inputStack = outputStack
-            outputStack = temp
         }
 
-        var count = 0
+        count = 0
         bst.keys().forEach { key ->
             val value = bst.get(key)!!
             if (value > maxActorNum) {
@@ -93,7 +95,7 @@ class BaconHistogram {
     }
 
     companion object {
-        // 可绘制区域的上下左右边界
+        // 可绘制区域的左边界和下边界
         const val LEFT = 0.05
         const val BOTTOM = 0.05
 

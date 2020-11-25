@@ -1,5 +1,6 @@
 package chapter4.section1
 
+import chapter3.section5.LinearProbingHashSET
 import edu.princeton.cs.algs4.Queue
 import extensions.spendTimeMillis
 
@@ -38,7 +39,7 @@ fun main() {
 
     val maxCC = ccArray.last()
     val newGraph = getGraphByCC(graph, maxCC)
-    // 下面的操作非常慢，时间复杂度为O(N*(N+E))，在我的电脑上耗时5分钟左右
+    // 下面的操作非常慢，时间复杂度为O(N*(N+E))
     val time = spendTimeMillis {
         val graphProperties = GraphProperties(newGraph)
         // “计算最大的连通分量的离心率”这句话不准确，每个顶点都有自己的离心率，但图没有离心率，只有直径、半径、中点等参数
@@ -60,6 +61,7 @@ private fun getGraphByCC(graph: Graph, cc: MoviesCC): Graph {
     val newGraph = Graph(cc.count)
     val marked = BooleanArray(graph.V)
     val indexMapping = IntArray(graph.V)
+    val set = LinearProbingHashSET<Edge>()
     var i = 0
     val queue = Queue<Int>()
     indexMapping[cc.example] = i
@@ -74,10 +76,17 @@ private fun getGraphByCC(graph: Graph, cc: MoviesCC): Graph {
                 marked[w] = true
                 queue.enqueue(w)
                 indexMapping[w] = i
-                newGraph.addEdge(indexMapping[v], i)
                 i++
             }
+            // 利用集合对边去重
+            val edge = Edge(indexMapping[v], indexMapping[w])
+            if (!set.contains(edge)) {
+                set.add(edge)
+            }
         }
+    }
+    set.keys().forEach { edge ->
+        newGraph.addEdge(edge.small, edge.large)
     }
     return newGraph
 }

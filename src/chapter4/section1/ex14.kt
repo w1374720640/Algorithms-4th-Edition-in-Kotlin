@@ -20,20 +20,20 @@ class StackBreadthFirstPath(graph: Graph, val s: Int) : Paths(graph, s) {
         var outputStack = Stack<Int>()
         inputStack.push(s)
         marked[s] = true
-        while (!inputStack.isEmpty || !outputStack.isEmpty) {
-            while (!inputStack.isEmpty) {
-                val v = inputStack.pop()
-                graph.adj(v).forEach { w ->
-                    if (!marked[w]) {
-                        outputStack.push(w)
-                        marked[w] = true
-                        edgeTo[w] = v
-                    }
+        while (!inputStack.isEmpty) {
+            val v = inputStack.pop()
+            graph.adj(v).forEach { w ->
+                if (!marked[w]) {
+                    outputStack.push(w)
+                    marked[w] = true
+                    edgeTo[w] = v
                 }
             }
-            val temp = inputStack
-            inputStack = outputStack
-            outputStack = temp
+            if (inputStack.isEmpty) {
+                val temp = inputStack
+                inputStack = outputStack
+                outputStack = temp
+            }
         }
     }
 
@@ -58,12 +58,12 @@ fun main() {
     val graph = Graph(In("./data/mediumG.txt"))
     val paths1 = BreadthFirstPaths(graph, 0)
     val paths2 = StackBreadthFirstPath(graph, 0)
-    for (i in 0 until graph.V) {
-        check(paths1.pathTo(i)?.count() == paths2.pathTo(i)?.count())
+    for (v in 0 until graph.V) {
+        check(paths1.pathTo(v)?.count() == paths2.pathTo(v)?.count())
 
-        println("i : $i")
-        println("paths1 : ${paths1.pathTo(i)?.joinToString()}")
-        println("paths2 : ${paths2.pathTo(i)?.joinToString()}")
+        println("v : $v")
+        println("paths1 : ${paths1.pathTo(v)?.joinToString()}")
+        println("paths2 : ${paths2.pathTo(v)?.joinToString()}")
     }
     println()
     println("mediumG check succeed.")

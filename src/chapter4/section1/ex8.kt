@@ -19,7 +19,7 @@ class UnionFindSearch(val graph: Graph, val s: Int) : Search(graph, s) {
             }
         }
 
-        // 初始化时统计count值，防止count()方法时间复杂度退化为N
+        // 初始化时统计count值，防止count()方法时间复杂度退化为O(N)
         val sId = uf.find(s)
         for (v in 0 until graph.V) {
             if (uf.find(v) == sId) {
@@ -33,7 +33,7 @@ class UnionFindSearch(val graph: Graph, val s: Int) : Search(graph, s) {
     }
 
     override fun count(): Int {
-        return count
+        return uf.treeSize[uf.find(s)]
     }
 
 }
@@ -49,5 +49,6 @@ fun main() {
         }
     }
     println()
+    println("count=${search.count()}")
     println("${if (search.count() == graph.V) "" else "NOT"} connected")
 }
