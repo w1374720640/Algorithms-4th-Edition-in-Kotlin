@@ -6,10 +6,10 @@ import edu.princeton.cs.algs4.In
 /**
  * 有向图的API
  */
-class Digraph {
+open class Digraph {
     val V: Int
     var E: Int = 0
-    private val adj: Array<Bag<Int>>
+    protected val adj: Array<Bag<Int>>
 
     constructor(V: Int) {
         this.V = V
@@ -26,19 +26,19 @@ class Digraph {
     /**
      * 向有向图中添加一条边 v -> w
      */
-    fun addEdge(v: Int, w: Int) {
+    open fun addEdge(v: Int, w: Int) {
         adj[v].add(w)
         E++
     }
 
-    fun adj(v: Int): Iterable<Int> {
+    open fun adj(v: Int): Iterable<Int> {
         return adj[v]
     }
 
     /**
      * 该图的反向图
      */
-    fun reverse(): Digraph {
+    open fun reverse(): Digraph {
         val reverseDigraph = Digraph(V)
         for (v in 0 until V) {
             adj[v].forEach { w ->
@@ -67,9 +67,12 @@ class Digraph {
     }
 }
 
-fun main() {
+fun getTinyDG(): Digraph {
     // 官网最新测试数据包内容和书中略有不同，需要修改成原文中相同的数据
-    val path = "./data/tinyDG.txt"
-    val digraph = Digraph(In(path))
+    return Digraph(In("./data/tinyDG.txt"))
+}
+
+fun main() {
+    val digraph = getTinyDG()
     println(digraph)
 }

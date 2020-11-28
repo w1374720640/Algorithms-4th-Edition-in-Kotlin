@@ -1,7 +1,6 @@
 package chapter4.section2
 
 import edu.princeton.cs.algs4.Bag
-import edu.princeton.cs.algs4.In
 
 /**
  * 强连通分量的API
@@ -58,8 +57,7 @@ class KosarajuSCC(digraph: Digraph) {
 }
 
 fun main() {
-    val path = "./data/tinyDG.txt"
-    val digraph = Digraph(In(path))
+    val digraph = getTinyDG()
     val scc = KosarajuSCC(digraph)
     val count = scc.count()
     println("$count components")

@@ -1,7 +1,5 @@
 package chapter4.section2
 
-import edu.princeton.cs.algs4.In
-
 /**
  * 有向图的可达性API
  */
@@ -46,8 +44,7 @@ class DirectedDFS {
 }
 
 fun main() {
-    val path = "./data/tinyDG.txt"
-    val digraph = Digraph(In(path))
+    val digraph = getTinyDG()
     val directedDFS = DirectedDFS(digraph, 0)
     println(directedDFS.marked(2))
     println(directedDFS.marked(6))

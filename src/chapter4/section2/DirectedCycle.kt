@@ -1,6 +1,5 @@
 package chapter4.section2
 
-import edu.princeton.cs.algs4.In
 import edu.princeton.cs.algs4.Stack
 
 /**
@@ -62,8 +61,7 @@ class DirectedCycle(digraph: Digraph) {
 }
 
 fun main() {
-    val path = "./data/tinyDG.txt"
-    val digraph = Digraph(In(path))
+    val digraph = getTinyDG()
     val cycle = DirectedCycle(digraph)
     if (cycle.hasCycle()) {
         println("has cycle")

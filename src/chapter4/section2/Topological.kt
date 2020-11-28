@@ -32,10 +32,12 @@ class Topological(digraph: Digraph) {
     }
 }
 
+fun getJobsSymbolDigraph(): SymbolDigraph {
+    return SymbolDigraph("./data/jobs.txt",  "/")
+}
+
 fun main() {
-    val fileName = "./data/jobs.txt"
-    val delim = "/"
-    val symbolDigraph = SymbolDigraph(fileName, delim)
+    val symbolDigraph = getJobsSymbolDigraph()
     val digraph = symbolDigraph.G()
     val topological = Topological(digraph)
     if (topological.isDAG()) {
