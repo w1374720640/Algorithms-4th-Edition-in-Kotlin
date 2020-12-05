@@ -13,10 +13,12 @@ class BreadthFirstDirectedPaths(digraph: Digraph, val s: Int) {
 
     private val marked = BooleanArray(digraph.V)
     private val edgeTo = IntArray(digraph.V)
+    private val distTo = IntArray(digraph.V) { -1 }
 
     init {
         val queue = Queue<Int>()
         marked[s] = true
+        distTo[s] = 0
         queue.enqueue(s)
         while (!queue.isEmpty) {
             val v = queue.dequeue()
@@ -24,6 +26,7 @@ class BreadthFirstDirectedPaths(digraph: Digraph, val s: Int) {
                 if (!marked[w]) {
                     marked[w] = true
                     edgeTo[w] = v
+                    distTo[w] = distTo[v] + 1
                     queue.enqueue(w)
                 }
             }
@@ -44,5 +47,9 @@ class BreadthFirstDirectedPaths(digraph: Digraph, val s: Int) {
         }
         stack.push(s)
         return stack
+    }
+
+    fun distTo(v: Int): Int {
+        return distTo[v]
     }
 }

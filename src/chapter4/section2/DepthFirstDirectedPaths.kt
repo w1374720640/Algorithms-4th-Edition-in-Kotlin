@@ -12,8 +12,10 @@ class DepthFirstDirectedPaths(digraph: Digraph, val s: Int) {
 
     private val marked = BooleanArray(digraph.V)
     private val edgeTo = IntArray(digraph.V)
+    private val distTo = IntArray(digraph.V) { -1 }
 
     init {
+        distTo[s] = 0
         dfs(digraph, s)
     }
 
@@ -22,6 +24,7 @@ class DepthFirstDirectedPaths(digraph: Digraph, val s: Int) {
         graph.adj(v).forEach {
             if (!marked[it]) {
                 edgeTo[it] = v
+                distTo[it] = distTo[v] + 1
                 dfs(graph, it)
             }
         }
@@ -41,5 +44,9 @@ class DepthFirstDirectedPaths(digraph: Digraph, val s: Int) {
         }
         stack.push(s)
         return stack
+    }
+
+    fun distTo(v: Int): Int {
+        return distTo[v]
     }
 }

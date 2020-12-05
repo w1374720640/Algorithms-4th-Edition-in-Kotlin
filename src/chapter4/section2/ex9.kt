@@ -6,7 +6,7 @@ package chapter4.section2
  * 解：虽然根据书中的拓扑排序算法得出的结果只有一种，但实际上有多种排列方式都可以满足拓扑顺序，只要能满足先后顺序就行
  * 创建一个marked数组，遍历给定排列时，将顶点对应位置的marked值设置为true，
  * 同时检查该顶点所有直接可达的顶点，只要有一个直接可达顶点的marked值为true，则不符合条件，
- * 如果遍历完成后，所有顶点的直接可达顶点对应的marked值为false，则该排序时图的拓扑排序
+ * 如果遍历完成后，所有顶点的直接可达顶点对应的marked值为false，则该排序是图的拓扑排序
  */
 fun ex9(digraph: Digraph, iterable: Iterable<Int>): Boolean {
     val marked = BooleanArray(digraph.V)
