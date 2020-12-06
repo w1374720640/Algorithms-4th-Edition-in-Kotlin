@@ -6,21 +6,15 @@ package chapter4.section2
  * 编写一个程序Euler来找出有向图中的欧拉环或者说明它不存在。
  * 提示：当且仅当有向图G是连通的且每个顶点的出度和入度相同时G含有一条有向欧拉环
  *
- * 解：先统计每个顶点的出度，再获取有向图的反向图获取每个顶点的入度
+ * 解：根据练习4.2.7计算每个顶点的出度和入度
  * 根据提示判断有向图G是否是一个欧拉环
  * 因为欧拉环的定义是：恰好包含了所有的边且没有重复的环
  * 所以所有的顶点都在欧拉环中
  */
 fun ex20_DirectedEulerianCycle(digraph: Digraph): Boolean {
-    val outDegrees = IntArray(digraph.V)
-
+    val degrees = Degrees(digraph)
     for (i in 0 until digraph.V) {
-        outDegrees[i] = digraph.adj(i).count()
-    }
-    val reverseDigraph = digraph.reverse()
-    for (i in 0 until digraph.V) {
-        val inDegree = reverseDigraph.adj(i).count()
-        if (inDegree != outDegrees[i]) return false
+        if (degrees.inDegree(i) != degrees.outDegree(i)) return false
     }
     return true
 }
