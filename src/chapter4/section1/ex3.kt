@@ -32,7 +32,7 @@ fun Graph.getEdgeSet(): SET<Edge> {
 }
 
 /**
- * 图的一条边，0-1和1-0相等，无法描述平行边
+ * 无向图的一条边，0-1和1-0相等，无法描述平行边
  */
 class Edge(v: Int, w: Int) {
 
