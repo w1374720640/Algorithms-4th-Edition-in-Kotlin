@@ -3,7 +3,7 @@ package chapter4.section3
 /**
  * 最小生成树的API
  */
-abstract class MST(graph: EdgeWeightedGraph) {
+abstract class MST(graph: EWG) {
 
     /**
      * 最小生成树的所有边

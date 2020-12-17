@@ -5,17 +5,10 @@ import edu.princeton.cs.algs4.In
 import edu.princeton.cs.algs4.Queue
 
 /**
- * 加权无向图的API
+ * 加权无向图的邻接表实现
  */
-open class EdgeWeightedGraph {
-    val V: Int
-    var E: Int = 0
-    protected val adj: Array<Bag<Edge>>
-
-    constructor(V: Int) {
-        this.V = V
-        adj = Array(V) { Bag<Edge>() }
-    }
+open class EdgeWeightedGraph(V: Int) : EWG(V) {
+    protected val adj = Array(V) { Bag<Edge>() }
 
     constructor(input: In) : this(input.readInt()) {
         val E = input.readInt()
@@ -24,17 +17,17 @@ open class EdgeWeightedGraph {
         }
     }
 
-    fun addEdge(edge: Edge) {
+    override fun addEdge(edge: Edge) {
         adj[edge.v].add(edge)
         adj[edge.w].add(edge)
         E++
     }
 
-    fun adj(v: Int): Iterable<Edge> {
+    override fun adj(v: Int): Iterable<Edge> {
         return adj[v]
     }
 
-    fun edges(): Iterable<Edge> {
+    override fun edges(): Iterable<Edge> {
         val queue = Queue<Edge>()
         for (v in adj.indices) {
             val bag = adj[v]
@@ -70,6 +63,8 @@ fun getMediumWeightedGraph(): EdgeWeightedGraph {
 }
 
 fun main() {
-    println(getTinyWeightedGraph())
-    drawEWGGraph(getTinyWeightedGraph())
+    val graph = getTinyWeightedGraph()
+    println(graph)
+
+    drawEWGGraph(graph)
 }

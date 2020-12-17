@@ -7,7 +7,7 @@ import extensions.formatDouble
  *
  * 和练习4.1.3中定义的边不同
  */
-class Edge(val v: Int, val w: Int, val weight: Double): Comparable<Edge> {
+class Edge(val v: Int, val w: Int, val weight: Double) : Comparable<Edge> {
 
     /**
      * 边两端点之一

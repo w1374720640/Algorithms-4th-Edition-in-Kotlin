@@ -10,11 +10,11 @@ import kotlin.math.ceil
 import kotlin.math.sqrt
 
 /**
- * 绘制加权无向图[EdgeWeightedGraph]及其最小生成树，并且可以绘制树的增长过程
+ * 绘制加权无向图[EWG]及其最小生成树，并且可以绘制树的增长过程
  * 要求无向图为连通图
  * 参考[chapter4.section1.GraphGraphics]的实现
  */
-class EWGGraphics(val graph: EdgeWeightedGraph) {
+class EWGGraphics(val graph: EWG) {
     private val st = LinearProbingHashST<Int, Point2D>()
 
     init {
@@ -143,15 +143,15 @@ fun getRandomEWG(V: Int = 100, d: Double = 0.2): Pair<EdgeWeightedGraph, Array<P
 }
 
 /**
- * 绘制加权无向图及其最小生成树，并且可以绘制树的增长过程
+ * 绘制加权无向图及其最小生成树，并且[createMST]参数非空的情况下可以绘制树的增长过程
  */
-fun drawEWGGraph(graph: EdgeWeightedGraph,
+fun drawEWGGraph(graph: EWG,
                  points: Array<Point2D>? = null,
                  showIndex: Boolean = EWGGraphics.DEFAULT_SHOW_INDEX,
                  pointRadius: Double = EWGGraphics.DEFAULT_POINT_RADIUS,
                  edgeWidth: Double = EWGGraphics.DEFAULT_EDGE_WIDTH,
                  delay: Long = 1000L,
-                 createMST: (() -> MST)? = null) {
+                 createMST: ((EWG) -> MST)? = null) {
     val graphics = EWGGraphics(graph)
     points?.let { graphics.setPoints(it) }
     graphics.showIndex = showIndex
@@ -159,7 +159,7 @@ fun drawEWGGraph(graph: EdgeWeightedGraph,
     graphics.edgeWidth = edgeWidth
     graphics.draw()
     if (createMST != null) {
-        val mst = createMST()
+        val mst = createMST(graph)
         mst.edges().forEach {
             sleep(delay)
             graphics.drawMSTEdge(it)
@@ -167,10 +167,10 @@ fun drawEWGGraph(graph: EdgeWeightedGraph,
     }
 }
 
-fun drawRandomEWG(createMST: ((EdgeWeightedGraph) -> MST)) {
+fun drawRandomEWG(createMST: ((EWG) -> MST)) {
     val randomGraph = getRandomEWG()
     drawEWGGraph(randomGraph.first, points = randomGraph.second, showIndex = false, delay = 100) {
-        createMST(randomGraph.first)
+        createMST(it)
     }
 }
 

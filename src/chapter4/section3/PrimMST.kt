@@ -7,7 +7,7 @@ import extensions.formatDouble
 /**
  * 最小生成树的Prim算法（即时版本）
  */
-class PrimMST(graph: EdgeWeightedGraph) : MST(graph) {
+class PrimMST(graph: EWG) : MST(graph) {
     private val marked = BooleanArray(graph.V)
     private val queue = Queue<Edge>()
     private val indexMinPQ = HeapIndexMinPriorityQueue<Edge>(graph.V)
@@ -28,7 +28,7 @@ class PrimMST(graph: EdgeWeightedGraph) : MST(graph) {
         }
     }
 
-    private fun visit(graph: EdgeWeightedGraph, v: Int) {
+    private fun visit(graph: EWG, v: Int) {
         marked[v] = true
         graph.adj(v).forEach {
             val w = it.other(v)
@@ -65,5 +65,6 @@ fun main() {
     val graph = getTinyWeightedGraph()
     val primMST = PrimMST(graph)
     println(primMST.toString())
+
     drawRandomEWG { PrimMST(it) }
 }

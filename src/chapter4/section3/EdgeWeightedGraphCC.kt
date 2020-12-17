@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.Bag
 /**
  * 找出一幅加权无向图的所有连通分量
  */
-class EdgeWeightedGraphCC(graph: EdgeWeightedGraph) {
+class EdgeWeightedGraphCC(graph: EWG) {
     private val uf = CompressionWeightedQuickUnionUF(graph.V)
 
     init {

@@ -7,7 +7,7 @@ import extensions.formatDouble
 /**
  * 最小生成树的Prim算法的延时实现
  */
-class LazyPrimMST(graph: EdgeWeightedGraph) : MST(graph) {
+class LazyPrimMST(graph: EWG) : MST(graph) {
     private val marked = BooleanArray(graph.V)
     private val queue = Queue<Edge>()
     private val minPQ = HeapMinPriorityQueue<Edge>()
@@ -28,7 +28,7 @@ class LazyPrimMST(graph: EdgeWeightedGraph) : MST(graph) {
         check(queue.size() == graph.V - 1)
     }
 
-    private fun visit(graph: EdgeWeightedGraph, v: Int) {
+    private fun visit(graph: EWG, v: Int) {
         marked[v] = true
         graph.adj(v).forEach {
             if (!marked[it.other(v)]) {
@@ -62,5 +62,6 @@ fun main() {
     val graph = getTinyWeightedGraph()
     val lazyPrimMST = LazyPrimMST(graph)
     println(lazyPrimMST.toString())
+
     drawRandomEWG { LazyPrimMST(it) }
 }
