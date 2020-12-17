@@ -62,4 +62,5 @@ fun main() {
     val graph = getTinyWeightedGraph()
     val lazyPrimMST = LazyPrimMST(graph)
     println(lazyPrimMST.toString())
+    drawRandomEWG { LazyPrimMST(it) }
 }

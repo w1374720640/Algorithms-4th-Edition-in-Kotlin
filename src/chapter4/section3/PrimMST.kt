@@ -65,4 +65,5 @@ fun main() {
     val graph = getTinyWeightedGraph()
     val primMST = PrimMST(graph)
     println(primMST.toString())
+    drawRandomEWG { PrimMST(it) }
 }

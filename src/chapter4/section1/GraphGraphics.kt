@@ -192,8 +192,10 @@ class GraphGraphics(val graph: Graph) {
             bag.forEach { v ->
                 val pointV = st.get(v)!!
                 graph.adj(v).forEach { w ->
-                    val pointW = st.get(w)!!
-                    StdDraw.line(pointV.x(), pointV.y(), pointW.x(), pointW.y())
+                    if (v > w) { // 重复的边只绘制一次
+                        val pointW = st.get(w)!!
+                        StdDraw.line(pointV.x(), pointV.y(), pointW.x(), pointW.y())
+                    }
                 }
             }
         }
@@ -261,4 +263,9 @@ fun main() {
     sleep(2000)
 
     showRandomGraph(100, 50)
+    sleep(2000)
+
+    // 练习4.1.41中的随机欧几里得图
+    val graph = ex41_RandomEuclideanGraphs(100, 0.2)
+    graph.draw()
 }

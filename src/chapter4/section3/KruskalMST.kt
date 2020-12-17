@@ -58,4 +58,5 @@ fun main() {
     val graph = getTinyWeightedGraph()
     val kruskalMST = KruskalMST(graph)
     println(kruskalMST.toString())
+    drawRandomEWG { KruskalMST(it) }
 }

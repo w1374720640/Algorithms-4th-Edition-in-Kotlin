@@ -2,6 +2,7 @@ package chapter4.section3
 
 import chapter2.sleep
 import chapter3.section4.LinearProbingHashST
+import chapter4.section1.ex41_RandomEuclideanGraphs
 import edu.princeton.cs.algs4.Point2D
 import edu.princeton.cs.algs4.StdDraw
 import extensions.random
@@ -9,15 +10,9 @@ import kotlin.math.ceil
 import kotlin.math.sqrt
 
 /**
- * 绘制无向图[Graph]的图形
- * 先用[BreadthFirstCC]类找出连通分量的数量，每个连通分量占据独立的一块区域
- * 在对应区域内为每个分量中的顶点添加一个随机坐标，连接每条边
- *
- * 将矩形的绘图区域按给定比例切分，并保证每个区域都是矩形（尽量小的长宽比）：
- * 1、将每个连通分量按大小降序排序
- * 2、从第一个连通分量开始，将每个连通分量的大小相加，直到大于等于总数的一半
- * 3、将绘图区域按比例分为两半，如果宽度大于等于高度，用垂直线分割，否则用水平线分割
- * 4、用递归的方式将前半部分和后半部分在对应的区域内重复步骤2和步骤3，直到每个区域只有一个连通分量
+ * 绘制加权无向图[EdgeWeightedGraph]及其最小生成树，并且可以绘制树的增长过程
+ * 要求无向图为连通图
+ * 参考[chapter4.section1.GraphGraphics]的实现
  */
 class EWGGraphics(val graph: EdgeWeightedGraph) {
     private val st = LinearProbingHashST<Int, Point2D>()
@@ -26,6 +21,17 @@ class EWGGraphics(val graph: EdgeWeightedGraph) {
         val cc = EdgeWeightedGraphCC(graph)
         require(cc.count() == 1) { "All vertices should be connected." }
         initAllPoint()
+    }
+
+    /**
+     * 不使用随机生成的坐标，为每个顶点设置一个新坐标
+     * 从文件中读取指定加权无向图时只能使用随机坐标，边的长度和权重无关
+     * 生成随机无向图时可以指定边的权重等于边的长度
+     */
+    fun setPoints(points: Array<Point2D>) {
+        points.forEachIndexed { index, point2D ->
+            st.put(index, point2D)
+        }
     }
 
     companion object {
@@ -114,16 +120,40 @@ class EWGGraphics(val graph: EdgeWeightedGraph) {
 }
 
 /**
- * 绘制加权无向图及其最小生成树，并且可以绘制查找过程
- * [createMST]用于创建一个最小生成树，接收一个回调函数，返回一个MST对象，回调函数又接收一个边作为参数
+ * 获取一个边长等于权重且可视性良好的加权无向图及每个顶点的坐标
+ *
+ * 根据练习4.1.41生成一个几乎必然连通的无向图，每个点都有一个对应的坐标
+ * 将每个边的权重设置为边的长度，生成一个加权无向图
+ */
+fun getRandomEWG(V: Int = 100, d: Double = 0.2): Pair<EdgeWeightedGraph, Array<Point2D>> {
+    val euclideanGraph = ex41_RandomEuclideanGraphs(V, d)
+    val edgeWeightedGraph = EdgeWeightedGraph(euclideanGraph.V)
+    for (v in 0 until euclideanGraph.V) {
+        euclideanGraph.adj(v).forEach { w ->
+            if (v < w) {
+                val pointV = euclideanGraph.points[v]
+                val pointW = euclideanGraph.points[w]
+                val weight = pointV.distanceTo(pointW)
+                val edge = Edge(v, w, weight)
+                edgeWeightedGraph.addEdge(edge)
+            }
+        }
+    }
+    return edgeWeightedGraph to euclideanGraph.points
+}
+
+/**
+ * 绘制加权无向图及其最小生成树，并且可以绘制树的增长过程
  */
 fun drawEWGGraph(graph: EdgeWeightedGraph,
+                 points: Array<Point2D>? = null,
                  showIndex: Boolean = EWGGraphics.DEFAULT_SHOW_INDEX,
                  pointRadius: Double = EWGGraphics.DEFAULT_POINT_RADIUS,
                  edgeWidth: Double = EWGGraphics.DEFAULT_EDGE_WIDTH,
                  delay: Long = 1000L,
-                 createMST: (() -> MST)? = null): EWGGraphics {
+                 createMST: (() -> MST)? = null) {
     val graphics = EWGGraphics(graph)
+    points?.let { graphics.setPoints(it) }
     graphics.showIndex = showIndex
     graphics.pointRadius = pointRadius
     graphics.edgeWidth = edgeWidth
@@ -135,21 +165,17 @@ fun drawEWGGraph(graph: EdgeWeightedGraph,
             graphics.drawMSTEdge(it)
         }
     }
-    return graphics
+}
+
+fun drawRandomEWG(createMST: ((EdgeWeightedGraph) -> MST)) {
+    val randomGraph = getRandomEWG()
+    drawEWGGraph(randomGraph.first, points = randomGraph.second, showIndex = false, delay = 100) {
+        createMST(randomGraph.first)
+    }
 }
 
 fun main() {
-    val tinyGraph = getTinyWeightedGraph()
-    val mediumGraph = getMediumWeightedGraph()
-    drawEWGGraph(tinyGraph) {
-        PrimMST(tinyGraph)
-    }
+    drawRandomEWG { PrimMST(it) }
     sleep(2000)
-    drawEWGGraph(mediumGraph, showIndex = false, delay = 100) {
-        LazyPrimMST(mediumGraph)
-    }
-    sleep(2000)
-    drawEWGGraph(mediumGraph, showIndex = false, delay = 100) {
-        KruskalMST(mediumGraph)
-    }
+    drawRandomEWG { KruskalMST(it) }
 }
