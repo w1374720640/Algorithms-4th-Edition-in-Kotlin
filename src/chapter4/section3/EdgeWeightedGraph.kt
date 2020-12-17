@@ -65,6 +65,11 @@ fun getTinyWeightedGraph(): EdgeWeightedGraph {
     return EdgeWeightedGraph(In("./data/tinyEWG.txt"))
 }
 
+fun getMediumWeightedGraph(): EdgeWeightedGraph {
+    return EdgeWeightedGraph(In("./data/mediumEWG.txt"))
+}
+
 fun main() {
     println(getTinyWeightedGraph())
+    drawEWGGraph(getTinyWeightedGraph())
 }
