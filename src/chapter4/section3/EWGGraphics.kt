@@ -122,10 +122,10 @@ class EWGGraphics(val graph: EWG) {
 /**
  * 获取一个边长等于权重且可视性良好的加权无向图及每个顶点的坐标
  *
- * 根据练习4.1.41生成一个几乎必然连通的无向图，每个点都有一个对应的坐标
+ * 根据练习4.1.41生成一个几乎必然连通（仍然可能不连通）的无向图，每个点都有一个对应的坐标
  * 将每个边的权重设置为边的长度，生成一个加权无向图
  */
-fun getRandomEWG(V: Int = 100, d: Double = 0.2): Pair<EdgeWeightedGraph, Array<Point2D>> {
+fun getRandomEWG(V: Int = 100, d: Double = 0.25): Pair<EdgeWeightedGraph, Array<Point2D>> {
     val euclideanGraph = ex41_RandomEuclideanGraphs(V, d)
     val edgeWeightedGraph = EdgeWeightedGraph(euclideanGraph.V)
     for (v in 0 until euclideanGraph.V) {
