@@ -7,7 +7,7 @@ import extensions.formatDouble
 /**
  * 最小生成树的Prim算法的延时实现
  */
-class LazyPrimMST(graph: EWG) : MST(graph) {
+class LazyPrimMST(graph: EWG) : MST {
     private val marked = BooleanArray(graph.V)
     private val queue = Queue<Edge>()
     private val minPQ = HeapMinPriorityQueue<Edge>()

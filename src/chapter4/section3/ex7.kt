@@ -12,7 +12,7 @@ import extensions.formatDouble
  * Kruskal算法将升序排序改为降序排序
  * 这里只演示Kruskal算法的最大生成树
  */
-class MaxKruskalMST(graph: EWG) : MST(graph) {
+class MaxKruskalMST(graph: EWG) : MST {
     private val edges = ArrayList<Edge>()
     private val uf = CompressionWeightedQuickUnionUF(graph.V)
     private val queue = Queue<Edge>()

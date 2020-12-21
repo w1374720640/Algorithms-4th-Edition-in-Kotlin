@@ -7,7 +7,7 @@ import extensions.formatDouble
 /**
  * 最小生成树的Prim算法（即时版本）
  */
-class PrimMST(graph: EWG) : MST(graph) {
+class PrimMST(graph: EWG) : MST {
     private val marked = BooleanArray(graph.V)
     private val queue = Queue<Edge>()
     private val indexMinPQ = HeapIndexMinPriorityQueue<Edge>(graph.V)
