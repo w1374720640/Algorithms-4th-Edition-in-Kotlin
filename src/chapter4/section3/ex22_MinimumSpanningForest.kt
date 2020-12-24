@@ -13,9 +13,8 @@ import extensions.formatDouble
  * 解：最小生成森林的数量等于连通分量的数量，每个连通分量的id为森林中的一个顶点
  * 分别以每个连通分量中的一个顶点为起点，使用Prim算法或Kruskal算法求单个最小生成树
  */
-class PrimMSF(graph: EdgeWeightedGraph) : MSF {
-    private val cc = EdgeWeightedGraphCC(graph)
-    private val trees = Array(cc.count()) { InnerPrimMST() }
+class PrimMSF(graph: EWG) : MSF {
+    private val trees = ArrayList<InnerPrimMST>()
     private val ids = IntArray(graph.V)
     private var id = 0
 
@@ -26,7 +25,8 @@ class PrimMSF(graph: EdgeWeightedGraph) : MSF {
     init {
         for (s in 0 until graph.V) {
             if (marked[s]) continue
-            val mst = trees[id]
+            val mst = InnerPrimMST()
+            trees.add(mst)
             visit(graph, s)
             while (!indexMinPQ.isEmpty()) {
                 val edge = indexMinPQ.min()
@@ -42,7 +42,7 @@ class PrimMSF(graph: EdgeWeightedGraph) : MSF {
             id++
         }
         // 最小生成树的数量应该和连通分量的数量相等
-        check(id == cc.count())
+        check(id == trees.size)
     }
 
     private fun visit(graph: EWG, v: Int) {
@@ -67,8 +67,7 @@ class PrimMSF(graph: EdgeWeightedGraph) : MSF {
     }
 
     override fun trees(): Iterable<MST> {
-        // 数组没有实现Iterable接口，转换一下
-        return trees.asIterable()
+        return trees
     }
 
     private class InnerPrimMST : MST {
@@ -113,12 +112,12 @@ class PrimMSF(graph: EdgeWeightedGraph) : MSF {
 /**
  * 最小生成森林的Kruskal算法
  */
-class KruskalMSF(graph: EdgeWeightedGraph) : MSF {
+class KruskalMSF(graph: EWG) : MSF {
     private val cc = EdgeWeightedGraphCC(graph)
     private val trees = Array(cc.count()) { InnerKruskalMST() }
     private val ids = IntArray(graph.V) { -1 }
 
-    // 为每个连通分量分配一个最小生成树
+    // 预处理，为每个连通分量分配一个最小生成树
     init {
         var index = 0
         for (v in 0 until graph.V) {
@@ -147,6 +146,7 @@ class KruskalMSF(graph: EdgeWeightedGraph) : MSF {
             val v = edge.either()
             val w = edge.other(v)
             if (uf.find(v) != uf.find(w)) {
+                // 最终会连通但还未连通时，找到对应的最小生成树，加入树中
                 val mst = trees[ids[v]]
                 mst.queue.enqueue(edge)
                 mst.weight += edge.weight

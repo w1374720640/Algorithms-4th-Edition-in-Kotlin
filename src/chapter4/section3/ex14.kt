@@ -14,7 +14,7 @@ import extensions.formatDouble
  * 遍历树的剩余边，使用[chapter1.section5.CompressionWeightedQuickUnionUF]获取每个顶点的id，时间复杂度接近O(V)
  * 遍历图G的所有边，找到同时连接两个连通分量、权重最小的边，组成新的最小生成树，时间复杂度接近O(E)
  */
-fun ex14(graph: EdgeWeightedGraph, mst: MST, deleteEdge: Edge): Iterable<Edge> {
+fun ex14(graph: EWG, mst: MST, deleteEdge: Edge): Iterable<Edge> {
     require(graph.V > 1)
 
     val uf = CompressionWeightedQuickUnionUF(graph.V)

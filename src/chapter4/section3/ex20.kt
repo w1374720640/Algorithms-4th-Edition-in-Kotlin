@@ -11,7 +11,7 @@ import edu.princeton.cs.algs4.Bag
  * 判断是否所有顶点子树权重的最大值是否都小于非子树权重的最小值。
  * 证明略
  */
-fun ex20(graph: EdgeWeightedGraph): Boolean {
+fun ex20(graph: EWG): Boolean {
     val adj = Array(graph.V) { Bag<Edge>() }
     KruskalMST(graph).edges().forEach {
         val v = it.either()

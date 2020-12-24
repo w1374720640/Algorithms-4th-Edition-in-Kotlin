@@ -14,7 +14,7 @@ import extensions.formatDouble
  * 以e的一个顶点开始使用广度（或深度）优先搜索找到一个环，时间复杂度O(V)
  * 遍历环中所有的边，删除权重最大的边，剩余的边构造成新的最小生成树
  */
-fun ex15(graph: EdgeWeightedGraph, mst: MST, e: Edge): Iterable<Edge> {
+fun ex15(graph: EWG, mst: MST, e: Edge): Iterable<Edge> {
     val adj = Array(graph.V) { Bag<Edge>() }
     mst.edges().forEach {
         val v = it.either()

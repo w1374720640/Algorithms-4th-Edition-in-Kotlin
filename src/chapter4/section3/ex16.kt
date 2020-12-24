@@ -11,7 +11,7 @@ import extensions.formatDouble
  * 由练习4.3.15可知，e的顶点不同产生的环不同，当e的权重不是环内的最大值时才会被加入最小生成树。
  * 通过广度优先搜索找到e的两个顶点间的最短路径，e的权重需要小于权重最大的边（假设权重为非负数）
  */
-fun ex16(graph: EdgeWeightedGraph, mst: MST, eV: Int, eW: Int): Pair<Double, Double> {
+fun ex16(graph: EWG, mst: MST, eV: Int, eW: Int): Pair<Double, Double> {
     val adj = Array(graph.V) { Bag<Edge>() }
     mst.edges().forEach {
         val v = it.either()
