@@ -62,7 +62,6 @@ class VyssotskyMST(graph: EWG) : MST {
 }
 
 fun main() {
-    // FIXME 使用getMediumWeightedGraph()获取图会失败
     val graph = getTinyWeightedGraph()
     val mst = VyssotskyMST(graph)
     println(mst.toString())
