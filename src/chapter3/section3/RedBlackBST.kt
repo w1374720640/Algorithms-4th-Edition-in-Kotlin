@@ -422,6 +422,7 @@ open class RedBlackBST<K : Comparable<K>, V : Any> : OrderedST<K, V> {
     }
 
     override fun keys(): Iterable<K> {
+        if (isEmpty()) return Queue<K>()
         return keys(min(), max())
     }
 }

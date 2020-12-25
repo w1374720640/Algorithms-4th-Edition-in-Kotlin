@@ -78,22 +78,23 @@ open class LinearProbingHashST<K : Any, V : Any>(m: Int = 4) : ST<K, V> {
         while (true) {
             @Suppress("UNCHECKED_CAST")
             when (keys[i] as? K) {
-                null -> throw NoSuchElementException()
+                null -> throw NoSuchElementException(key.toString())
                 key -> {
-                    //如果后面不为空的数据hash值和索引不同，则向前挪动一位
-                    while (true) {
-                        val nextIndex = (i + 1) % m
-                        val nextKey = keys[nextIndex] as? K
-                        if (nextKey != null && hash(nextKey) != nextIndex) {
-                            keys[i] = keys[nextIndex]
-                            values[i] = values[nextIndex]
-                            i = nextIndex
-                        } else break
-                    }
-                    //删除最后一条数据
+                    // 从当前索引开始向后查找，将后面的元素重新插入符号表，直到第一个为null的元素
                     keys[i] = null
                     values[i] = null
                     n--
+                    i = (i + 1) % m
+                    while (keys[i] != null) {
+                        // 先将自身的位置置空，再重新插入，可能插入原位置，也可能插入到前方若干个元素前
+                        val keyToRedo = keys[i] as K
+                        val valueToRedo = values[i] as V
+                        keys[i] = null
+                        values[i] = null
+                        n--
+                        put(keyToRedo, valueToRedo)
+                        i = (i + 1) % m
+                    }
                     //检查是否需要重新调整大小
                     if (m >= 8 && n <= m / 8) resize(m / 2)
                     return
