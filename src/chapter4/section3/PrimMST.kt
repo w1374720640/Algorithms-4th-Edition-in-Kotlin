@@ -26,6 +26,7 @@ class PrimMST(graph: EWG) : MST {
             if (!marked[v]) visit(graph, v)
             if (!marked[w]) visit(graph, w)
         }
+        check(queue.size() == graph.V - 1) { "All vertices should be connected." }
     }
 
     private fun visit(graph: EWG, v: Int) {

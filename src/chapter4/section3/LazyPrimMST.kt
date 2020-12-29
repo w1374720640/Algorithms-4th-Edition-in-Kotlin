@@ -25,7 +25,7 @@ class LazyPrimMST(graph: EWG) : MST {
             if (!marked[w]) visit(graph, w)
             weight += edge.weight
         }
-        check(queue.size() == graph.V - 1)
+        check(queue.size() == graph.V - 1) { "All vertices should be connected." }
     }
 
     private fun visit(graph: EWG, v: Int) {

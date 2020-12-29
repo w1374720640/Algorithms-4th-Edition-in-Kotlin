@@ -82,7 +82,7 @@ class DenseGraphPrimMST(graph: EWG) : MST {
 /**
  * 生成稠密图
  */
-private fun getDenseGraph(V: Int): EWG {
+fun getDenseGraph(V: Int): EWG {
     val graph = EdgeWeightedGraph(V)
     for (v in 0 until V) {
         for (w in v + 1 until V) {

@@ -31,6 +31,7 @@ class KruskalMST(graph: EWG) : MST {
                 uf.union(v, w)
             }
         }
+        check(uf.count() == 1) { "All vertices should be connected." }
     }
 
     override fun edges(): Iterable<Edge> {
