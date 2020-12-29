@@ -78,8 +78,8 @@ class RedBlackOrderedSET<K : Comparable<K>> : OrderedSET<K> {
         return st.isEmpty()
     }
 
-    override fun keys(): Iterable<K> {
-        return st.keys()
+    override fun iterator(): Iterator<K> {
+        return st.keys().iterator()
     }
 
 }
@@ -114,10 +114,9 @@ class LinearProbingHashSET<K : Any> : SET<K> {
         return st.size()
     }
 
-    override fun keys(): Iterable<K> {
-        return st.keys()
+    override fun iterator(): Iterator<K> {
+        return st.keys().iterator()
     }
-
 }
 
 fun main() {
@@ -132,6 +131,6 @@ fun main() {
         set.add(key)
         orderedSET.add(key)
     }
-    println("set       : ${set.keys().joinToString()}")
-    println("orderedSET: ${orderedSET.keys().joinToString()}")
+    println("set       : ${set.joinToString()}")
+    println("orderedSET: ${orderedSET.joinToString()}")
 }

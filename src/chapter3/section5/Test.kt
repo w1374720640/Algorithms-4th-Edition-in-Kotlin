@@ -25,9 +25,8 @@ fun testSET(set: SET<Int>) {
     check(set.contains(111))
     check(set.size() == 3)
 
-    val keys = set.keys()
     var count = 0
-    keys.forEach {
+    set.forEach {
         when (it) {
             111, 333, 444 -> {
                 check(set.contains(it))
@@ -221,7 +220,7 @@ fun testMathSET(createSET: () -> MathSET<Int>) {
 
 fun <K : Any> SET<K>.sameAs(other: SET<K>): Boolean {
     if (this.size() != other.size()) return false
-    this.keys().forEach {
+    this.forEach {
         if (!other.contains(it)) {
             return false
         }

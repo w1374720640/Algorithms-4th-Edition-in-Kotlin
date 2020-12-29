@@ -58,12 +58,12 @@ class BinarySearchSET<K: Comparable<K>> : OrderedSET<K> {
         return size
     }
 
-    override fun keys(): Iterable<K> {
+    override fun iterator(): Iterator<K> {
         val queue = Queue<K>()
         for (i in 0 until size) {
             queue.enqueue(keys[i] as K)
         }
-        return queue
+        return queue.iterator()
     }
 
     override fun min(): K {

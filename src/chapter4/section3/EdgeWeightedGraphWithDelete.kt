@@ -24,13 +24,13 @@ class EdgeWeightedGraphWithDelete(V: Int) : EWG(V) {
     }
 
     override fun adj(v: Int): Iterable<Edge> {
-        return adj[v].keys()
+        return adj[v]
     }
 
     override fun edges(): Iterable<Edge> {
         val queue = Queue<Edge>()
         for (v in 0 until V) {
-            adj[v].keys().forEach { edge ->
+            adj[v].forEach { edge ->
                 val w = edge.other(v)
                 if (v > w) {
                     queue.enqueue(edge)

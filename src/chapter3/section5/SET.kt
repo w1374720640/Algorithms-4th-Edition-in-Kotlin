@@ -3,7 +3,7 @@ package chapter3.section5
 /**
  * 无序集合
  */
-interface SET<K : Any> {
+interface SET<K : Any> : Iterable<K> {
     fun add(key: K)
 
     fun delete(key: K)
@@ -13,6 +13,4 @@ interface SET<K : Any> {
     fun isEmpty(): Boolean
 
     fun size(): Int
-
-    fun keys(): Iterable<K>
 }

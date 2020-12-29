@@ -96,7 +96,7 @@ class MultiSET<K : Any> : SET<K> {
         return size
     }
 
-    override fun keys(): Iterable<K> {
+    override fun iterator(): Iterator<K> {
         val queue = Queue<K>()
         var node = first
         while (node != null) {
@@ -105,7 +105,7 @@ class MultiSET<K : Any> : SET<K> {
             }
             node = node.next
         }
-        return queue
+        return queue.iterator()
     }
 }
 

@@ -32,7 +32,7 @@ class DuplicateKeysLinearProbingHashST<K : Any, V : Any>(var m: Int = 16) : Dupl
         }
 
         fun getAllValues(): Iterable<V> {
-            return set.keys()
+            return set
         }
 
         override fun equals(other: Any?): Boolean {

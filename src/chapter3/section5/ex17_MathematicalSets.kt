@@ -11,7 +11,7 @@ class HashMathSET<K : Any> : MathSET<K> {
 
     override fun complement(set: MathSET<K>): MathSET<K> {
         val newSet = HashMathSET<K>()
-        set.keys().forEach {
+        set.forEach {
             if (!this.contains(it)) {
                 newSet.add(it)
             }
@@ -21,10 +21,10 @@ class HashMathSET<K : Any> : MathSET<K> {
 
     override fun union(set: MathSET<K>): MathSET<K> {
         val newSet = HashMathSET<K>()
-        this.keys().forEach {
+        this.forEach {
             newSet.add(it)
         }
-        set.keys().forEach {
+        set.forEach {
             newSet.add(it)
         }
         return newSet
@@ -33,13 +33,13 @@ class HashMathSET<K : Any> : MathSET<K> {
     override fun intersection(set: MathSET<K>): MathSET<K> {
         val newSet = HashMathSET<K>()
         if (this.size() < set.size()) {
-            this.keys().forEach {
+            this.forEach {
                 if (set.contains(it)) {
                     newSet.add(it)
                 }
             }
         } else {
-            set.keys().forEach {
+            set.forEach {
                 if (this.contains(it)) {
                     newSet.add(it)
                 }
@@ -68,8 +68,8 @@ class HashMathSET<K : Any> : MathSET<K> {
         return hashSET.size()
     }
 
-    override fun keys(): Iterable<K> {
-        return hashSET.keys()
+    override fun iterator(): Iterator<K> {
+        return hashSET.iterator()
     }
 }
 

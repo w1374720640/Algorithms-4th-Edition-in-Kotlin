@@ -85,7 +85,7 @@ private fun getGraphByCC(graph: Graph, cc: MoviesCC): Graph {
             }
         }
     }
-    set.keys().forEach { edge ->
+    set.forEach { edge ->
         newGraph.addEdge(edge.small, edge.large)
     }
     return newGraph

@@ -56,14 +56,14 @@ class SequentialSearchSET<K : Any> : SET<K> {
         return size
     }
 
-    override fun keys(): Iterable<K> {
+    override fun iterator(): Iterator<K> {
         val queue = Queue<K>()
         var node = first
         while (node != null) {
             queue.enqueue(node.key)
             node = node.next
         }
-        return queue
+        return queue.iterator()
     }
 }
 
@@ -75,5 +75,5 @@ fun main() {
     while (!input.isEmpty) {
         st.add(input.readString())
     }
-    println(st.keys().joinToString())
+    println(st.joinToString())
 }

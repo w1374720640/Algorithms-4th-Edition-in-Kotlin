@@ -15,7 +15,7 @@ import edu.princeton.cs.algs4.In
 fun Graph.copy(): Graph {
     val set = getEdgeSet()
     val graph = Graph(V)
-    set.keys().forEach {
+    set.forEach {
         graph.addEdge(it.small, it.large)
     }
     return graph

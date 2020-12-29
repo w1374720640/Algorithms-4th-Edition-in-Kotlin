@@ -23,7 +23,7 @@ class DuplicateKeysBST<K : Comparable<K>, V : Any> : BinarySearchTree<K, V>(), D
     override fun getAllValues(key: K): Iterable<V>? {
         if (isEmpty()) return null
         val node = get(root!!, key)
-        return (node as? Node<K, V>)?.set?.keys()
+        return (node as? Node<K, V>)?.set
     }
 
     override fun put(key: K, value: V) {

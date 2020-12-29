@@ -24,7 +24,7 @@ class DuplicateKeysRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, V>()
     override fun getAllValues(key: K): Iterable<V>? {
         if (isEmpty()) return null
         val node = get(root!!, key)
-        return (node as? Node)?.set?.keys()
+        return (node as? Node)?.set
     }
 
     override fun put(key: K, value: V) {

@@ -40,7 +40,7 @@ class EuclideanGraph : Graph {
         val edgeSet = getEdgeSet()
         StdDraw.setPenRadius(GraphGraphics.DEFAULT_EDGE_WIDTH)
         StdDraw.setPenColor(StdDraw.BLACK)
-        edgeSet.keys().forEach {
+        edgeSet.forEach {
             StdDraw.line(points[it.small].x(), points[it.small].y(), points[it.large].x(), points[it.large].y())
         }
     }
