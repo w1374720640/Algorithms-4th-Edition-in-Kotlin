@@ -5,6 +5,7 @@ package chapter4.section3
  */
 abstract class EWG(val V: Int) {
     var E: Int = 0
+        protected set
 
     /**
      * 添加一条边

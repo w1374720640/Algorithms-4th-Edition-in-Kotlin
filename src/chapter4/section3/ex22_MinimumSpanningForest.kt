@@ -29,8 +29,7 @@ class PrimMSF(graph: EWG) : MSF {
             trees.add(mst)
             visit(graph, s)
             while (!indexMinPQ.isEmpty()) {
-                val edge = indexMinPQ.min()
-                indexMinPQ.delMin()
+                val edge = indexMinPQ.delMin().first
                 mst.queue.enqueue(edge)
                 mst.weight += edge.weight
                 weight += edge.weight

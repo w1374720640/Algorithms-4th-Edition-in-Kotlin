@@ -17,10 +17,9 @@ class PrimMST(graph: EWG) : MST {
         visit(graph, 0)
         while (!indexMinPQ.isEmpty()) {
             // indexMinPQ的大小永远小于graph.V
-            val edge = indexMinPQ.min()
+            val edge = indexMinPQ.delMin().first
             queue.enqueue(edge)
             weight += edge.weight
-            indexMinPQ.delMin()
             val v = edge.either()
             val w = edge.other(v)
             if (!marked[v]) visit(graph, v)

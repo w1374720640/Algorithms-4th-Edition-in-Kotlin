@@ -91,18 +91,16 @@ class HeapIndexMinPriorityQueue<T : Comparable<T>>(private val maxSize: Int) : I
         return pq[1]
     }
 
-    override fun delMin(): Int {
-        if (isEmpty()) {
-            throw NoSuchElementException("Priority queue is empty!")
-        }
-        val minIndex = pq[1]
+    override fun delMin(): Pair<T, Int> {
+        val min = min()
+        val minIndex = minIndex()
         swap(1, size)
         keys[minIndex] = null
         qp[minIndex] = -1
         pq[size] = -1
         size--
         sink(1)
-        return minIndex
+        return min to minIndex
     }
 
     override fun isEmpty(): Boolean {
@@ -257,7 +255,7 @@ fun main() {
                     println("minIndex=$minIndex")
                 }
                 6 -> {
-                    val minIndex = priorityQueue.delMin()
+                    val minIndex = priorityQueue.delMin().second
                     println("delMin, index=$minIndex")
                 }
                 7 -> println("isEmpty=${priorityQueue.isEmpty()}")

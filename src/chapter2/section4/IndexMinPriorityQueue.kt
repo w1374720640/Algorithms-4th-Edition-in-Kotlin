@@ -20,7 +20,7 @@ interface IndexMinPriorityQueue<T : Comparable<T>> : Iterable<T> {
 
     fun minIndex(): Int
 
-    fun delMin(): Int
+    fun delMin(): Pair<T, Int>
 
     fun isEmpty(): Boolean
 

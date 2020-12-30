@@ -1,6 +1,7 @@
 package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
+import chapter2.section4.HeapMinPriorityQueue
 import edu.princeton.cs.algs4.Queue
 import extensions.formatDouble
 
@@ -8,30 +9,25 @@ import extensions.formatDouble
  * 最小生成树的Kruskal算法
  */
 class KruskalMST(graph: EWG) : MST {
-    private val edges = ArrayList<Edge>()
-    private val uf = CompressionWeightedQuickUnionUF(graph.V)
     private val queue = Queue<Edge>()
     private var weight = 0.0
 
     init {
+        val uf = CompressionWeightedQuickUnionUF(graph.V)
+        val pq = HeapMinPriorityQueue<Edge>()
         graph.edges().forEach {
-            edges.add(it)
+            pq.insert(it)
         }
-        // 直接排序，而不是使用优先队列
-        edges.sort()
-        var i = 0
-        // 最小生成树最多有V-1条边
-        while (queue.size() < graph.V - 1) {
-            val edge = edges[i++]
+        while (!pq.isEmpty() && queue.size() < graph.V - 1) {
+            val edge = pq.delMin()
             val v = edge.either()
             val w = edge.other(v)
-            if (uf.find(v) != uf.find(w)) {
-                queue.enqueue(edge)
-                weight += edge.weight
-                uf.union(v, w)
-            }
+            if (uf.connected(v, w)) continue
+            queue.enqueue(edge)
+            weight += edge.weight
+            uf.union(v, w)
         }
-        check(uf.count() == 1) { "All vertices should be connected." }
+        check(queue.size() == graph.V - 1) { "All vertices should be connected." }
     }
 
     override fun edges(): Iterable<Edge> {
