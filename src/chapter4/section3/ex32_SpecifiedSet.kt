@@ -3,8 +3,6 @@ package chapter4.section3
 import chapter1.section5.CompressionWeightedQuickUnionUF
 import chapter3.section5.LinearProbingHashSET
 import chapter3.section5.SET
-import edu.princeton.cs.algs4.Queue
-import extensions.formatDouble
 
 /**
  * 指定的集合
@@ -12,11 +10,9 @@ import extensions.formatDouble
  *
  * 解：使用Kruskal算法计算最小生成树时，先将集合S内的所有边都加入到最小生成树中，然后再执行正常逻辑
  */
-class SpecifiedSetMST(graph: EWG, S: SET<Edge>) : MST {
+class SpecifiedSetMST(graph: EWG, S: SET<Edge>) : MST() {
     private val edges = ArrayList<Edge>()
     private val uf = CompressionWeightedQuickUnionUF(graph.V)
-    private val queue = Queue<Edge>()
-    private var weight = 0.0
 
     init {
         // 先将集合S中的所有边都加入最小生成树中
@@ -44,26 +40,6 @@ class SpecifiedSetMST(graph: EWG, S: SET<Edge>) : MST {
                 uf.union(v, w)
             }
         }
-    }
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

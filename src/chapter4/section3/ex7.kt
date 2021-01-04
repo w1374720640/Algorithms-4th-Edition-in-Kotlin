@@ -1,8 +1,6 @@
 package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
-import edu.princeton.cs.algs4.Queue
-import extensions.formatDouble
 
 /**
  * 如何得到一幅加权图的最大生成树？
@@ -12,11 +10,9 @@ import extensions.formatDouble
  * Kruskal算法将升序排序改为降序排序
  * 这里只演示Kruskal算法的最大生成树
  */
-class MaxKruskalMST(graph: EWG) : MST {
+class MaxKruskalMST(graph: EWG) : MST() {
     private val edges = ArrayList<Edge>()
     private val uf = CompressionWeightedQuickUnionUF(graph.V)
-    private val queue = Queue<Edge>()
-    private var weight = 0.0
 
     init {
         graph.edges().forEach {
@@ -36,26 +32,6 @@ class MaxKruskalMST(graph: EWG) : MST {
                 uf.union(v, w)
             }
         }
-    }
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

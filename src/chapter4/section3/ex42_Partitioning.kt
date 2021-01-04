@@ -2,9 +2,7 @@ package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
 import chapter2.swap
-import edu.princeton.cs.algs4.Queue
 import edu.princeton.cs.algs4.Stack
-import extensions.formatDouble
 import extensions.shuffle
 import extensions.spendTimeMillis
 
@@ -20,9 +18,7 @@ import extensions.spendTimeMillis
  * 6、如果X不等于0，使用第2步和第3步的方法在右侧切分出小于等于X的范围，重复第4步，第5步
  * 7、如果X等于0，程序结束，得到最小生成树
  */
-class PartitioningKruskalMST(graph: EWG) : MST {
-    private val queue = Queue<Edge>()
-    private var weight = 0.0
+class PartitioningKruskalMST(graph: EWG) : MST() {
 
     init {
         val edges = graph.edges()
@@ -74,26 +70,6 @@ class PartitioningKruskalMST(graph: EWG) : MST {
         }
         if (j != start) array.swap(start, j)
         return j
-    }
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

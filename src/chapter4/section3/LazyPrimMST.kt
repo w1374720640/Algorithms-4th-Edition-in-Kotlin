@@ -1,17 +1,13 @@
 package chapter4.section3
 
 import chapter2.section4.HeapMinPriorityQueue
-import edu.princeton.cs.algs4.Queue
-import extensions.formatDouble
 
 /**
  * 最小生成树的Prim算法的延时实现
  */
-class LazyPrimMST(graph: EWG) : MST {
+class LazyPrimMST(graph: EWG) : MST() {
     private val marked = BooleanArray(graph.V)
-    private val queue = Queue<Edge>()
     private val minPQ = HeapMinPriorityQueue<Edge>()
-    private var weight = 0.0
 
     init {
         visit(graph, 0)
@@ -35,26 +31,6 @@ class LazyPrimMST(graph: EWG) : MST {
                 minPQ.insert(it)
             }
         }
-    }
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

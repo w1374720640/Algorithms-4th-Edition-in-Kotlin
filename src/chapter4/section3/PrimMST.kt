@@ -1,17 +1,13 @@
 package chapter4.section3
 
 import chapter2.section4.HeapIndexMinPriorityQueue
-import edu.princeton.cs.algs4.Queue
-import extensions.formatDouble
 
 /**
  * 最小生成树的Prim算法（即时版本）
  */
-class PrimMST(graph: EWG) : MST {
+class PrimMST(graph: EWG) : MST() {
     private val marked = BooleanArray(graph.V)
-    private val queue = Queue<Edge>()
     private val indexMinPQ = HeapIndexMinPriorityQueue<Edge>(graph.V)
-    private var weight = 0.0
 
     init {
         visit(graph, 0)
@@ -38,26 +34,6 @@ class PrimMST(graph: EWG) : MST {
                 }
             }
         }
-    }
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

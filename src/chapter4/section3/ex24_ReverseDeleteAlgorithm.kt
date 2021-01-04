@@ -1,7 +1,5 @@
 package chapter4.section3
 
-import extensions.formatDouble
-
 /**
  * 逆向删除算法
  * 实现以下计算最小生成树的算法：
@@ -16,9 +14,8 @@ import extensions.formatDouble
  * 对边排序时间复杂度为O(ElgE)，由高到低遍历时间复杂度为O(E)，判断图的连通性时间复杂度接近O(E)
  * 总时间复杂度为O(E^2)
  */
-class ReverseDeleteMST(graph: EWG) : MST {
+class ReverseDeleteMST(graph: EWG) : MST() {
     private val deleteEWG = EdgeWeightedGraphWithDelete(graph)
-    private var weight = 0.0
 
     init {
         val list = ArrayList<Edge>()
@@ -40,22 +37,6 @@ class ReverseDeleteMST(graph: EWG) : MST {
 
     override fun edges(): Iterable<Edge> {
         return deleteEWG.edges()
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        edges().forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

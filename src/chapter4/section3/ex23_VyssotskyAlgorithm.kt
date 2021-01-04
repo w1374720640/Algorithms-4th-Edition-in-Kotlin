@@ -1,7 +1,5 @@
 package chapter4.section3
 
-import extensions.formatDouble
-
 /**
  * Vyssotsky算法
  * 开发一种不断使用环的性质（请见练习4.3.8）来计算最小生成树的算法：
@@ -15,9 +13,8 @@ import extensions.formatDouble
  * 因为边一条一条的加入，每次加入后会删除环中权重最大的边，所以，每次查找环时，最多需要遍历V条边，
  * 一共需要查找E次，所以总的时间复杂度为O(V*E)
  */
-class VyssotskyMST(graph: EWG) : MST {
+class VyssotskyMST(graph: EWG) : MST() {
     private val deleteEWG = EdgeWeightedGraphWithDelete(graph.V)
-    private var weight = 0.0
 
     init {
         graph.edges().forEach { edge ->
@@ -42,22 +39,6 @@ class VyssotskyMST(graph: EWG) : MST {
 
     override fun edges(): Iterable<Edge> {
         return deleteEWG.edges()
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        edges().forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

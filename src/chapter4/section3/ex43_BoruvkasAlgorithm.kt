@@ -1,8 +1,6 @@
 package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
-import edu.princeton.cs.algs4.Queue
-import extensions.formatDouble
 import kotlin.math.abs
 
 /**
@@ -23,9 +21,7 @@ import kotlin.math.abs
  * 所以最多需要lgV次遍历就可以找到唯一的一个连通分量
  * 遍历一次的时间复杂度为O(E)，总时间复杂度为O(ElgV)
  */
-class BoruvkaMST(graph: EWG) : MST {
-    private val queue = Queue<Edge>()
-    private var weight = 0.0
+class BoruvkaMST(graph: EWG) : MST() {
 
     init {
         val uf = CompressionWeightedQuickUnionUF(graph.V)
@@ -56,27 +52,6 @@ class BoruvkaMST(graph: EWG) : MST {
             }
             i *= 2
         }
-    }
-
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

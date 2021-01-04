@@ -1,7 +1,5 @@
 package chapter4.section3
 
-import edu.princeton.cs.algs4.Queue
-import extensions.formatDouble
 import extensions.random
 import extensions.spendTimeMillis
 
@@ -17,11 +15,9 @@ import extensions.spendTimeMillis
  * 所以，总时间复杂度为(O(V) + O(V)) * O(V) = O(V²)
  * 当面对稠密图时，E约等于V²，基于优先队列的即时Prim算法的时间复杂度ElogV约等于V²lgV，大于不使用优先队列的最小生成树算法
  */
-class DenseGraphPrimMST(graph: EWG) : MST {
+class DenseGraphPrimMST(graph: EWG) : MST() {
     private val marked = BooleanArray(graph.V)
     private val edgeTo = Array<Edge?>(graph.V) { null }
-    private val queue = Queue<Edge>()
-    private var weight = 0.0
 
     init {
         visit(graph, 0)
@@ -56,26 +52,6 @@ class DenseGraphPrimMST(graph: EWG) : MST {
                 }
             }
         }
-    }
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 

@@ -2,7 +2,6 @@ package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
 import chapter2.section4.HeapIndexMinPriorityQueue
-import edu.princeton.cs.algs4.Queue
 import extensions.formatDouble
 
 /**
@@ -30,8 +29,7 @@ class PrimMSF(graph: EWG) : MSF {
             visit(graph, s)
             while (!indexMinPQ.isEmpty()) {
                 val edge = indexMinPQ.delMin().first
-                mst.queue.enqueue(edge)
-                mst.weight += edge.weight
+                mst.enqueue(edge)
                 weight += edge.weight
                 val v = edge.either()
                 val w = edge.other(v)
@@ -69,28 +67,11 @@ class PrimMSF(graph: EWG) : MSF {
         return trees
     }
 
-    private class InnerPrimMST : MST {
-        val queue = Queue<Edge>()
-        var weight = 0.0
+    private class InnerPrimMST : MST() {
 
-        override fun edges(): Iterable<Edge> {
-            return queue
-        }
-
-        override fun weight(): Double {
-            return weight
-        }
-
-        override fun toString(): String {
-            val stringBuilder = StringBuilder()
-                    .append("weight=")
-                    .append(formatDouble(weight, 2))
-                    .append("\n")
-            queue.forEach {
-                stringBuilder.append(it.toString())
-                        .append("\n")
-            }
-            return stringBuilder.toString()
+        fun enqueue(edge: Edge) {
+            queue.enqueue(edge)
+            weight += edge.weight
         }
     }
 
@@ -147,8 +128,7 @@ class KruskalMSF(graph: EWG) : MSF {
             if (uf.find(v) != uf.find(w)) {
                 // 最终会连通但还未连通时，找到对应的最小生成树，加入树中
                 val mst = trees[ids[v]]
-                mst.queue.enqueue(edge)
-                mst.weight += edge.weight
+                mst.enqueue(edge)
                 weight += edge.weight
                 uf.union(v, w)
                 count++
@@ -170,28 +150,10 @@ class KruskalMSF(graph: EWG) : MSF {
         return trees.asIterable()
     }
 
-    private class InnerKruskalMST : MST {
-        val queue = Queue<Edge>()
-        var weight = 0.0
-
-        override fun edges(): Iterable<Edge> {
-            return queue
-        }
-
-        override fun weight(): Double {
-            return weight
-        }
-
-        override fun toString(): String {
-            val stringBuilder = StringBuilder()
-                    .append("weight=")
-                    .append(formatDouble(weight, 2))
-                    .append("\n")
-            queue.forEach {
-                stringBuilder.append(it.toString())
-                        .append("\n")
-            }
-            return stringBuilder.toString()
+    private class InnerKruskalMST : MST() {
+        fun enqueue(edge: Edge) {
+            queue.enqueue(edge)
+            weight += edge.weight
         }
     }
 

@@ -4,8 +4,6 @@ import chapter1.section3.DoublyLinkedList
 import chapter1.section3.addTail
 import chapter1.section3.forwardIterator
 import chapter1.section3.isEmpty
-import edu.princeton.cs.algs4.Queue
-import extensions.formatDouble
 import kotlin.math.abs
 
 /**
@@ -20,9 +18,7 @@ import kotlin.math.abs
  * 遍历一次的时间复杂度为O(E)+O(V) ~O(E)，所以总时间复杂度仍然为O(ElgV)
  * 虽然时间复杂度相同，但效率确实降低了，可能有更好的实现方式（因为我的链表不需要是环形的）
  */
-class ImprovedBoruvkaMST(graph: EWG) : MST {
-    private val queue = Queue<Edge>()
-    private var weight = 0.0
+class ImprovedBoruvkaMST(graph: EWG) : MST() {
 
     init {
         // 初始化所有子树，每个子树中只有一个顶点
@@ -63,26 +59,6 @@ class ImprovedBoruvkaMST(graph: EWG) : MST {
             }
             i *= 2
         }
-    }
-
-    override fun edges(): Iterable<Edge> {
-        return queue
-    }
-
-    override fun weight(): Double {
-        return weight
-    }
-
-    override fun toString(): String {
-        val stringBuilder = StringBuilder()
-                .append("weight=")
-                .append(formatDouble(weight, 2))
-                .append("\n")
-        queue.forEach {
-            stringBuilder.append(it.toString())
-                    .append("\n")
-        }
-        return stringBuilder.toString()
     }
 }
 
