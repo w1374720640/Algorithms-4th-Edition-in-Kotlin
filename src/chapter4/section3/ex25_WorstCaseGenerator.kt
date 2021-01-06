@@ -11,7 +11,7 @@ import extensions.spendTimeMillis
  *
  * 解：由命题M及其证明可知，最坏情况下优先队列一次插入的成本为~lgE，删除最小元素的成本为~2lgE，
  * 当加权图中插入的边权重按降序排列时，插入的成本为~lgE，延时Prim算法所需的运行时间为~ElgE
- * 堆排序的最坏情况很难确定，参考练习2.4.16
+ * 上述操作运行时间是非线性的，但不是最坏情况，堆排序的最坏情况很难确定，参考练习2.4.16
  */
 fun ex25_WorstCaseGenerator(V: Int, E: Int): EdgeWeightedGraph {
     val graph = EdgeWeightedGraph(V)

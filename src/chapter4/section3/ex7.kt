@@ -1,6 +1,7 @@
 package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
+import chapter2.section4.HeapMaxPriorityQueue
 
 /**
  * 如何得到一幅加权图的最大生成树？
@@ -11,27 +12,23 @@ import chapter1.section5.CompressionWeightedQuickUnionUF
  * 这里只演示Kruskal算法的最大生成树
  */
 class MaxKruskalMST(graph: EWG) : MST() {
-    private val edges = ArrayList<Edge>()
-    private val uf = CompressionWeightedQuickUnionUF(graph.V)
 
     init {
+        val uf = CompressionWeightedQuickUnionUF(graph.V)
+        val pq = HeapMaxPriorityQueue<Edge>()
         graph.edges().forEach {
-            edges.add(it)
+            pq.insert(it)
         }
-        // 直接排序，而不是使用优先队列
-        edges.sortDescending()
-        var i = 0
-        // 最小生成树最多有V-1条边
-        while (queue.size() < graph.V - 1) {
-            val edge = edges[i++]
+        while (!pq.isEmpty() && queue.size() < graph.V - 1) {
+            val edge = pq.delMax()
             val v = edge.either()
             val w = edge.other(v)
-            if (uf.find(v) != uf.find(w)) {
-                queue.enqueue(edge)
-                weight += edge.weight
-                uf.union(v, w)
-            }
+            if (uf.connected(v, w)) continue
+            queue.enqueue(edge)
+            weight += edge.weight
+            uf.union(v, w)
         }
+        check(queue.size() == graph.V - 1) { "All vertices should be connected." }
     }
 }
 

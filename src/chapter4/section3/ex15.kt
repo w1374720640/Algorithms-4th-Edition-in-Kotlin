@@ -1,6 +1,5 @@
 package chapter4.section3
 
-import edu.princeton.cs.algs4.Bag
 import edu.princeton.cs.algs4.Queue
 import extensions.formatDouble
 
@@ -15,56 +14,26 @@ import extensions.formatDouble
  * 遍历环中所有的边，删除权重最大的边，剩余的边构造成新的最小生成树
  */
 fun ex15(graph: EWG, mst: MST, e: Edge): Iterable<Edge> {
-    val adj = Array(graph.V) { Bag<Edge>() }
+    val tree = EdgeWeightedGraph(graph.V)
     mst.edges().forEach {
-        val v = it.either()
-        val w = it.other(v)
-        adj[v].add(it)
-        adj[w].add(it)
+        tree.addEdge(it)
     }
-    val eV = e.either()
-    val eW = e.other(eV)
-    adj[eV].add(e)
-    adj[eW].add(e)
+    tree.addEdge(e)
 
-    val marked = BooleanArray(graph.V)
-    val pathTo = Array<Edge?>(graph.V) { null }
-    val queue = Queue<Edge>()
-    queue.enqueue(e)
-    marked[eV] = true
-    while (!queue.isEmpty) {
-        val edge = queue.dequeue()
-        val v = edge.either()
-        val w = edge.other(v)
-        if (marked[v] && marked[w]) {
-            pathTo[eV] = edge
-            break
-        }
-        val notMarked = if (marked[v]) w else v
-        marked[notMarked] = true
-        pathTo[notMarked] = edge
-        adj[notMarked].forEach {
-            if (it != edge) queue.enqueue(it)
-        }
-    }
-
-    var maxEdge = e
-    var lastVertex = eV
-    while (true) {
-        val edge = pathTo[lastVertex]
-        check(edge != null)
-        if (edge.weight > maxEdge.weight) {
+    val cycle = EdgeWeightedGraphCycle(tree).cycle()?.iterator()
+    if (cycle == null || !cycle.hasNext()) return tree.edges()
+    var maxEdge = cycle.next()
+    while (cycle.hasNext()) {
+        val edge = cycle.next()
+        if (edge > maxEdge) {
             maxEdge = edge
         }
-        lastVertex = edge.other(lastVertex)
-        if (lastVertex == eV) break
     }
 
     val result = Queue<Edge>()
-    mst.edges().forEach {
+    tree.edges().forEach {
         if (it != maxEdge) result.enqueue(it)
     }
-    if (e != maxEdge) result.enqueue(e)
     return result
 }
 

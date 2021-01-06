@@ -1,7 +1,5 @@
 package chapter4.section3
 
-import edu.princeton.cs.algs4.Bag
-import edu.princeton.cs.algs4.Queue
 import extensions.formatDouble
 
 /**
@@ -9,50 +7,23 @@ import extensions.formatDouble
  * 向G中添加一条边e，编写一段程序找到e的权重在什么范围内才会被加入最小生成树。
  *
  * 由练习4.3.15可知，e的顶点不同产生的环不同，当e的权重不是环内的最大值时才会被加入最小生成树。
- * 通过广度优先搜索找到e的两个顶点间的最短路径，e的权重需要小于权重最大的边（假设权重为非负数）
+ * 将e加入最小生成树中，再找到新树中的环，e的权重需要小于环中权重最大的边（假设权重为非负数）
  */
-fun ex16(graph: EWG, mst: MST, eV: Int, eW: Int): Pair<Double, Double> {
-    val adj = Array(graph.V) { Bag<Edge>() }
+fun ex16(graph: EWG, mst: MST, e: Edge): Pair<Double, Double> {
+    val tree = EdgeWeightedGraph(graph.V)
     mst.edges().forEach {
-        val v = it.either()
-        val w = it.other(v)
-        adj[v].add(it)
-        adj[w].add(it)
+        tree.addEdge(it)
     }
+    tree.addEdge(e)
 
-    val marked = BooleanArray(graph.V)
-    val pathTo = Array<Edge?>(graph.V) { null }
-    val queue = Queue<Edge>()
-    // 假设权重为非负数
-    val e = Edge(eV, eW, 0.0)
-    queue.enqueue(e)
-    marked[eV] = true
-    while (!queue.isEmpty) {
-        val edge = queue.dequeue()
-        val v = edge.either()
-        val w = edge.other(v)
-        if (marked[v] && marked[w]) {
-            pathTo[eV] = edge
-            break
-        }
-        val notMarked = if (marked[v]) w else v
-        marked[notMarked] = true
-        pathTo[notMarked] = edge
-        adj[notMarked].forEach {
-            if (it != edge) queue.enqueue(it)
-        }
-    }
-
-    var maxEdge = e
-    var lastVertex = eV
-    while (true) {
-        val edge = pathTo[lastVertex]
-        check(edge != null)
-        if (edge.weight > maxEdge.weight) {
+    val cycle = EdgeWeightedGraphCycle(tree).cycle()?.iterator()
+    check(cycle != null && cycle.hasNext())
+    var maxEdge = cycle.next()
+    while (cycle.hasNext()) {
+        val edge = cycle.next()
+        if (edge > maxEdge) {
             maxEdge = edge
         }
-        lastVertex = edge.other(lastVertex)
-        if (lastVertex == eV) break
     }
     return 0.0 to maxEdge.weight
 }
@@ -62,6 +33,6 @@ fun main() {
     val mst = PrimMST(graph)
     println(mst)
 
-    val result = ex16(graph, mst, 0, 6)
+    val result = ex16(graph, mst, Edge(0, 6, 0.0))
     println("[${formatDouble(result.first, 2)}, ${formatDouble(result.second, 2)}]")
 }

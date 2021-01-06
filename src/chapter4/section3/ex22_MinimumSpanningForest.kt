@@ -2,6 +2,7 @@ package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
 import chapter2.section4.HeapIndexMinPriorityQueue
+import chapter2.section4.HeapMinPriorityQueue
 import extensions.formatDouble
 
 /**
@@ -112,17 +113,17 @@ class KruskalMSF(graph: EWG) : MSF {
         }
     }
 
-    private val edges = ArrayList<Edge>()
-    private val uf = CompressionWeightedQuickUnionUF(graph.V)
     private var weight = 0.0
 
     init {
         var count = 0
+        val uf = CompressionWeightedQuickUnionUF(graph.V)
+        val pq = HeapMinPriorityQueue<Edge>()
         graph.edges().forEach {
-            edges.add(it)
+            pq.insert(it)
         }
-        edges.sort()
-        for (edge in edges) {
+        while (!pq.isEmpty() && count < graph.V - 1) {
+            val edge = pq.delMin()
             val v = edge.either()
             val w = edge.other(v)
             if (uf.find(v) != uf.find(w)) {
@@ -133,7 +134,6 @@ class KruskalMSF(graph: EWG) : MSF {
                 uf.union(v, w)
                 count++
             }
-            if (count == graph.V - 1) break
         }
     }
 
