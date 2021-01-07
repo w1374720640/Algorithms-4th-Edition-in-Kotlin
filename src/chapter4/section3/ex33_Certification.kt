@@ -31,16 +31,13 @@ fun ex33_Certification(graph: EWG, tree: Iterable<Edge>): Boolean {
         }
         // 删除一条边后，最小生成树必须分裂为两个独立的连通分量
         if (uf.count() != 2) return false
-        var minEdge: Edge? = null
         graph.edges().forEach { edge ->
             val v = edge.v
             val w = edge.other(v)
-            if (!uf.connected(v, w) && (minEdge == null || edge < minEdge!!)) {
-                minEdge = edge
+            if (!uf.connected(v, w) && edge < deleteEdge!!) {
+                return false
             }
         }
-        // 最小的横切边应该是被删除的那个边
-        if (minEdge != deleteEdge) return false
     }
     return true
 }

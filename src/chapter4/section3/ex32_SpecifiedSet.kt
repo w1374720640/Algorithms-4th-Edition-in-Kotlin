@@ -1,6 +1,7 @@
 package chapter4.section3
 
 import chapter1.section5.CompressionWeightedQuickUnionUF
+import chapter2.section4.HeapMinPriorityQueue
 import chapter3.section5.LinearProbingHashSET
 import chapter3.section5.SET
 
@@ -11,10 +12,9 @@ import chapter3.section5.SET
  * 解：使用Kruskal算法计算最小生成树时，先将集合S内的所有边都加入到最小生成树中，然后再执行正常逻辑
  */
 class SpecifiedSetMST(graph: EWG, S: SET<Edge>) : MST() {
-    private val edges = ArrayList<Edge>()
-    private val uf = CompressionWeightedQuickUnionUF(graph.V)
 
     init {
+        val uf = CompressionWeightedQuickUnionUF(graph.V)
         // 先将集合S中的所有边都加入最小生成树中
         S.forEach { edge ->
             val v = edge.either()
@@ -25,21 +25,20 @@ class SpecifiedSetMST(graph: EWG, S: SET<Edge>) : MST() {
         }
 
         // 下面是正常逻辑
+        val pq = HeapMinPriorityQueue<Edge>()
         graph.edges().forEach {
-            edges.add(it)
+            pq.insert(it)
         }
-        edges.sort()
-        var i = 0
-        while (queue.size() < graph.V - 1) {
-            val edge = edges[i++]
+        while (!pq.isEmpty() && queue.size() < graph.V - 1) {
+            val edge = pq.delMin()
             val v = edge.either()
             val w = edge.other(v)
-            if (uf.find(v) != uf.find(w)) {
-                queue.enqueue(edge)
-                weight += edge.weight
-                uf.union(v, w)
-            }
+            if (uf.connected(v, w)) continue
+            queue.enqueue(edge)
+            weight += edge.weight
+            uf.union(v, w)
         }
+        check(queue.size() == graph.V - 1) { "All vertices should be connected." }
     }
 }
 

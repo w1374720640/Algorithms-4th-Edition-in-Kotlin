@@ -33,7 +33,7 @@ class PartitioningKruskalMST(graph: EWG) : MST() {
         stack.push(0)
         while (stack.size() >= 2 && queue.size() < graph.V - 1) {
             val start = stack.pop()
-            val end = stack.peek()
+            val end = stack.peek() // 这里用peek()，不弹出
             val p = partition(array, start, end)
             if (p - start < graph.V - 1 - queue.size() + 20) {
                 // 如果分割后的左侧范围比需要最大数量少，将左侧所有元素排序后依次插入
@@ -50,7 +50,7 @@ class PartitioningKruskalMST(graph: EWG) : MST() {
                 }
                 if (p + 1 < end) stack.push(p + 1)
             } else {
-                // 如果分割后的左侧范围比需要的多大数量多，则将左侧继续分割
+                // 如果分割后的左侧范围比需要的数量多，则将左侧继续分割
                 stack.push(p - 1)
                 stack.push(start)
             }
