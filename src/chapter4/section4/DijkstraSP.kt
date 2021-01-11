@@ -6,7 +6,7 @@ import chapter2.section4.HeapIndexMinPriorityQueue
  * 最短路径的Dijkstra算法
  */
 class DijkstraSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
-    private val pq = HeapIndexMinPriorityQueue<DirectedEdge>(digraph.V)
+    private val pq = HeapIndexMinPriorityQueue<Double>(digraph.V)
 
     init {
         distTo[s] = 0.0
@@ -22,7 +22,7 @@ class DijkstraSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
             if (distTo[w] > distTo[v] + edge.weight) {
                 distTo[w] = distTo[v] + edge.weight
                 edgeTo[w] = edge
-                pq[w] = edge
+                pq[w] = distTo[w]
             }
         }
     }

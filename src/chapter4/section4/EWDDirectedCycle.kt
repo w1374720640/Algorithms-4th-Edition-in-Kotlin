@@ -8,9 +8,9 @@ import edu.princeton.cs.algs4.Stack
  */
 class EWDDirectedCycle(digraph: EdgeWeightedDigraph) {
     private val marked = BooleanArray(digraph.V)
-    private val edgeTo = IntArray(digraph.V)
+    private val edgeTo = arrayOfNulls<DirectedEdge>(digraph.V)
     private val onStack = BooleanArray(digraph.V)
-    private var stack: Stack<Int>? = null
+    private var stack: Stack<DirectedEdge>? = null
 
     init {
         for (v in 0 until digraph.V) {
@@ -27,19 +27,17 @@ class EWDDirectedCycle(digraph: EdgeWeightedDigraph) {
             if (hasCycle()) return
             val w = edge.to()
             if (!marked[w]) {
-                edgeTo[w] = v
+                edgeTo[w] = edge
                 dfs(digraph, w)
             } else if (onStack[w]) {
                 // 如果w点被当前方法调用栈访问过，说明当前路径上存在环
+                stack = Stack<DirectedEdge>()
+                stack!!.push(edge)
                 var s = v
-                stack = Stack<Int>()
                 while (s != w) {
-                    stack!!.push(s)
-                    s = edgeTo[s]
+                    stack!!.push(edgeTo[s])
+                    s = edgeTo[s]!!.from()
                 }
-                stack!!.push(w)
-                // 顶点v被添加了两次，用于表现环的特点
-                stack!!.push(v)
             }
         }
         // 方法退出时，表明v点未连接任何环结构，重置onStack对应位置的值，而不重置marked对应位置的值
@@ -57,7 +55,7 @@ class EWDDirectedCycle(digraph: EdgeWeightedDigraph) {
     /**
      * 有向环中的所有顶点（如果存在的话）
      */
-    fun cycle(): Iterable<Int>? {
+    fun cycle(): Iterable<DirectedEdge>? {
         return stack
     }
 }

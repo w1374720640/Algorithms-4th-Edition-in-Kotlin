@@ -7,6 +7,7 @@ import chapter2.section4.HeapIndexMinPriorityQueue
  */
 class PrimMST(graph: EWG) : MST() {
     private val marked = BooleanArray(graph.V)
+    // 书上用distTo的值作为排序依据，这里使用边的权重作为排序依据，过程不同，但结果相同
     private val indexMinPQ = HeapIndexMinPriorityQueue<Edge>(graph.V)
 
     init {
