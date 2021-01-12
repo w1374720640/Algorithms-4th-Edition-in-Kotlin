@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.Stack
  * 加权有向环的API
  * 参考[chapter4.section2.DirectedCycle]
  */
-class EWDDirectedCycle(digraph: EdgeWeightedDigraph) {
+class EdgeWeightedCycleFinder(digraph: EdgeWeightedDigraph) {
     private val marked = BooleanArray(digraph.V)
     private val edgeTo = arrayOfNulls<DirectedEdge>(digraph.V)
     private val onStack = BooleanArray(digraph.V)
@@ -62,7 +62,7 @@ class EWDDirectedCycle(digraph: EdgeWeightedDigraph) {
 
 fun main() {
     val digraph = getTinyEWDAG()
-    val cycle = EWDDirectedCycle(digraph)
+    val cycle = EdgeWeightedCycleFinder(digraph)
     if (cycle.hasCycle()) {
         println("has cycle")
         println(cycle.cycle()!!.joinToString())

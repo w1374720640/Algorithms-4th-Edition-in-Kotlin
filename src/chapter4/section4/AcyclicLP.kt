@@ -11,7 +11,7 @@ class AcyclicLP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
             distTo[it] = Double.NEGATIVE_INFINITY
         }
 
-        val topological = EWDTopological(digraph)
+        val topological = EdgeWeightedTopological(digraph)
         require(topological.isDAG()) { "The directed graph should be acyclic" }
         val iterator = topological.order()!!.iterator()
         distTo[s] = 0.0

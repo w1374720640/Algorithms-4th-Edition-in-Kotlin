@@ -4,11 +4,11 @@ package chapter4.section4
  * 加权有向无环图拓扑排序的API
  * 参考[chapter4.section2.Topological]
  */
-class EWDTopological(digraph: EdgeWeightedDigraph) {
+class EdgeWeightedTopological(digraph: EdgeWeightedDigraph) {
     private var order: Iterable<Int>? = null
 
     init {
-        val cycle = EWDDirectedCycle(digraph)
+        val cycle = EdgeWeightedCycleFinder(digraph)
         if (!cycle.hasCycle()) {
             val depthFirstOrder = EWDDepthFirstOrder(digraph)
             order = depthFirstOrder.reversePost()
@@ -33,7 +33,7 @@ class EWDTopological(digraph: EdgeWeightedDigraph) {
 
 fun main() {
     val digraph = getTinyEWDAG()
-    val topological = EWDTopological(digraph)
+    val topological = EdgeWeightedTopological(digraph)
     if (topological.isDAG()) {
         println(topological.order()!!.joinToString())
     }

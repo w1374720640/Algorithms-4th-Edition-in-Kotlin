@@ -6,7 +6,7 @@ package chapter4.section4
  */
 class AcyclicSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
     init {
-        val topological = EWDTopological(digraph)
+        val topological = EdgeWeightedTopological(digraph)
         require(topological.isDAG()) { "The directed graph should be acyclic" }
         val iterator = topological.order()!!.iterator()
         distTo[s] = 0.0
