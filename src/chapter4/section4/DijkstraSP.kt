@@ -4,6 +4,8 @@ import chapter2.section4.HeapIndexMinPriorityQueue
 
 /**
  * 最短路径的Dijkstra算法
+ * 命题R：Dijkstra算法能够解决边权重非负的加权有向图的单起点最短路径问题
+ * 所需的空间与V成正比，时间与ElogV成正比（最坏情况下）
  */
 class DijkstraSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
     private val pq = HeapIndexMinPriorityQueue<Double>(digraph.V)

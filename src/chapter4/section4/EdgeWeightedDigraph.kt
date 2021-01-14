@@ -62,14 +62,24 @@ open class EdgeWeightedDigraph(val V: Int) {
 }
 
 /**
- * 获取一个小规模的加权有向图
+ * 获取一个小规模的加权有向图，图形见课本P412
  */
 fun getTinyEWD() = EdgeWeightedDigraph(In("./data/tinyEWD.txt"))
 
 /**
- * 获取一个小规模的无环加权有向图
+ * 获取一个小规模的无环加权有向图，图形见课本P426
  */
 fun getTinyEWDAG() = EdgeWeightedDigraph(In("./data/tinyEWDAG.txt"))
+
+/**
+ * 获取一个小规模、含负权重环的加权有向图，图形见课本P435
+ */
+fun getTinyEWDAGnc() = EdgeWeightedDigraph(In("./data/tinyEWDnc.txt"))
+
+/**
+ * 获取一个小规模、含负权重边、有环、但不含负权重环的加权有向图，图形见课本P441
+ */
+fun getTinyEWDAGn() = EdgeWeightedDigraph(In("./data/tinyEWDn.txt"))
 
 fun main() {
     val digraph = getTinyEWD()
