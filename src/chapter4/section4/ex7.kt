@@ -19,15 +19,17 @@ import kotlin.math.sqrt
  * 实现DijkstraSP的另一个版本，支持一个方法来返回一幅加权有向图中从s到t的另一条最短路径。
  * （如果从s到t的最短路径只有一条则返回null。）
  *
- * 解：这里对题目稍作修改，求一个有向图中，从s到t的前k短路径
+ * 解：这里题目稍作修改：求一个有向图中，从s到t的前k短路径
  * Path类型表示一条路径，从起点开始进行广度优先搜索
  * 使用一个队列保存广度优先遍历过程中的路径
  * 如果一个顶点有n个有效指出边（不包含自环边和指向顶点已访问的边），则路径的总数增加n
  * 如果一个顶点有效指出边为0，则包含该顶点的路径无法到达目标点
- * 一个最大优先队列保存最短的k条路径（控制优先队列大小小于等于k）
+ * 使用一个最大优先队列保存最短的k条路径（控制优先队列大小小于等于k）
  * 不断从队列中取出路径，判断需要继续查找还是丢弃路径
- * 为了防止路径重复，使用一个大小为V的最大优先队列数组
+ * 为了防止路径重复，使用一个大小为V的最大优先队列数组，
  * 当需要添加一条新边时，只有当前路径加新边的权重小于经过该点的前k短路径时才加入队列中，否则丢弃
+ *
+ * 未证明算法正确性，算法复杂度未知，而且和Dijkstra算法无关...
  */
 class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: Int) {
     class Path(edge: DirectedEdge) : Comparable<Path>, Iterable<DirectedEdge> {
@@ -98,7 +100,11 @@ class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: In
             if (v == t) {
                 result.insert(path)
                 if (result.size() > k) {
-                    result.delMax()
+                    val deletePath = result.delMax()
+                    if (deletePathSet.contains(deletePath)) {
+                        deletePathSet.delete(deletePath)
+                        continue
+                    }
                 }
                 continue
             }
