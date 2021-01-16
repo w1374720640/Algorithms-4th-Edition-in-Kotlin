@@ -1,6 +1,7 @@
 package chapter4.section4
 
 import edu.princeton.cs.algs4.In
+import edu.princeton.cs.algs4.Queue
 import extensions.formatDouble
 import extensions.formatInt
 
@@ -43,8 +44,25 @@ class CPM(private val N: Int) {
         lp = AcyclicLP(digraph, s)
     }
 
+    /**
+     * 最短运行时间
+     */
     fun total(): Double {
         return lp?.distTo(t) ?: Double.NEGATIVE_INFINITY
+    }
+
+    /**
+     * 关键路径
+     */
+    fun criticalPath(): Iterable<Int>? {
+        if (total() == Double.NEGATIVE_INFINITY) return null
+        val queue = Queue<Int>()
+        lp!!.pathTo(t)!!.forEach { edge ->
+            if (edge.from() in 0 until N) {
+                queue.enqueue(edge.from())
+            }
+        }
+        return queue
     }
 
     override fun toString(): String {
@@ -59,6 +77,9 @@ class CPM(private val N: Int) {
         }
         stringBuilder.append("Finish time:\n")
                 .append(formatDouble(total, 2))
+                .append("\n")
+                .append("criticalPath: ")
+                .append(criticalPath()!!.joinToString())
         return stringBuilder.toString()
     }
 }
