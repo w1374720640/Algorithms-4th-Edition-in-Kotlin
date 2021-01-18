@@ -26,8 +26,6 @@ import kotlin.math.sqrt
  * 如果一个顶点有效指出边为0，则包含该顶点的路径无法到达目标点
  * 使用一个最大优先队列保存最短的k条路径（控制优先队列大小小于等于k）
  * 不断从队列中取出路径，判断需要继续查找还是丢弃路径
- * 为了防止路径重复，使用一个大小为V的最大优先队列数组，
- * 当需要添加一条新边时，只有当前路径加新边的权重小于经过该点的前k短路径时才加入队列中，否则丢弃
  *
  * 未证明算法正确性，算法复杂度未知，而且和Dijkstra算法无关...
  */
@@ -84,7 +82,6 @@ class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: In
     private val queue = Queue<Path>()
     private val result = HeapMaxPriorityQueue<Path>()
     private val array = Array(digraph.V) { HeapMaxPriorityQueue<Path>() }
-    private val deletePathSet = LinearProbingHashSET<Path>()
 
     init {
         require(s in 0 until digraph.V && t in 0 until digraph.V && s != t && k > 0)
@@ -100,17 +97,8 @@ class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: In
             if (v == t) {
                 result.insert(path)
                 if (result.size() > k) {
-                    val deletePath = result.delMax()
-                    if (deletePathSet.contains(deletePath)) {
-                        deletePathSet.delete(deletePath)
-                        continue
-                    }
+                    result.delMax()
                 }
-                continue
-            }
-            // 如果已经有k条比该路径更优的路径（到达某个点的权重更小），则该路径直接丢弃
-            if (deletePathSet.contains(path)) {
-                deletePathSet.delete(path)
                 continue
             }
             val iterator = digraph.adj(v).iterator()
@@ -125,8 +113,7 @@ class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: In
                 if (maxPQ.size() == k) {
                     // 如果已经有k个到该结点的更短路径，则该路径不通
                     if (maxPQ.max().weight <= path.weight + edge.weight) continue
-                    // 如果当前路径更短，删除最大的那个，并在下次从队列中取出时跳过
-                    deletePathSet.add(maxPQ.delMax())
+                    maxPQ.delMax()
                 }
                 val newPath = path.copy()
                 newPath.addEdge(edge)

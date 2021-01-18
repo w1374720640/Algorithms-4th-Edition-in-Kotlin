@@ -7,13 +7,17 @@ import chapter3.section5.LinearProbingHashSET
 import edu.princeton.cs.algs4.In
 import edu.princeton.cs.algs4.Queue
 import extensions.formatDouble
+import kotlin.math.E
 import kotlin.math.ln
+import kotlin.math.pow
 
 /**
  * 找出正文中的例子里权重最低的环（即最佳套汇机会）。
  *
  * 解：参考练习4.4.7，找出权重最低的环
  * LowestWeightCycle用于找出在一个加权有向图中包含顶点s的权重最低环
+ * 同样用广度优先遍历、路径不重复
+ * 区别在于这里起点和终点相同，只要权重最小的那条路径
  */
 class MinWeightCycleFinder(digraph: EdgeWeightedDigraph, s: Int) {
     class Path(edge: DirectedEdge) : Comparable<Path>, Iterable<DirectedEdge> {
@@ -67,7 +71,6 @@ class MinWeightCycleFinder(digraph: EdgeWeightedDigraph, s: Int) {
     private val queue = Queue<Path>()
     private var result: Path? = null
     private val array = arrayOfNulls<Path>(digraph.V)
-    private val deletePathSet = LinearProbingHashSET<Path>()
 
     init {
         require(s in 0 until digraph.V)
@@ -80,17 +83,9 @@ class MinWeightCycleFinder(digraph: EdgeWeightedDigraph, s: Int) {
         while (!queue.isEmpty) {
             val path = queue.dequeue()
             // 如果已经有k条比该路径更优的路径（到达某个点的权重更小），则该路径直接丢弃
-            if (deletePathSet.contains(path)) {
-                deletePathSet.delete(path)
-                continue
-            }
             val v = path.getLastVertex()
             if (v == s) {
                 if (result == null || path < result!!) {
-                    if (result != null && deletePathSet.contains(result!!)) {
-                        deletePathSet.delete(result!!)
-                        continue
-                    }
                     result = path
                 }
                 continue
@@ -104,9 +99,6 @@ class MinWeightCycleFinder(digraph: EdgeWeightedDigraph, s: Int) {
 
                 val oldPath = array[w]
                 if (oldPath == null || path.weight + edge.weight < oldPath.weight) {
-                    if (oldPath != null) {
-                        deletePathSet.add(oldPath)
-                    }
                     val newPath = path.copy()
                     newPath.addEdge(edge)
                     queue.enqueue(newPath)
@@ -167,7 +159,9 @@ fun main() {
             val edge = iterator.next()
             queue.enqueue(edge.to())
         }
-        println("minWeight=${formatDouble(minPath.weight, 5)} minPath: ${minPath.joinToString()}")
+        // 计算利润
+        val profit = E.pow(minPath.weight * -1.0) - 1
+        println("profit=${formatDouble(profit, 10)} minPath: ${minPath.joinToString()}")
         println("minWeightCycle: ${queue.joinToString { names[it] }}")
     }
 }
