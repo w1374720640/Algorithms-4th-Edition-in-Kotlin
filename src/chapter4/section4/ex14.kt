@@ -50,7 +50,7 @@ class AddValueSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
 }
 
 fun main() {
-    val digraph = getTinyEWDAGn()
+    val digraph = getTinyEWDn()
     println(BellmanFordSP(digraph, 0))
     println(AddValueSP(digraph, 0))
     println(DijkstraSP(digraph, 0))

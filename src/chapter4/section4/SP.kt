@@ -25,7 +25,7 @@ abstract class SP(protected val digraph: EdgeWeightedDigraph, protected val s: I
     }
 
     /**
-     * 从顶点s到v的路径，如果不存在则为null
+     * 从顶点s到v的最短路径，如果不存在则为null
      */
     open fun pathTo(v: Int): Iterable<DirectedEdge>? {
         if (!hasPathTo(v)) return null

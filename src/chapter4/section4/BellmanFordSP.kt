@@ -79,12 +79,12 @@ class BellmanFordSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
 
 fun main() {
     // 含有负权重边但无负权重环
-    val negativeDigraph = getTinyEWDAGn()
+    val negativeDigraph = getTinyEWDn()
     val negativeSP = BellmanFordSP(negativeDigraph, 5)
     println(negativeSP.toString())
 
     // 含负权重环
-    val negativeCycleDigraph = getTinyEWDAGnc()
+    val negativeCycleDigraph = getTinyEWDnc()
     val negativeCycleSP = BellmanFordSP(negativeCycleDigraph, 6)
     println(negativeCycleSP.toString())
 }
