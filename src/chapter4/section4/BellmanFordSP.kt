@@ -68,6 +68,21 @@ class BellmanFordSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
 
     fun negativeCycle() = cycle
 
+    override fun distTo(v: Int): Double {
+        if (hasNegativeCycle()) return Double.POSITIVE_INFINITY
+        return super.distTo(v)
+    }
+
+    override fun hasPathTo(v: Int): Boolean {
+        if (hasNegativeCycle()) return false
+        return super.hasPathTo(v)
+    }
+
+    override fun pathTo(v: Int): Iterable<DirectedEdge>? {
+        if (hasNegativeCycle()) return null
+        return super.pathTo(v)
+    }
+
     override fun toString(): String {
         return if (hasNegativeCycle()) {
             "has negative cycle: ${negativeCycle()!!.joinToString()}"

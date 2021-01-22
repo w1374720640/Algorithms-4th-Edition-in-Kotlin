@@ -90,7 +90,7 @@ class EuclideanEdgeWeightedDigraph(val V: Int, ratio: Double = 1.1) {
     fun draw() {
         StdDraw.clear()
         drawPoint()
-        drawVertex()
+//        drawVertex()
         drawEdge()
     }
 
@@ -102,6 +102,7 @@ class EuclideanEdgeWeightedDigraph(val V: Int, ratio: Double = 1.1) {
         }
     }
 
+    // 标注出所有顶点
     private fun drawVertex() {
         StdDraw.setPenRadius()
         StdDraw.setPenColor(StdDraw.RED)
@@ -135,6 +136,9 @@ class EuclideanEdgeWeightedDigraphSP(
     private val pq = HeapIndexMinPriorityQueue<Double>(digraph.V)
 
     init {
+        if (drawingProcess) {
+            drawVertex()
+        }
         distTo[s] = distance(s, t)
         pq[s] = distTo[s]
         while (!pq.isEmpty()) {
@@ -189,18 +193,30 @@ class EuclideanEdgeWeightedDigraphSP(
     private fun drawEdge(v: Int, w: Int) {
         val pointV = digraph.getPoint(v)
         val pointW = digraph.getPoint(w)
-        StdDraw.setPenRadius(GraphGraphics.DEFAULT_EDGE_WIDTH)
+        StdDraw.setPenRadius(GraphGraphics.DEFAULT_EDGE_WIDTH * 2)
         StdDraw.setPenColor(StdDraw.BLACK)
         StdDraw.line(pointV.x(), pointV.y(), pointW.x(), pointW.y())
+    }
+
+    /**
+     * 标注出起始点
+     */
+    private fun drawVertex() {
+        StdDraw.setPenRadius()
+        StdDraw.setPenColor(StdDraw.RED)
+        val pointS = digraph.getPoint(s)
+        val pointT = digraph.getPoint(t)
+        StdDraw.text(pointS.x(), pointS.y() + GraphGraphics.DEFAULT_POINT_RADIUS * 2, s.toString())
+        StdDraw.text(pointT.x(), pointT.y() + GraphGraphics.DEFAULT_POINT_RADIUS * 2, t.toString())
     }
 }
 
 fun main() {
     // 为了让绘制的图形更直观且每次的图形都相同，为随机方法设置一个种子
     setSeed(70)
-    val digraph = EuclideanEdgeWeightedDigraph(20)
+    val digraph = EuclideanEdgeWeightedDigraph(250)
     digraph.draw()
-    val sp = EuclideanEdgeWeightedDigraphSP(digraph, 5, 3, true, delay = 500)
+    val sp = EuclideanEdgeWeightedDigraphSP(digraph, 5, 230, true, delay = 100)
     println(sp.path()?.joinToString())
 }
 
