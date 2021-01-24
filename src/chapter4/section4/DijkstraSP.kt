@@ -12,7 +12,7 @@ class DijkstraSP(digraph: EdgeWeightedDigraph, s: Int) : SP(digraph, s) {
 
     init {
         distTo[s] = 0.0
-        relax(s)
+        pq[s] = 0.0
         while (!pq.isEmpty()) {
             relax(pq.delMin().second)
         }
