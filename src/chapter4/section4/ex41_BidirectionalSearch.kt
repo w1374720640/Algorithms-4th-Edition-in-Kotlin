@@ -23,7 +23,7 @@ import extensions.formatDouble
  * 使用一个队列保存最短路径，如果最后一条边为v->w，
  * 先将起点s到v的路径放入栈中，再依次取出放入队列，然后将v->w边放入队列，最后将w到终点t的路径依次放入队列。
  */
-class BidirectionalSearchSP(private val digraph: EdgeWeightedDigraph, private val s: Int, private val t: Int) {
+class BidirectionalSearchSP(private val digraph: EdgeWeightedDigraph, s: Int, t: Int) {
     private val distTo = Array(digraph.V) { Double.POSITIVE_INFINITY }
     private val edgeTo = arrayOfNulls<DirectedEdge>(digraph.V)
     private val pq = HeapIndexMinPriorityQueue<Double>(digraph.V)
