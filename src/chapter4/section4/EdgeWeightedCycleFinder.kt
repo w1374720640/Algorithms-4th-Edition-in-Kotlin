@@ -61,7 +61,7 @@ class EdgeWeightedCycleFinder(digraph: EdgeWeightedDigraph) {
 }
 
 fun main() {
-    val digraph = getTinyEWDAG()
+    val digraph = getTinyEWD()
     val cycle = EdgeWeightedCycleFinder(digraph)
     if (cycle.hasCycle()) {
         println("has cycle")

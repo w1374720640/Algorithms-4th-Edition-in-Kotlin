@@ -3,12 +3,12 @@ package chapter4.section4
 import chapter1.section3.DoublyLinkedList
 import chapter1.section3.addTail
 import chapter1.section3.forwardIterator
-import chapter2.section4.HeapMaxPriorityQueue
+import chapter2.section4.HeapMinPriorityQueue
+import chapter3.section4.LinearProbingHashST
 import chapter3.section5.LinearProbingHashSET
 import chapter4.section3.drawEWGGraph
 import chapter4.section3.getRandomEWG
 import edu.princeton.cs.algs4.Queue
-import edu.princeton.cs.algs4.Stack
 import extensions.formatDouble
 import extensions.setSeed
 import kotlin.math.PI
@@ -20,14 +20,11 @@ import kotlin.math.sqrt
  * （如果从s到t的最短路径只有一条则返回null。）
  *
  * 解：这里题目稍作修改：求一个有向图中，从s到t的前k短路径
- * Path类型表示一条路径，从起点开始进行广度优先搜索
- * 使用一个队列保存广度优先遍历过程中的路径
+ * Path类型表示一条路径，使用一个最小优先队列保存每条路径，不使用relax放松顶点
  * 如果一个顶点有n个有效指出边（不包含自环边和指向顶点已访问的边），则路径的总数增加n
  * 如果一个顶点有效指出边为0，则包含该顶点的路径无法到达目标点
- * 使用一个最大优先队列保存最短的k条路径（控制优先队列大小小于等于k）
- * 不断从队列中取出路径，判断需要继续查找还是丢弃路径
- *
- * 未证明算法正确性，算法复杂度未知，而且和Dijkstra算法无关...
+ * 不断从最小优先队列中取出路径，直到找到k条从s到t的最短路径
+ * 和书中实现的Dijkstra算法相比，只遍历了图的部分边，没有全部遍历，空间复杂度较大
  */
 class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: Int) {
     class Path(edge: DirectedEdge) : Comparable<Path>, Iterable<DirectedEdge> {
@@ -79,28 +76,29 @@ class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: In
         }
     }
 
-    private val queue = Queue<Path>()
-    private val result = HeapMaxPriorityQueue<Path>()
-    private val array = Array(digraph.V) { HeapMaxPriorityQueue<Path>() }
+    private val pq = HeapMinPriorityQueue<Path>()
+    private val result = Queue<Path>()
+    private val countST = LinearProbingHashST<Int, Int>()
 
     init {
         require(s in 0 until digraph.V && t in 0 until digraph.V && s != t && k > 0)
 
         digraph.adj(s).forEach { edge ->
             val path = Path(edge)
-            queue.enqueue(path)
-            array[edge.to()].insert(path)
+            pq.insert(path)
+            countST.put(edge.to(), 1)
         }
-        while (!queue.isEmpty) {
-            val path = queue.dequeue()
+        while (!pq.isEmpty()) {
+            val path = pq.delMin()
             val v = path.getLastVertex()
+            val count = (countST.get(v) ?: 0) + 1
+            countST.put(v, count)
+
             if (v == t) {
-                result.insert(path)
-                if (result.size() > k) {
-                    result.delMax()
-                }
-                continue
+                result.enqueue(path)
+                if (result.size() == k) break
             }
+            if (count > k) continue
             val iterator = digraph.adj(v).iterator()
             while (iterator.hasNext()) {
                 val edge = iterator.next()
@@ -108,17 +106,9 @@ class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: In
                 // 不走回头路
                 if (path.containVertex(w)) continue
 
-                val maxPQ = array[w]
-                check(maxPQ.size() <= k)
-                if (maxPQ.size() == k) {
-                    // 如果已经有k个到该结点的更短路径，则该路径不通
-                    if (maxPQ.max().weight <= path.weight + edge.weight) continue
-                    maxPQ.delMax()
-                }
                 val newPath = path.copy()
                 newPath.addEdge(edge)
-                queue.enqueue(newPath)
-                maxPQ.insert(newPath)
+                pq.insert(newPath)
             }
 
         }
@@ -128,12 +118,7 @@ class DijkstraKShortPath(digraph: EdgeWeightedDigraph, s: Int, t: Int, val k: In
      * 获取前k短的路径
      */
     fun getPaths(): Iterable<Path> {
-        val stack = Stack<Path>()
-        var i = 0
-        while (!result.isEmpty() && i++ < k) {
-            stack.push(result.delMax())
-        }
-        return stack
+        return result
     }
 }
 

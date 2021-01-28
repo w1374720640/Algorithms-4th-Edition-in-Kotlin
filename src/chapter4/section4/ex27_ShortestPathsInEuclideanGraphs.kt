@@ -15,7 +15,7 @@ import kotlin.math.sqrt
  * 欧几里得图中的最短路径
  * 已知图中的顶点均在平面上，修改API以提高Dijkstra算法的性能。
  *
- * 解：这里我们认为欧几里得图边的权重近似于两个顶点之间的距离（可以不严格相等，类似与地图两点之间的路径）
+ * 解：这里我们认为欧几里得图边的权重近似于两个顶点之间的距离（可以不严格相等，类似于地图两点之间的路径）
  * 图可以有环，但边的权重为正数（距离只能为正数）
  * 参考练习2.5.32中的A*寻路算法[chapter2.section5.AStartPathFind]
  * 和普通Dijkstra算法的区别：
@@ -199,7 +199,7 @@ class EuclideanEdgeWeightedDigraphSP(
     }
 
     /**
-     * 标注出起始点
+     * 标注出起点和终点
      */
     private fun drawVertex() {
         StdDraw.setPenRadius()

@@ -1,32 +1,58 @@
 package chapter4.section4
 
+import chapter2.section4.HeapIndexMinPriorityQueue
+import edu.princeton.cs.algs4.Stack
+
 /**
  * 给定两点的最短路径
  * 设计并实现一份API，使用Dijkstra算法的改进版本解决加权有向图中给定两点的最短路径问题
  *
- * 解：需要先求从x点到y点的最短路径，再求从y到x的最短路径，路径可能不存在
- * 用两个[DijkstraSP]类分别求两条最短路径
+ * 解：只遍历图的一部分，不会放松所有顶点
  */
-class SourceSinkShortestPaths(digraph: EdgeWeightedDigraph, val x: Int, val y: Int) {
-    private val xSP = DijkstraSP(digraph, x)
-    private val ySP = DijkstraSP(digraph, y)
+class SourceSinkShortestPaths(digraph: EdgeWeightedDigraph, s: Int, private val t: Int) {
+    private val distTo = Array(digraph.V) { Double.POSITIVE_INFINITY }
+    private val edgeTo = arrayOfNulls<DirectedEdge>(digraph.V)
+    private val pq = HeapIndexMinPriorityQueue<Double>(digraph.V)
 
-    fun hasPathXToY() = xSP.hasPathTo(y)
+    init {
+        distTo[s] = 0.0
+        pq[s] = 0.0
+        while (!pq.isEmpty()) {
+            val v = pq.delMin().second
+            if (v == t) break
+            relax(digraph, v)
+        }
+    }
 
-    fun hasPathYToX() = ySP.hasPathTo(x)
+    private fun relax(digraph: EdgeWeightedDigraph, v: Int) {
+        digraph.adj(v).forEach { edge ->
+            val w = edge.to()
+            if (distTo[w] > distTo[v] + edge.weight) {
+                distTo[w] = distTo[v] + edge.weight
+                edgeTo[w] = edge
+                pq[w] = distTo[w]
+            }
+        }
+    }
 
-    fun distXToY() = xSP.distTo(y)
+    fun hasPath(): Boolean {
+        return distTo[t] != Double.POSITIVE_INFINITY
+    }
 
-    fun distYToX() = ySP.distTo(x)
-
-    fun pathXToY() = xSP.pathTo(y)
-
-    fun pathYToX() = ySP.pathTo(x)
+    fun path(): Iterable<DirectedEdge>? {
+        if (!hasPath()) return null
+        val stack = Stack<DirectedEdge>()
+        var edge = edgeTo[t]
+        while (edge != null) {
+            stack.push(edge)
+            edge = edgeTo[edge.from()]
+        }
+        return stack
+    }
 }
 
 fun main() {
     val digraph = getTinyEWD()
-    val paths = SourceSinkShortestPaths(digraph, 0, 1)
-    println(paths.pathXToY()?.joinToString())
-    println(paths.pathYToX()?.joinToString())
+    val paths = SourceSinkShortestPaths(digraph, 0, 5)
+    println(paths.path()?.joinToString())
 }

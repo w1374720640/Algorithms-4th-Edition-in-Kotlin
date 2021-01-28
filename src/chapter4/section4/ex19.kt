@@ -16,8 +16,8 @@ import kotlin.math.pow
  *
  * 解：参考练习4.4.7，找出权重最低的环
  * LowestWeightCycle用于找出在一个加权有向图中包含顶点s的权重最低环
- * 同样用广度优先遍历、路径不重复
- * 区别在于这里起点和终点相同，只要权重最小的那条路径
+ * 使用广度优先遍历、路径不重复
+ * 区别在于这里起点和终点相同，只要权重最小的那条路径，且完整遍历整个图
  */
 class MinWeightCycleFinder(digraph: EdgeWeightedDigraph, s: Int) {
     class Path(edge: DirectedEdge) : Comparable<Path>, Iterable<DirectedEdge> {
