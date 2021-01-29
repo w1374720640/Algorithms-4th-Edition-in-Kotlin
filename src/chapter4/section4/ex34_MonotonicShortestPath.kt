@@ -25,7 +25,7 @@ class MonotonicSP(digraph: EdgeWeightedDigraph,
 
     init {
         distTo[s] = 0.0
-        relax(s)
+        pq[s] = 0.0
         while (!pq.isEmpty()) {
             relax(pq.delMin().second)
         }
@@ -39,7 +39,7 @@ class MonotonicSP(digraph: EdgeWeightedDigraph,
             // 在练习4.4.35中限制路径应该是简单的，所以需要排除某些顶点
             if (excludeVertex.contains(w)) continue
             if (edge.weight >= maxDist || edge.weight <= minDist) continue
-            if (distTo[w] < distTo[v] + edge.weight) continue
+            if (distTo[w] <= distTo[v] + edge.weight) continue
             val lastEdge = edgeTo[v]
             if (lastEdge == null
                     || (increase && lastEdge < edge)

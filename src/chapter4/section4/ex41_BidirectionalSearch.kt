@@ -15,7 +15,7 @@ import extensions.formatDouble
  * 创建两个大小为V的marked数组，用于表示需要放松的点在起点的搜索树中还是在终点的搜索树中，
  * 将marked数组A中起点的位置设为true，marked数组B中终点的位置设为true，
  * distTo数组中两个点的位置都设置为0.0，将两个点放入最小索引优先队列中。
- * 当从优先队列中取出一个值准备放松时，先判断这个顶点在数组A中对应的位置为true还是数组B中对应的位置为true，
+ * 当从优先队列中取出一个顶点准备放松时，先判断这个顶点在数组A中对应的位置为true还是数组B中对应的位置为true，
  * 如果在数组A中对应位置的值为true，以原始有向图为数据源进行放松操作，
  * 如果在数组B中对应位置的值为true，以反向图为数据源进行放松操作，
  * 放松时，如果顶点v指向的顶点w在另一个数组中存在，则表示找到最短路径，
@@ -29,9 +29,10 @@ class BidirectionalSearchSP(private val digraph: EdgeWeightedDigraph, s: Int, t:
     private val pq = HeapIndexMinPriorityQueue<Double>(digraph.V)
     private val marked = BooleanArray(digraph.V)
     private val reverseMarked = BooleanArray(digraph.V)
+
+    // 边的方向不变，只是将起点索引改为终点索引
     private val reverseDigraph = object : EdgeWeightedDigraph(digraph.V) {
         override fun addEdge(edge: DirectedEdge) {
-            // 将边按终点索引，可以根据终点查找所有指向该点的边
             adj[edge.to()].add(edge)
             E++
         }
