@@ -7,9 +7,10 @@ package chapter5.section1
  * 书中第454页倒数第二行中规定，在本章中使用常数R=256作为String类的参数
  */
 object LSD {
+    private const val R = 256
+
     fun sort(array: Array<String>, W: Int) {
         val aux = Array(array.size) { "" }
-        val R = 256
 
         for (i in W - 1 downTo 0) {
             val count = IntArray(R + 1)

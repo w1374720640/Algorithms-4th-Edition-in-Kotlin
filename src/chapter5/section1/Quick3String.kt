@@ -7,7 +7,7 @@ import extensions.shuffle
  * 三向字符串快速排序
  */
 object Quick3String {
-    private val M = 15
+    private const val M = 10
 
     fun sort(array: Array<String>) {
         array.shuffle()
