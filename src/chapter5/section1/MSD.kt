@@ -39,6 +39,7 @@ object MSD {
 
             // 递归对R个子区间排序
             for (i in 0 until R) {
+                // count[0]表示已经到达结尾的字符串数量，不需要继续排序，所以从low+count[i]开始排序
                 sort(array, aux, low + count[i], low + count[i + 1] - 1, d + 1)
             }
         }
