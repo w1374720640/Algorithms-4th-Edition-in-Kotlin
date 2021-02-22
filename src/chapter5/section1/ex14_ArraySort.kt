@@ -30,7 +30,7 @@ private fun ex14_ArraySort(array: Array<IntArray>, low: Int, high: Int, d: Int) 
         }
     }
     ex14_ArraySort(array, low, j - 1, d)
-    if (array[j].size > d + 1) ex14_ArraySort(array, j, i - 1, d + 1)
+    if (array[j].size > d) ex14_ArraySort(array, j, i - 1, d + 1)
     ex14_ArraySort(array, i, high, d)
 }
 
