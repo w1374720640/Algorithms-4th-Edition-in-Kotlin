@@ -21,7 +21,7 @@ fun main() {
     val array = readAllStrings()
     val list = SinglyLinkedList<String>()
     list.addAll(array.iterator())
-    println("key = ${key}")
-    println("list = ${list.joinToSting()}")
+    println("key = $key")
+    println("list = ${list.joinToString()}")
     println("find index = ${list.find(key)}")
 }

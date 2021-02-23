@@ -2,10 +2,7 @@ package chapter3.section5
 
 import chapter1.section3.SinglyLinkedList
 import chapter1.section3.add
-import chapter1.section3.forEach
-import chapter1.section3.size
 import edu.princeton.cs.algs4.Queue
-import kotlin.NoSuchElementException
 
 /**
  * 开发一个和SET相似的类MultiSET，允许出现相等的键，也就是实现了数学上的多重集合
@@ -52,14 +49,14 @@ class MultiSET<K : Any> : SET<K> {
         var node = first!!
         if (node.key == key) {
             first = node.next
-            size -= node.list.size()
+            size -= node.list.size
             return
         }
         var nextNode = node.next
         while (nextNode != null) {
             if (nextNode.key == key) {
                 node.next = nextNode.next
-                size -= nextNode.list.size()
+                size -= nextNode.list.size
                 return
             }
             node = nextNode
@@ -81,7 +78,7 @@ class MultiSET<K : Any> : SET<K> {
         var node = first
         while (node != null) {
             if (node.key == key) {
-                return node.list.size()
+                return node.list.size
             }
             node = node.next
         }

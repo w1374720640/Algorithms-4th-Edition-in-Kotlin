@@ -7,7 +7,7 @@ import extensions.readString
  * LRU算法，如果在列表中找到，将数据移至起始位，未找到，在起始位添加
  */
 fun <T> SinglyLinkedList<T>.moveToFront(value: T) {
-    var preNode: Node<T>? = null
+    var preNode: SinglyLinkedList.Node<T>? = null
     var node = first
     while (node != null) {
         if (node.item == value) {
@@ -16,14 +16,16 @@ fun <T> SinglyLinkedList<T>.moveToFront(value: T) {
             } else {
                 preNode.next = node.next
             }
+            size--
         } else {
             preNode = node
         }
         node = node.next
     }
-    val newNode = Node(value)
+    val newNode = SinglyLinkedList.Node(value)
     newNode.next = first
     first = newNode
+    size++
 }
 
 fun main() {
@@ -36,7 +38,7 @@ fun main() {
             return
         } else {
             list.moveToFront(value)
-            println("list = ${list.joinToSting()}")
+            println("list = ${list.joinToString()}")
         }
     }
 }

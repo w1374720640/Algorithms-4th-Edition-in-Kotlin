@@ -2,7 +2,6 @@ package chapter4.section2
 
 import chapter1.section3.SinglyLinkedList
 import chapter1.section3.add
-import chapter1.section3.forEach
 import chapter1.section3.isEmpty
 
 /**

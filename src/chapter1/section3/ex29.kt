@@ -8,18 +8,21 @@ import extensions.readAllStrings
  * 只要链表非空，则last.next的值为first，只能使用一个Node类型的实例变量（last）
  */
 class RingLinkedQueue<T> {
-    private var last: Node<T>? = null
+    private var last: SinglyLinkedList.Node<T>? = null
+    var size = 0
+        private set
 
     fun enqueue(value: T) {
         if (last == null) {
-            last = Node(value)
+            last = SinglyLinkedList.Node(value)
             last?.next = last
         } else {
             val first = last?.next
-            last?.next = Node(value)
+            last?.next = SinglyLinkedList.Node(value)
             last = last?.next
             last?.next = first
         }
+        size++
     }
 
     fun dequeue(): T {
@@ -30,6 +33,7 @@ class RingLinkedQueue<T> {
         } else {
             last?.next = last?.next?.next
         }
+        size--
         return value!!
     }
 

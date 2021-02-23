@@ -18,6 +18,6 @@ fun main() {
     val array = readAllInts()
     val list = SinglyLinkedList<Int>()
     list.addAll(array.iterator())
-    println("list = ${list.joinToSting()}")
+    println("list = ${list.joinToString()}")
     println("list.max() = ${list.max()}")
 }

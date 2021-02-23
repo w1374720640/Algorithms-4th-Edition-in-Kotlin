@@ -7,14 +7,25 @@ import extensions.readString
 //删除链表中所有值为key的节点
 fun <T> SinglyLinkedList<T>.remove(key: T) {
     var node = first
-    if (node?.item == key) {
-        first = first?.next
-    }
-    while (node?.next != null) {
-        if (node.next?.item == key) {
-            node.next = node.next?.next
-        } else {
+    while (node != null) {
+        if (node.item == key) {
+            size--
             node = node.next
+        } else {
+            first = node
+            break
+        }
+    }
+    if (node == null) return
+    var next = node.next
+    while (next != null) {
+        if (next.item == key) {
+            node!!.next = next.next
+            next = next.next
+            size--
+        } else {
+            node = next
+            next = next.next
         }
     }
 }
@@ -25,8 +36,10 @@ fun main() {
     val array = readAllStrings()
     val list = SinglyLinkedList<String>()
     list.addAll(array.iterator())
+    list.checkSize()
     println("key = $key")
-    println("origin list = ${list.joinToSting()}")
+    println("origin list = ${list.joinToString()}")
     list.remove(key)
-    println("end list = ${list.joinToSting()}")
+    list.checkSize()
+    println("end list = ${list.joinToString()}")
 }

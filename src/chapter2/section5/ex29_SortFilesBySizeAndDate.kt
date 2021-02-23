@@ -1,6 +1,8 @@
 package chapter2.section5
 
-import chapter1.section3.*
+import chapter1.section3.SinglyLinkedList
+import chapter1.section3.add
+import chapter1.section3.find
 import extensions.*
 import java.io.File
 
@@ -31,7 +33,7 @@ fun ex29_SortFilesBySizeAndDate(array: Array<File>, vararg args: String) {
         when (args[i]) {
             sizeOrder, timeOrder, nameOrder -> {
                 //参数列表最长三个，添加前需要判断是否已添加
-                if (argList.size() < 3 && argList.find(args[i]) == -1) {
+                if (argList.size < 3 && argList.find(args[i]) == -1) {
                     argList.add(args[i])
                 }
             }
@@ -40,7 +42,7 @@ fun ex29_SortFilesBySizeAndDate(array: Array<File>, vararg args: String) {
         }
     }
     //如果没有任何参数，默认按名称排序
-    if (argList.size() == 0) {
+    if (argList.size == 0) {
         argList.add(nameOrder)
     }
 

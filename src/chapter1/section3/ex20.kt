@@ -9,8 +9,11 @@ import extensions.readInt
  */
 fun <T> SinglyLinkedList<T>.delete(k: Int) {
     //k从1开始计数
+    require(k >= 1)
+    if (isEmpty()) throw NoSuchElementException()
     if (k == 1) {
         first = first?.next
+        size--
         return
     }
     var node = first
@@ -19,11 +22,13 @@ fun <T> SinglyLinkedList<T>.delete(k: Int) {
         //因为要删除的是node.next元素，所有i要先加一
         if (++i == k - 1) {
             node.next = node.next?.next
+            size--
             return
         } else {
             node = node.next
         }
     }
+    throw NoSuchElementException()
 }
 
 fun main() {
@@ -32,7 +37,8 @@ fun main() {
     val array = readAllStrings()
     val list = SinglyLinkedList<String>()
     list.addAll(array.iterator())
-    println("origin list = ${list.joinToSting()}")
+    println("origin list = ${list.joinToString()}")
     list.delete(k)
-    println("end list    = ${list.joinToSting()}")
+    list.checkSize()
+    println("end list    = ${list.joinToString()}")
 }

@@ -9,7 +9,7 @@ import extensions.readAllStrings
  * 每次操作保存三个结点，将中间结点的next指针指向第一个结点，
  * 然后将三个结点同步后移一位，依次循环直到最后一个结点
  */
-fun <T> reverse(node: Node<T>): Node<T> {
+fun <T> reverse(node: SinglyLinkedList.Node<T>): SinglyLinkedList.Node<T> {
     var first = node
     var reverse = node.next
     first.next = null
@@ -28,16 +28,16 @@ fun main() {
     val array = readAllStrings()
     val list = SinglyLinkedList<String>()
     list.addAll(array.iterator())
-    println("origin list = ${list.joinToSting()}")
-    if (list.first == null) {
+    println("origin list = ${list.joinToString()}")
+    if (list.isEmpty()) {
         println("list is empty")
     } else {
         val node = reverse(list.first!!)
-        println("reverse end list = ${list.joinToSting()}")
+        println("reverse end list = ${list.joinToString()}")
         println("new list first node = ${node.item}")
         println("new list = ${SinglyLinkedList<String>().run {
             first = node
-            joinToSting()
+            joinToString()
         }}")
     }
 }
