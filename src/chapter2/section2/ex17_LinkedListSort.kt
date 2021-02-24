@@ -16,15 +16,15 @@ import extensions.spendTimeMillis
  * （很奇怪的是这里如果用扩展函数效率会比将List作为参数传递效率要高，难道是因为原有的链表操作都是通过扩展函数实现的？）
  */
 fun <T : Comparable<T>> DoublyLinkedList<T>.linkedListBottomUpMergeSort() {
-    val size = this.size()
+    val total = size
     var step = 1
-    while (step < size) {
+    while (step < total) {
         //每个归并过程开始时，第一部分置空，第二部分起始点为列表起点，循环判断第三部分和第四部分的起始位置
-        var second: DoubleNode<T>? = this.first
-        var third: DoubleNode<T>? = null
-        var fourth: DoubleNode<T>? = null
+        var second: DoublyLinkedList.Node<T>? = this.first
+        var third: DoublyLinkedList.Node<T>? = null
+        var fourth: DoublyLinkedList.Node<T>? = null
         this.clear()
-        for (i in 0 until size step 2 * step) {
+        for (i in 0 until total step 2 * step) {
             third = second
             for (j in 1..step) {
                 third = third?.next
@@ -55,7 +55,7 @@ fun <T : Comparable<T>> DoublyLinkedList<T>.linkedListBottomUpMergeSort() {
 }
 
 //将第二部分和第三部分拼接到第一部分后面
-fun <T : Comparable<T>> DoublyLinkedList<T>.linkedListBottomUpMerge(second: DoubleNode<T>?, third: DoubleNode<T>?) {
+fun <T : Comparable<T>> DoublyLinkedList<T>.linkedListBottomUpMerge(second: DoublyLinkedList.Node<T>?, third: DoublyLinkedList.Node<T>?) {
     var secondNode = second
     var thirdNode = third
     while (secondNode != null || thirdNode != null) {
@@ -87,7 +87,7 @@ fun <T : Comparable<T>> DoublyLinkedList<T>.linkedListBottomUpMerge(second: Doub
 /**
  * 在双向链表头部添加结点
  */
-fun <T> DoublyLinkedList<T>.addHeaderNode(node: DoubleNode<T>) {
+fun <T> DoublyLinkedList<T>.addHeaderNode(node: DoublyLinkedList.Node<T>) {
     node.previous = null
     node.next = first
     if (first == null) {
@@ -97,12 +97,13 @@ fun <T> DoublyLinkedList<T>.addHeaderNode(node: DoubleNode<T>) {
         first!!.previous = node
         first = node
     }
+    size++
 }
 
 /**
  * 在双向链表尾部添加结点
  */
-fun <T> DoublyLinkedList<T>.addTailNode(node: DoubleNode<T>) {
+fun <T> DoublyLinkedList<T>.addTailNode(node: DoublyLinkedList.Node<T>) {
     node.previous = last
     node.next = null
     if (last == null) {
@@ -112,6 +113,7 @@ fun <T> DoublyLinkedList<T>.addTailNode(node: DoubleNode<T>) {
         last!!.next = node
         last = node
     }
+    size++
 }
 
 /**
@@ -134,27 +136,17 @@ fun <T : Comparable<T>> checkAscOrder(iterator: Iterator<T>): Boolean {
 fun compareLinkedListAndArray(
         linkedListSortMethod: () -> Unit,
         arraySortMethod: (Array<Double>) -> Unit,
-        times: Int,
         size: Int
 ) {
-    require(times > 0)
-    var linkedListTime = 0L
-    repeat(times) {
-        val list = DoublyLinkedList<Double>()
-        repeat(size) {
-            list.addTail(random())
-        }
-        linkedListTime += spendTimeMillis { linkedListSortMethod() }
+    val list = DoublyLinkedList<Double>()
+    repeat(size) {
+        list.addTail(random())
     }
-    linkedListTime /= times
+    val linkedListTime = spendTimeMillis { linkedListSortMethod() }
     println("Linked list average spend $linkedListTime ms")
 
-    var arrayTime = 0L
-    repeat(times) {
-        val array = getDoubleArray(size)
-        arrayTime += spendTimeMillis { arraySortMethod(array) }
-    }
-    arrayTime /= times
+    val array = getDoubleArray(size)
+    val arrayTime = spendTimeMillis { arraySortMethod(array) }
     println("Array average spend $arrayTime ms")
 }
 
@@ -166,8 +158,9 @@ fun main() {
         list.addTail(random())
     }
     list.linkedListBottomUpMergeSort()
+    list.checkSize()
     val isAscOrder = checkAscOrder(list.forwardIterator())
-    println("isAscOrder=$isAscOrder size=${list.size()}")
+    println("isAscOrder=$isAscOrder size=${list.size}")
 
-    compareLinkedListAndArray(list::linkedListBottomUpMergeSort, ::bottomUpMergeSort, 10, size)
+    compareLinkedListAndArray(list::linkedListBottomUpMergeSort, ::bottomUpMergeSort, size)
 }

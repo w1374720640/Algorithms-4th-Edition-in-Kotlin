@@ -266,6 +266,7 @@ class UnorderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
             maxNode.previous?.next = maxNode.next
             maxNode.next?.previous = maxNode.previous
         }
+        list.size--
         return maxValue
     }
 
@@ -274,7 +275,7 @@ class UnorderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
     }
 
     override fun size(): Int {
-        return list.size()
+        return list.size
     }
 
     override fun iterator(): Iterator<T> {
@@ -302,13 +303,14 @@ class OrderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
             var node = list.first
             while (node?.next != null) {
                 if (value <= node.next!!.item) {
-                    val insertNode = DoubleNode(value, node, node.next)
+                    val insertNode = DoublyLinkedList.Node(value, node, node.next)
                     node.next = insertNode
                     insertNode.next?.previous = insertNode
                     break
                 }
                 node = node.next
             }
+            list.size++
         }
     }
 
@@ -327,7 +329,7 @@ class OrderedLinkedMaxPriorityQueue<T : Comparable<T>> : MaxPriorityQueue<T> {
     }
 
     override fun size(): Int {
-        return list.size()
+        return list.size
     }
 
     override fun iterator(): Iterator<T> {

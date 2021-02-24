@@ -4,15 +4,6 @@ import extensions.readInt
 import extensions.readString
 import extensions.safeCall
 
-interface Deque<T> : Iterable<T> {
-    fun isEmpty(): Boolean
-    fun size(): Int
-    fun pushLeft(item: T)
-    fun pushRight(item: T)
-    fun popLeft(): T
-    fun popRight(): T
-}
-
 /**
  * 双向链表实现的双向队列
  */
@@ -21,7 +12,7 @@ class DoublyLinkedDeque<T> : Deque<T> {
 
     override fun isEmpty(): Boolean = list.isEmpty()
 
-    override fun size(): Int = list.size()
+    override fun size(): Int = list.size
 
     override fun pushLeft(item: T) = list.addHeader(item)
 

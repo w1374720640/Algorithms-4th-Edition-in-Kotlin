@@ -266,7 +266,7 @@ fun main() {
     if (list.isEmpty()) {
         println("Find failed!")
     } else {
-        println("Find successful, step=${list.size() - 1}")
+        println("Find successful, step=${list.size - 1}")
         list.forwardIterator().forEach {
             if (draw) {
                 it.draw(delay)
@@ -276,7 +276,7 @@ fun main() {
             }
         }
         if (!draw) {
-            println("Find successful, step=${list.size() - 1}")
+            println("Find successful, step=${list.size - 1}")
         }
     }
 }

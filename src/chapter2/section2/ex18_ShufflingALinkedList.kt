@@ -18,9 +18,9 @@ import extensions.randomBoolean
  * 一次拆分需要的额外空间为2，所以同一时刻需要的最大额外空间为2lgN
  */
 fun <T> DoublyLinkedList<T>.shuffleLinkedList() {
-    if (this.size() <= 1) return
+    if (size <= 1) return
     //列表长度为2时，直接判断是否需要调换两个元素的顺序，提高效率
-    if (this.size() == 2) {
+    if (size == 2) {
         if (randomBoolean()) {
             this.addHeader(this.deleteTail())
         }
@@ -28,7 +28,7 @@ fun <T> DoublyLinkedList<T>.shuffleLinkedList() {
     }
     val leftList = DoublyLinkedList<T>()
     val rightList = DoublyLinkedList<T>()
-    repeat(this.size()) {
+    repeat(size) {
         if (randomBoolean()) {
             leftList.addTail(this.deleteHeader())
         } else {
@@ -56,6 +56,7 @@ fun <T> DoublyLinkedList<T>.appendList(list: DoublyLinkedList<T>) {
             this.last = list.last
         }
     }
+    size += list.size
 }
 
 fun main() {

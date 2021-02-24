@@ -67,6 +67,7 @@ class ImprovedBoruvkaMST(graph: EWG) : MST() {
  */
 fun <T> DoublyLinkedList<T>.addListHeader(list: DoublyLinkedList<T>) {
     if (list.isEmpty()) return
+    size += list.size
     if (this.isEmpty()) {
         this.first = list.first
         this.last = list.last
@@ -82,6 +83,7 @@ fun <T> DoublyLinkedList<T>.addListHeader(list: DoublyLinkedList<T>) {
  */
 fun <T> DoublyLinkedList<T>.addListTail(list: DoublyLinkedList<T>) {
     if (list.isEmpty()) return
+    size += list.size
     if (this.isEmpty()) {
         this.first = list.first
         this.last = list.last

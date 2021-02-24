@@ -5,7 +5,7 @@ import extensions.readString
 import extensions.safeCall
 
 fun <T> DoublyLinkedList<T>.addHeader(value: T) {
-    val node = DoubleNode(value, next = first)
+    val node = DoublyLinkedList.Node(value, next = first)
     if (first == null) {
         first = node
         last = node
@@ -13,10 +13,11 @@ fun <T> DoublyLinkedList<T>.addHeader(value: T) {
         first!!.previous = node
         first = node
     }
+    size++
 }
 
 fun <T> DoublyLinkedList<T>.addTail(value: T) {
-    val node = DoubleNode(value, previous = last)
+    val node = DoublyLinkedList.Node(value, previous = last)
     if (last == null) {
         first = node
         last = node
@@ -24,6 +25,7 @@ fun <T> DoublyLinkedList<T>.addTail(value: T) {
         last!!.next = node
         last = node
     }
+    size++
 }
 
 fun <T> DoublyLinkedList<T>.deleteHeader(): T {
@@ -37,6 +39,7 @@ fun <T> DoublyLinkedList<T>.deleteHeader(): T {
         node.previous = null
         first = node
     }
+    size--
     return value
 }
 
@@ -51,22 +54,24 @@ fun <T> DoublyLinkedList<T>.deleteTail(): T {
         node.next = null
         last = node
     }
+    size--
     return value
 }
 
 fun <T> DoublyLinkedList<T>.addBefore(index: Int, value: T) {
     var i = 0
     var node = first
-    var previousNode: DoubleNode<T>? = null
+    var previousNode: DoublyLinkedList.Node<T>? = null
     while (node != null) {
         if (i++ == index) {
-            val newNode = DoubleNode(value, next = node, previous = previousNode)
+            val newNode = DoublyLinkedList.Node(value, next = node, previous = previousNode)
             node.previous = newNode
             if (previousNode == null) {
                 first = newNode
             } else {
                 previousNode.next = newNode
             }
+            size++
             return
         }
         previousNode = node
@@ -81,13 +86,14 @@ fun <T> DoublyLinkedList<T>.addAfter(index: Int, value: T) {
     while (node != null) {
         val nextNode = node.next
         if (i++ == index) {
-            val newNode = DoubleNode(value, next = nextNode, previous = node)
+            val newNode = DoublyLinkedList.Node(value, next = nextNode, previous = node)
             node.next = newNode
             if (nextNode == null) {
                 last = newNode
             } else {
                 nextNode.previous = newNode
             }
+            size++
             return
         }
         node = nextNode
@@ -98,7 +104,7 @@ fun <T> DoublyLinkedList<T>.addAfter(index: Int, value: T) {
 fun <T> DoublyLinkedList<T>.delete(index: Int): T {
     var i = 0
     var node = first
-    var previousNode: DoubleNode<T>? = null
+    var previousNode: DoublyLinkedList.Node<T>? = null
     while (node != null) {
         val nextNode = node.next
         if (i++ == index) {
@@ -115,6 +121,7 @@ fun <T> DoublyLinkedList<T>.delete(index: Int): T {
                 previousNode.next = nextNode
                 nextNode.previous = previousNode
             }
+            size--
             return node.item
         }
         previousNode = node
@@ -135,14 +142,13 @@ fun <T> DoublyLinkedList<T>.get(index: Int): T {
     throw NoSuchElementException("No such element with index: $index")
 }
 
-fun <T> DoublyLinkedList<T>.size(): Int {
-    var size = 0
-    var node = first
-    while (node != null) {
-        size++
-        node = node.next
-    }
-    return size
+/**
+ * 检查size的实现是否正确
+ */
+fun <T> DoublyLinkedList<T>.checkSize() {
+    var i = 0
+    forEach { _ -> i++ }
+    check(i == size)
 }
 
 fun <T> DoublyLinkedList<T>.isEmpty() = first == null && last == null
@@ -150,6 +156,7 @@ fun <T> DoublyLinkedList<T>.isEmpty() = first == null && last == null
 fun <T> DoublyLinkedList<T>.clear() {
     first = null
     last = null
+    size = 0
 }
 
 /**
@@ -189,7 +196,7 @@ fun <T> DoublyLinkedList<T>.reverseIterator(): Iterator<T> = object : Iterator<T
     }
 }
 
-fun <T> DoublyLinkedList<T>.joinToString(iterator: Iterator<T> = forwardIterator()): String {
+fun <T> DoublyLinkedList<T>.joinByIterator(iterator: Iterator<T> = forwardIterator()): String {
     var result = ""
     while (iterator.hasNext()) {
         result += iterator.next().toString() + " "
@@ -199,8 +206,8 @@ fun <T> DoublyLinkedList<T>.joinToString(iterator: Iterator<T> = forwardIterator
 
 fun main() {
     fun DoublyLinkedList<String>.println() {
-        println("forward traversal list: ${joinToString()}")
-        println("reverse traversal list: ${joinToString(reverseIterator())}")
+        println("forward traversal list: ${joinByIterator()}")
+        println("reverse traversal list: ${joinByIterator(reverseIterator())}")
     }
 
     val list = DoublyLinkedList<String>()
@@ -248,8 +255,9 @@ fun main() {
                 safeCall { println(list.get(readInt("get index: "))) }
             }
             9 -> {
-                println("list.size = ${list.size()}")
+                println("list.size = ${list.size}")
             }
         }
+        list.checkSize()
     }
 }

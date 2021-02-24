@@ -22,7 +22,7 @@ fun ex3() {
             count++
         }
     }
-    println("list.size()=${list.size} count=$count")
+    println("list.size=${list.size} count=$count")
 }
 
 /**

@@ -262,7 +262,7 @@ fun main() {
             println("Cannot move to the end point")
         }
     } else {
-        println("Need to move ${list.size() - 1} times")
+        println("Need to move ${list.size - 1} times")
         list.forwardIterator().forEach {
             print("(${it.x},${it.y}) ")
         }

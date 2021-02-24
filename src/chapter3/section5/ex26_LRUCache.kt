@@ -21,7 +21,7 @@ class LRUCache<K : Any, V : Any> {
             var value: V,
             previous: Node<K, V>? = null,
             next: Node<K, V>? = null
-    ) : DoubleNode<K>(key, previous = previous, next = next)
+    ) : DoublyLinkedList.Node<K>(key, previous = previous, next = next)
 
     private val linkedList = DoublyLinkedList<K>()
     private val st = LinearProbingHashST<K, Node<K, V>>()
@@ -76,6 +76,7 @@ class LRUCache<K : Any, V : Any> {
         }
         node.previous = null
         node.next = null
+        size--
     }
 
     private fun DoublyLinkedList<K>.addNodeHeader(node: Node<K, V>) {
@@ -87,6 +88,7 @@ class LRUCache<K : Any, V : Any> {
             this.first!!.previous = node
             this.first = node
         }
+        size++
     }
 }
 
