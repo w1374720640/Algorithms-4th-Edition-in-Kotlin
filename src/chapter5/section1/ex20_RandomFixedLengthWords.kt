@@ -10,6 +10,7 @@ import extensions.random
 fun ex20_RandomFixedLengthWords(N: Int, W: Int): Array<String> {
     // 英文字母表选择小写英文字母
     val alphabet = Alphabet.LOWERCASE
+    // 根据给定字母表随机生成字符
     val randomAlphabet = {
         alphabet.toChar(random(alphabet.R()))
     }

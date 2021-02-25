@@ -1,6 +1,5 @@
 package chapter5.section1
 
-import extensions.formatStringLength
 import extensions.random
 
 /**
@@ -23,7 +22,7 @@ fun ex21_RandomItems(N: Int): Array<String> {
                 .append(part3[random(part3.size)])
         val w = random(4, 16)
         val part4 = ex20_RandomFixedLengthWords(1, w)[0]
-        stringBuilder.append(formatStringLength(part4, 15, alignLeft = true))
+        stringBuilder.append(part4)
         stringBuilder.toString()
     }
     return Array(N) { randomString() }

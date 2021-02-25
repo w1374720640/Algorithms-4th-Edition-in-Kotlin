@@ -11,6 +11,7 @@ import edu.princeton.cs.algs4.Queue
  * 注意，在这种方法中count[]数组不需要在递归方法内创建。
  *
  * 解：根据首字母将每个元素插入适当的队列中后，对每个队列转换成相应大小的数组，分别进行归并或快速排序
+ * 并没有用到count[]数组，应该有更优解
  */
 fun ex11_QueueSort(array: Array<String>) {
     val R = 256

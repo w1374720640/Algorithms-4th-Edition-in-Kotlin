@@ -25,7 +25,7 @@ fun ex16_LinkedListSort(list: DoublyLinkedList<String>): DoublyLinkedList<String
 }
 
 private fun ex16_LinkedListSort(list: DoublyLinkedList<String>, d: Int): DoublyLinkedList<String> {
-    if (list.isEmpty()) return list
+    if (list.size <= 1) return list
     val smallList = DoublyLinkedList<String>()
     val equalList = DoublyLinkedList<String>()
     val largeList = DoublyLinkedList<String>()

@@ -8,23 +8,18 @@ import extensions.random
  * 每个字符串都是与本节的示例类似的加利福尼亚州的车牌号。
  */
 fun ex19_RandomCALicensePlates(N: Int): Array<String> {
-    // 生成随机字符型数字的lambda表达式
-    val randomNum = { random('0'.toInt(), '9'.toInt() + 1).toChar() }
-    // 生成随机字符型大写字母
-    val randomAlphabet = { random('A'.toInt(), 'Z'.toInt() + 1).toChar() }
-    // 生成随机字符串，长度为7，第一位数字，第二至第四位大写字母，第五至第七位数字
-    val randomString = {
-        val charArray = CharArray(7)
-        charArray[0] = randomNum()
-        for (i in 1..3) {
-            charArray[i] = randomAlphabet()
+    return Array(N) {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append(random(10))
+        repeat(3) {
+            // 生成随机大写字母
+            stringBuilder.append(random('A'.toInt(), 'Z'.toInt() + 1).toChar())
         }
-        for (i in 4..6) {
-            charArray[i] = randomNum()
+        repeat(3) {
+            stringBuilder.append(random(10))
         }
-        String(charArray)
+        stringBuilder.toString()
     }
-    return Array(N) { randomString() }
 }
 
 fun main() {
