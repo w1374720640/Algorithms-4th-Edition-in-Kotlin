@@ -60,9 +60,10 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
 
     private fun delete(node: Node, key: String, d: Int): Node? {
         if (d == key.length) {
+            if (node.value == null) throw NoSuchElementException()
             node.value = null
             size--
-            return null
+            return if (node.nextNum() == 0) null else node
         }
         val index = alphabet.toIndex(key[d])
         val nextNode = node.next[index] ?: throw NoSuchElementException()
