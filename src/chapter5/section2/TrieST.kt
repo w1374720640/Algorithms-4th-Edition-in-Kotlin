@@ -25,51 +25,49 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
     private var size = 0
 
     override fun put(key: String, value: V) {
-        var node = root
-        for (i in key.indices) {
-            val index = alphabet.toIndex(key[i])
-            var nextNode = node.next[index]
-            if (nextNode == null) {
-                nextNode = Node()
-                node.next[index] = nextNode
-            }
-            node = nextNode
+        put(root, key, value, 0)
+    }
+
+    private fun put(node: Node, key: String, value: V, d: Int) {
+        if (d == key.length) {
+            if (node.value == null) size++
+            node.value = value
+            return
         }
-        if (node.value == null) size++
-        node.value = value
+        val index = alphabet.toIndex(key[d])
+        var nextNode = node.next[index]
+        if (nextNode == null) {
+            nextNode = Node()
+            node.next[index] = nextNode
+        }
+        put(nextNode, key, value, d + 1)
     }
 
     override fun get(key: String): V? {
-        var node = root
-        for (i in key.indices) {
-            val index = alphabet.toIndex(key[i])
-            val nextNode = node.next[index] ?: return null
-            node = nextNode
-        }
-        return node.value
+        return get(root, key, 0)?.value
+    }
+
+    private fun get(node: Node, key: String, d: Int): Node? {
+        if (d == key.length) return node
+        val index = alphabet.toIndex(key[d])
+        val nextNode = node.next[index] ?: return null
+        return get(nextNode, key, d + 1)
     }
 
     override fun delete(key: String) {
-        val parents = arrayOfNulls<Node>(key.length)
-        var node = root
-        for (i in key.indices) {
-            parents[i] = node
-            val index = alphabet.toIndex(key[i])
-            val nextNode = node.next[index] ?: throw NoSuchElementException()
-            node = nextNode
+        delete(root, key, 0)
+    }
+
+    private fun delete(node: Node, key: String, d: Int): Node? {
+        if (d == key.length) {
+            node.value = null
+            size--
+            return null
         }
-        if (node.value == null) throw NoSuchElementException()
-        node.value = null
-        size--
-        for (i in parents.size - 1 downTo 0) {
-            if (node.value == null && node.nextNum() == 0) {
-                val index = alphabet.toIndex(key[i])
-                parents[i]!!.next[index] = null
-                node = parents[i]!!
-            } else {
-                break
-            }
-        }
+        val index = alphabet.toIndex(key[d])
+        val nextNode = node.next[index] ?: throw NoSuchElementException()
+        node.next[index] = delete(nextNode, key, d + 1)
+        return if (node.value == null && node.nextNum() == 0) null else node
     }
 
     override fun contains(key: String): Boolean {
@@ -117,12 +115,7 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
 
     override fun keysWithPrefix(s: String): Iterable<String> {
         val queue = Queue<String>()
-        var node = root
-        for (i in s.indices) {
-            val index = alphabet.toIndex(s[i])
-            val nextNode = node.next[index] ?: return queue
-            node = nextNode
-        }
+        val node = get(root, s, 0) ?: return queue
         keys(node, queue, s)
         return queue
     }
