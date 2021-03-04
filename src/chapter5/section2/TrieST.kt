@@ -6,9 +6,9 @@ import edu.princeton.cs.algs4.Queue
 /**
  * 基于单词查找树的符号表
  */
-class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
+open class TrieST<V : Any>(protected val alphabet: Alphabet) : StringST<V> {
 
-    private inner class Node {
+    protected inner class Node {
         val next = arrayOfNulls<Node>(alphabet.R())
         var value: V? = null
 
@@ -21,14 +21,14 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
         }
     }
 
-    private val root = Node()
-    private var size = 0
+    protected val root = Node()
+    protected var size = 0
 
     override fun put(key: String, value: V) {
         put(root, key, value, 0)
     }
 
-    private fun put(node: Node, key: String, value: V, d: Int) {
+    protected open fun put(node: Node, key: String, value: V, d: Int) {
         if (d == key.length) {
             if (node.value == null) size++
             node.value = value
@@ -47,7 +47,7 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
         return get(root, key, 0)?.value
     }
 
-    private fun get(node: Node, key: String, d: Int): Node? {
+    protected open fun get(node: Node, key: String, d: Int): Node? {
         if (d == key.length) return node
         val index = alphabet.toIndex(key[d])
         val nextNode = node.next[index] ?: return null
@@ -58,7 +58,7 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
         delete(root, key, 0)
     }
 
-    private fun delete(node: Node, key: String, d: Int): Node? {
+    protected open fun delete(node: Node, key: String, d: Int): Node? {
         if (d == key.length) {
             if (node.value == null) throw NoSuchElementException()
             node.value = null
@@ -89,7 +89,7 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
         return queue
     }
 
-    private fun keys(node: Node, queue: Queue<String>, key: String) {
+    protected open fun keys(node: Node, queue: Queue<String>, key: String) {
         if (node.value != null) {
             queue.enqueue(key)
         }
@@ -104,7 +104,7 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
         return if (length == 0) null else s.substring(0, length)
     }
 
-    private fun longestPrefixOf(node: Node, s: String, d: Int, length: Int): Int {
+    protected open fun longestPrefixOf(node: Node, s: String, d: Int, length: Int): Int {
         val index = alphabet.toIndex(s[d])
         val nextNode = node.next[index] ?: return length
         var newLength = length
@@ -127,7 +127,7 @@ class TrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
         return queue
     }
 
-    private fun keysThatMatch(node: Node, queue: Queue<String>, match: String, real: String) {
+    protected open fun keysThatMatch(node: Node, queue: Queue<String>, match: String, real: String) {
         val d = real.length
         if (d == match.length) {
             if (node.value != null) {

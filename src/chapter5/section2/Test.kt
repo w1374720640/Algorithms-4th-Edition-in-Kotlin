@@ -1,7 +1,9 @@
 package chapter5.section2
 
 import chapter2.section2.checkAscOrder
+import chapter3.section1.OrderedST
 import chapter5.section1.getMSDData
+import extensions.shuffle
 
 fun testStringST(create: () -> StringST<Int>) {
     val st = create()
@@ -62,4 +64,69 @@ fun testStringST(create: () -> StringST<Int>) {
     check(st.keysThatMatch("").count() == 1)
 
     println("StringST check succeed.")
+}
+
+fun testOrderedStringST(create: () -> OrderedST<String, Int>) {
+    val st = create()
+    val array = arrayOf(
+            "",
+            "a",
+            "aaa",
+            "aba",
+            "abc",
+            "bac",
+            "bb",
+            "bbb",
+            "bc",
+            "bca"
+    )
+    array.shuffle()
+    for (i in array.indices) {
+        st.put(array[i], i)
+    }
+
+    check(st.size() == 10)
+    check(st.min() == "")
+    check(st.max() == "bca")
+
+    check(st.floor("abc") == "abc")
+    check(st.floor("b") == "abc")
+    check(st.floor("bcc") == "bca")
+    check(st.ceiling("") == "")
+    check(st.ceiling("aa") == "aaa")
+    check(st.ceiling("bc") == "bc")
+
+    check(st.rank("aaa") == 2)
+    check(st.rank("") == 0)
+    check(st.rank("b") == 5)
+    check(st.rank("bcc") == 10)
+    check(st.rank("ccc") == 10)
+
+    check(st.select(0) == "")
+    check(st.select(3) == "aba")
+    check(st.select(5) == "bac")
+    check(st.select(9) == "bca")
+
+    st.deleteMin()
+    st.deleteMax()
+    check(st.size() == 8)
+    check(st.min() == "a")
+    check(st.max() == "bc")
+    check(st.floor("b") == "abc")
+    check(st.ceiling("aa") == "aaa")
+    check(st.rank("aaa") == 1)
+    check(st.rank("bcc") == 8)
+    check(st.select(3) == "abc")
+
+    check(st.size("a", "bca") == 8)
+    check(st.size("", "bbb") == 7)
+    check(st.size("abc", "ccc") == 5)
+    check(st.size("aa", "bba") == 5)
+
+    check(st.keys("a", "bca").count() == 8)
+    check(st.keys("a", "bca").checkAscOrder())
+    check(st.keys("ab", "bc").count() == 6)
+    check(st.keys("ab", "bc").checkAscOrder())
+
+    println("OrderedStringST check succeed.")
 }

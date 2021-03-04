@@ -5,20 +5,20 @@ import edu.princeton.cs.algs4.Queue
 /**
  * 基于三向单词查找树的符号表
  */
-class TST<V : Any> : StringST<V> {
+open class TST<V : Any> : StringST<V> {
 
-    private inner class Node(val char: Char) {
+    protected inner class Node(val char: Char) {
         var value: V? = null
         var left: Node? = null
         var mid: Node? = null
         var right: Node? = null
     }
 
-    private var root: Node? = null
-    private var size = 0
+    protected var root: Node? = null
+    protected var size = 0
 
     // 符号表应该支持以空字符串为键，空字符串不含任何字符，需要特殊处理
-    private var emptyKeyValue: V? = null
+    protected var emptyKeyValue: V? = null
 
     override fun put(key: String, value: V) {
         if (key == "") {
@@ -29,7 +29,7 @@ class TST<V : Any> : StringST<V> {
         root = put(root, key, value, 0)
     }
 
-    private fun put(node: Node?, key: String, value: V, d: Int): Node? {
+    protected open fun put(node: Node?, key: String, value: V, d: Int): Node? {
         val char = key[d]
         val result = node ?: Node(char)
         when {
@@ -52,7 +52,7 @@ class TST<V : Any> : StringST<V> {
         return get(root, key, 0)?.value
     }
 
-    private fun get(node: Node?, key: String, d: Int): Node? {
+    protected open fun get(node: Node?, key: String, d: Int): Node? {
         if (node == null) return null
         val char = key[d]
         return when {
@@ -72,7 +72,7 @@ class TST<V : Any> : StringST<V> {
         root = delete(root, key, 0)
     }
 
-    private fun delete(node: Node?, key: String, d: Int): Node? {
+    protected open fun delete(node: Node?, key: String, d: Int): Node? {
         if (node == null) throw NoSuchElementException()
         val char = key[d]
         when {
@@ -115,7 +115,7 @@ class TST<V : Any> : StringST<V> {
         return queue
     }
 
-    private fun keys(node: Node?, queue: Queue<String>, key: String) {
+    protected open fun keys(node: Node?, queue: Queue<String>, key: String) {
         if (node == null) return
         keys(node.left, queue, key)
         if (node.value != null) {
@@ -134,7 +134,7 @@ class TST<V : Any> : StringST<V> {
         }
     }
 
-    private fun longestPrefixOf(node: Node?, key: String, d: Int, length: Int): Int {
+    protected open fun longestPrefixOf(node: Node?, key: String, d: Int, length: Int): Int {
         if (node == null || d == key.length) return length
         var newLength = length
         val char = key[d]
@@ -158,7 +158,7 @@ class TST<V : Any> : StringST<V> {
         return queue
     }
 
-    private fun keysWithPrefix(node: Node?, queue: Queue<String>, key: String, d: Int) {
+    protected open fun keysWithPrefix(node: Node?, queue: Queue<String>, key: String, d: Int) {
         if (node == null) return
         if (d == key.length) {
             keys(node, queue, key)
@@ -183,7 +183,7 @@ class TST<V : Any> : StringST<V> {
         return queue
     }
 
-    private fun keysThatMatch(node: Node?, queue: Queue<String>, match: String, real: String) {
+    protected open fun keysThatMatch(node: Node?, queue: Queue<String>, match: String, real: String) {
         if (node == null) return
         val d = real.length
         val char = match[d]

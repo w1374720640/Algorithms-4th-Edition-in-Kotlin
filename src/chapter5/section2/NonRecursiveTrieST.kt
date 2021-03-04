@@ -7,9 +7,9 @@ import edu.princeton.cs.algs4.Stack
 /**
  * 基于单词查找树的符号表（非递归实现）
  */
-class NoneRecursiveTrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
+open class NoneRecursiveTrieST<V : Any>(protected val alphabet: Alphabet) : StringST<V> {
 
-    private inner class Node {
+    protected inner class Node {
         val next = arrayOfNulls<Node>(alphabet.R())
         var value: V? = null
 
@@ -22,8 +22,8 @@ class NoneRecursiveTrieST<V : Any>(private val alphabet: Alphabet) : StringST<V>
         }
     }
 
-    private val root = Node()
-    private var size = 0
+    protected val root = Node()
+    protected var size = 0
 
     override fun put(key: String, value: V) {
         var node = root

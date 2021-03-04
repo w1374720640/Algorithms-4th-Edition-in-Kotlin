@@ -6,20 +6,20 @@ import edu.princeton.cs.algs4.Stack
 /**
  * 基于三向单词查找树的符号表（非递归实现）
  */
-class NonRecursiveTST<V : Any> : StringST<V> {
+open class NonRecursiveTST<V : Any> : StringST<V> {
 
-    private inner class Node(val char: Char) {
+    protected inner class Node(val char: Char) {
         var value: V? = null
         var left: Node? = null
         var mid: Node? = null
         var right: Node? = null
     }
 
-    private var root: Node? = null
-    private var size = 0
+    protected var root: Node? = null
+    protected var size = 0
 
     // 符号表应该支持以空字符串为键，空字符串不含任何字符，需要特殊处理
-    private var emptyKeyValue: V? = null
+    protected var emptyKeyValue: V? = null
 
     override fun put(key: String, value: V) {
         if (key == "") {
@@ -63,7 +63,7 @@ class NonRecursiveTST<V : Any> : StringST<V> {
         return node?.value
     }
 
-    private fun getNode(key: String): Node? {
+    protected open fun getNode(key: String): Node? {
         var node = root
         var i = 0
         while (node != null) {
@@ -153,7 +153,7 @@ class NonRecursiveTST<V : Any> : StringST<V> {
         return queue
     }
 
-    private fun keys(root: Node, queue: Queue<String>, rootKey: String) {
+    protected open fun keys(root: Node, queue: Queue<String>, rootKey: String) {
         require(!rootKey.isEmpty())
         val nodeStack = Stack<Node>()
         val keyStack = Stack<String>()
