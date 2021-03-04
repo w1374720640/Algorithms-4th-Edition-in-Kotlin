@@ -29,7 +29,7 @@ open class TST<V : Any> : StringST<V> {
         root = put(root, key, value, 0)
     }
 
-    protected open fun put(node: Node?, key: String, value: V, d: Int): Node? {
+    protected open fun put(node: Node?, key: String, value: V, d: Int): Node {
         val char = key[d]
         val result = node ?: Node(char)
         when {

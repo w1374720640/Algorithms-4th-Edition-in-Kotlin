@@ -152,6 +152,8 @@ class OrderedTriesST<V : Any>(alphabet: Alphabet) : TrieST<V>(alphabet), Ordered
     override fun keys(low: String, high: String): Iterable<String> {
         val queue = Queue<String>()
         if (low > high) return queue
+        // 也可以先调用keys()方法获取所有键，再遍历依次所有元素判断是否在范围内
+        // 这里实现的方法比较麻烦，但效率较高
         keys(root, queue, "", low, high, 0)
         return queue
     }
@@ -176,13 +178,16 @@ class OrderedTriesST<V : Any>(alphabet: Alphabet) : TrieST<V>(alphabet), Ordered
         val lowIndex = alphabet.toIndex(low[d])
         val highIndex = alphabet.toIndex(high[d])
         if (lowIndex == highIndex) {
+            // 跳过所有相同的前缀
             val nextNode = node.next[lowIndex] ?: return
             keys(nextNode, queue, key + alphabet.toChar(lowIndex), low, high, d + 1)
         } else {
             val lowNode = node.next[lowIndex]
             if (lowNode != null) {
+                // 以lowNode为根结点，将所有大于low的元素加入队列
                 keysGreaterThan(lowNode, queue, key + alphabet.toChar(lowIndex), low, d + 1)
             }
+            // 将lowIndex和highIndex范围内（不包含边界）的所有元素加入队列
             for (i in lowIndex + 1 until highIndex) {
                 val nextNode = node.next[i]
                 if (nextNode != null) {
@@ -191,6 +196,7 @@ class OrderedTriesST<V : Any>(alphabet: Alphabet) : TrieST<V>(alphabet), Ordered
             }
             val highNode = node.next[highIndex]
             if (highNode != null) {
+                // 以highNode为根结点，将所有小于high的元素加入队列
                 keysLessThan(highNode, queue, key + alphabet.toChar(highIndex), high, d + 1)
             }
         }
