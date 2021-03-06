@@ -9,14 +9,21 @@ import edu.princeton.cs.algs4.Queue
  */
 class R2BranchingTST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
 
+    /**
+     * 长度为1的键对应的值保存在这个结点中
+     */
     inner class OneCharNode(val char: Char) {
         var value: V? = null
     }
 
+    /**
+     * 长度大于等于2的键对应的值保存在这个结点中
+     */
     inner class TwoCharNode(val firstChar: Char, val secondChar: Char) {
         val tst = TST<V>()
     }
 
+    // 保存空键对应的值
     private var emptyKeyValue: V? = null
 
     private val oneCharRootNodes = Array(alphabet.R()) {

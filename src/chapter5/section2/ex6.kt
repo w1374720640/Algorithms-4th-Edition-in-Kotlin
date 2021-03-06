@@ -32,6 +32,15 @@ class TrieStringSET : StringSET {
         return st.size()
     }
 
+    override fun key(): Iterable<String> {
+        return st.keys()
+    }
+
+    override fun containsPrefix(s: String): Boolean {
+        val iterator = st.keysWithPrefix(s).iterator()
+        return iterator.hasNext()
+    }
+
     override fun toString(): String {
         return st.keys().joinToString()
     }
@@ -62,6 +71,15 @@ class ThreeWayStringSET : StringSET {
 
     override fun size(): Int {
         return st.size()
+    }
+
+    override fun key(): Iterable<String> {
+        return st.keys()
+    }
+
+    override fun containsPrefix(s: String): Boolean {
+        val iterator = st.keysWithPrefix(s).iterator()
+        return iterator.hasNext()
     }
 
     override fun toString(): String {

@@ -160,15 +160,20 @@ open class TST<V : Any> : StringST<V> {
 
     protected open fun keysWithPrefix(node: Node?, queue: Queue<String>, key: String, d: Int) {
         if (node == null) return
-        if (d == key.length) {
-            keys(node, queue, key)
-            return
-        }
         val char = key[d]
         when {
             char < node.char -> keysWithPrefix(node.left, queue, key, d)
             char > node.char -> keysWithPrefix(node.right, queue, key, d)
-            else -> keysWithPrefix(node.mid, queue, key, d + 1)
+            else -> {
+                if (d == key.length - 1) {
+                    if (node.value != null) {
+                        queue.enqueue(key)
+                    }
+                    keys(node.mid, queue, key)
+                } else {
+                    keysWithPrefix(node.mid, queue, key, d + 1)
+                }
+            }
         }
     }
 

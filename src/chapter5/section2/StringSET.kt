@@ -29,4 +29,14 @@ interface StringSET {
      * 集合中的键的数量
      */
     fun size(): Int
+
+    /**
+     * 集合中所有的键
+     */
+    fun key(): Iterable<String>
+
+    /**
+     * 如果集合中存在某个以s作为前缀的字符串时返回true
+     */
+    fun containsPrefix(s: String): Boolean
 }
