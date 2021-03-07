@@ -5,8 +5,8 @@ import extensions.readInt
 import extensions.readString
 import extensions.safeCall
 
-class TrieStringSET : StringSET {
-    private val st = TrieST<String>(Alphabet.EXTENDED_ASCII)
+class TrieStringSET(alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSET {
+    private val st = TrieST<String>(alphabet)
 
     companion object {
         private const val DEFAULT_VALUE = ""
@@ -32,8 +32,8 @@ class TrieStringSET : StringSET {
         return st.size()
     }
 
-    override fun key(): Iterable<String> {
-        return st.keys()
+    override fun iterator(): Iterator<String> {
+        return st.keys().iterator()
     }
 
     override fun containsPrefix(s: String): Boolean {
@@ -73,8 +73,8 @@ class ThreeWayStringSET : StringSET {
         return st.size()
     }
 
-    override fun key(): Iterable<String> {
-        return st.keys()
+    override fun iterator(): Iterator<String> {
+        return st.keys().iterator()
     }
 
     override fun containsPrefix(s: String): Boolean {
@@ -89,7 +89,7 @@ class ThreeWayStringSET : StringSET {
 
 fun main() {
     println("Please input command:")
-    println("0: exit, 1: add, 2: delete, 3: contains, 4: isEmpty, 5: size, 6: toString")
+    println("0: exit, 1: add, 2: delete, 3: contains, 4: isEmpty, 5: size, 6: containPrefix, 7: toString")
     val set = TrieStringSET()
 //    val set = ThreeWayStringSET()
     while (true) {
@@ -112,7 +112,8 @@ fun main() {
                 }
                 4 -> println("isEmpty: ${set.isEmpty()}")
                 5 -> println("size=${set.size()}")
-                6 -> println(set)
+                6 -> println(set.containsPrefix(readString("containPrefix: ")))
+                7 -> println(set)
             }
         }
     }
