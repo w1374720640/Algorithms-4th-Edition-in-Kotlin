@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.Stack
 /**
  * 基于三向单词查找树的符号表（非递归实现）
  */
-open class NonRecursiveTST<V : Any> : StringST<V> {
+open class TSTIterative<V : Any> : StringST<V> {
 
     protected inner class Node(val char: Char) {
         var value: V? = null
@@ -263,5 +263,5 @@ open class NonRecursiveTST<V : Any> : StringST<V> {
 }
 
 fun main() {
-    testStringST { NonRecursiveTST() }
+    testStringST { TSTIterative() }
 }

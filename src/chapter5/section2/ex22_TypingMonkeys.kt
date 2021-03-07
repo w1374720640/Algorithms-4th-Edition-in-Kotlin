@@ -23,7 +23,8 @@ fun ex22_TypingMonkeys(p: Double, N: Int): Array<Double> {
             p
         }
     }
-    val st = TrieST<Int>(Alphabet.LOWERCASE)
+    val alphabet = Alphabet.LOWERCASE
+    val st = TrieST<Int>(alphabet)
     val stringBuilder = StringBuilder()
     repeat(N) {
         val index = StdRandom.discrete(probabilities)
@@ -31,7 +32,7 @@ fun ex22_TypingMonkeys(p: Double, N: Int): Array<Double> {
             st.put(stringBuilder.toString(), 0)
             stringBuilder.clear()
         } else {
-            stringBuilder.append(Alphabet.LOWERCASE.toChar(index))
+            stringBuilder.append(alphabet.toChar(index))
         }
     }
     if (stringBuilder.isNotEmpty()) {

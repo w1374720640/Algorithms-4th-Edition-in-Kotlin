@@ -21,6 +21,7 @@ open class TrieST<V : Any>(protected val alphabet: Alphabet) : StringST<V> {
         }
     }
 
+    // 根结点不可重新赋值，用于存放空字符串对应的值
     protected val root = Node()
     protected var size = 0
 

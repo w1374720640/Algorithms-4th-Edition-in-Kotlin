@@ -73,7 +73,7 @@ private fun <K : Comparable<K>> postorderTraversal(node: BinarySearchTree.Node<K
 /**
  * 非递归实现的前序遍历
  */
-fun <K : Comparable<K>> BinarySearchTree<K, *>.preorderTraversalNonRecursive(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.preorderTraversalIterative(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
     val stack = Stack<BinarySearchTree.Node<K, *>>()
@@ -97,7 +97,7 @@ fun <K : Comparable<K>> BinarySearchTree<K, *>.preorderTraversalNonRecursive(): 
  * 从栈中弹出结点时，如果结点的右子结点为空，则直接弹出该结点，
  * 否则弹出该结点后，需要以该结点的右子结点为根节点，将所有左子结点依次加入栈中
  */
-fun <K : Comparable<K>> BinarySearchTree<K, *>.inorderTraversalNonRecursive(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.inorderTraversalIterative(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
     val stack = Stack<BinarySearchTree.Node<K, *>>()
@@ -128,7 +128,7 @@ private fun <K : Comparable<K>> addAllLeftNode(root: BinarySearchTree.Node<K, *>
  * 需要注意，为了防止重复添加一个结点的右子结点造成死循环，需要记录最后添加的结点，
  * 当最后添加的结点和该结点的右子结点相同时，说明该结点的所有右子结点都已经添加，可以直接返回
  */
-fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversalNonRecursive1(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversalIterative1(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
     val stack = Stack<BinarySearchTree.Node<K, *>>()
@@ -153,7 +153,7 @@ fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversalNonRecursive1()
  * 修改前序遍历的非递归实现，以根-右-左的形式遍历二叉查找树
  * 遍历完成后将列表数据前后颠倒，结果为左-右-根的形式
  */
-fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversalNonRecursive2(): List<K> {
+fun <K : Comparable<K>> BinarySearchTree<K, *>.postorderTraversalIterative2(): List<K> {
     if (root == null) return emptyList()
     val list = ArrayList<K>()
     val stack = Stack<BinarySearchTree.Node<K, *>>()
@@ -206,11 +206,11 @@ fun main() {
     drawBST(bst)
 
     println("preorder : ${bst.preorderTraversal().joinToString()}")
-    println("preorder : ${bst.preorderTraversalNonRecursive().joinToString()}")
+    println("preorder : ${bst.preorderTraversalIterative().joinToString()}")
     println("inorder  : ${bst.inorderTraversal().joinToString()}")
-    println("inorder  : ${bst.inorderTraversalNonRecursive().joinToString()}")
+    println("inorder  : ${bst.inorderTraversalIterative().joinToString()}")
     println("postorder: ${bst.postorderTraversal().joinToString()}")
-    println("postorder: ${bst.postorderTraversalNonRecursive1().joinToString()}")
-    println("postorder: ${bst.postorderTraversalNonRecursive2().joinToString()}")
+    println("postorder: ${bst.postorderTraversalIterative1().joinToString()}")
+    println("postorder: ${bst.postorderTraversalIterative2().joinToString()}")
     println("breadth  : ${bst.breadthFirstTraversal().joinToString()}")
 }

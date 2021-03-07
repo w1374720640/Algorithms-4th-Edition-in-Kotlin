@@ -9,7 +9,7 @@ import edu.princeton.cs.algs4.Queue
  *
  * 解：参考二叉查找树的实现[chapter3.section2.BinarySearchTree]
  */
-class EagerTrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
+class InstantTrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
 
     private inner class Node {
         val next = arrayOfNulls<Node>(alphabet.R())
@@ -156,7 +156,7 @@ class EagerTrieST<V : Any>(private val alphabet: Alphabet) : StringST<V> {
     }
 }
 
-class EagerTST<V : Any> : StringST<V> {
+class InstantTST<V : Any> : StringST<V> {
 
     private inner class Node(val char: Char) {
         var value: V? = null
@@ -373,6 +373,6 @@ class EagerTST<V : Any> : StringST<V> {
 
 
 fun main() {
-    testStringST { EagerTrieST(Alphabet.EXTENDED_ASCII) }
-    testStringST { EagerTST() }
+    testStringST { InstantTrieST(Alphabet.EXTENDED_ASCII) }
+    testStringST { InstantTST() }
 }

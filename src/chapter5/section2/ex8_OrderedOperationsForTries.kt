@@ -5,9 +5,10 @@ import chapter5.section1.Alphabet
 import edu.princeton.cs.algs4.Queue
 
 /**
- * 实现有序符号表API的单词查找树
+ * 单词查找树的有序性操作
+ * 为TrieST实现floor()、ceiling()、rank()和select()方法（来自第3章标准有序符号表的API）
  */
-class OrderedTriesST<V : Any>(alphabet: Alphabet) : TrieST<V>(alphabet), OrderedST<String, V> {
+class OrderedTrieST<V : Any>(alphabet: Alphabet) : TrieST<V>(alphabet), OrderedST<String, V> {
 
     override fun min(): String {
         return min(root, "") ?: throw NoSuchElementException()
@@ -243,6 +244,6 @@ class OrderedTriesST<V : Any>(alphabet: Alphabet) : TrieST<V>(alphabet), Ordered
 }
 
 fun main() {
-    testStringST { OrderedTriesST(Alphabet.EXTENDED_ASCII) }
-    testOrderedStringST { OrderedTriesST(Alphabet.EXTENDED_ASCII) }
+    testStringST { OrderedTrieST(Alphabet.EXTENDED_ASCII) }
+    testOrderedStringST { OrderedTrieST(Alphabet.EXTENDED_ASCII) }
 }

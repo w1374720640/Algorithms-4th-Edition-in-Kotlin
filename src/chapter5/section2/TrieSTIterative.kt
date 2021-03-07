@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.Stack
 /**
  * 基于单词查找树的符号表（非递归实现）
  */
-open class NoneRecursiveTrieST<V : Any>(protected val alphabet: Alphabet) : StringST<V> {
+open class TrieSTIterative<V : Any>(protected val alphabet: Alphabet) : StringST<V> {
 
     protected inner class Node {
         val next = arrayOfNulls<Node>(alphabet.R())
@@ -195,5 +195,5 @@ open class NoneRecursiveTrieST<V : Any>(protected val alphabet: Alphabet) : Stri
 }
 
 fun main() {
-    testStringST { NoneRecursiveTrieST(Alphabet.EXTENDED_ASCII) }
+    testStringST { TrieSTIterative(Alphabet.EXTENDED_ASCII) }
 }
