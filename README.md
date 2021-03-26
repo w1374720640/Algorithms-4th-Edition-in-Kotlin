@@ -29,7 +29,9 @@
 数组大小：20  延迟：500 ms  数组初始状态：0-随机数组（1-升序 2-降序 3-接近升序 4-接近降序 5-大量重复元素）。
 深灰色表示比较大小，黑色表示交换元素。
 
-![ShellSort](./image/ShellSort.gif)
+<div align=center>
+<img src="./image/ShellSort.gif" />
+</div>
 
 
 
@@ -37,28 +39,36 @@
 数组大小：32  延迟：500 ms  数组初始状态：0-随机数组
 上半部分为原始数组，下半部分为相同大小的辅助数组，从原始数组向辅助数组中复制数据时，对应区间变为深灰色，黑色表示从辅助数组中向原始数组中复制元素。
 
-![TopDownMergeSort](./image/TopDownMergeSort.gif)
-
+<div align=center>
+<img src="./image/TopDownMergeSort.gif" />
+</div>
 
 
 [随机生成的二叉查找树](./src/chapter3/section2/BSTGraphics.kt)：
 
-![BinarySearchTree](./image/BinarySearchTree.png)
-
+<div align=center>
+<img src="./image/BinarySearchTree.png" />
+</div>
 
 
 [红黑树添加、删除操作](./src/chapter3/section3/ShowChangeProcessRedBlackBST.kt)：
 
-![RedBlackBST](./image/RedBlackBST.gif)
+<div align=center>
+<img src="./image/RedBlackBST.gif" />
+</div>
 
 
 
 [无向图最小生成树的Kruskal算法](./src/chapter4/section3/KruskalMST.kt)：
 
-![KruskalMST](./image/KruskalMST.gif)
+<div align=center>
+<img src="./image/KruskalMST.gif" />
+</div>
 
 
 
 [A\*寻路算法](./src/chapter2/section5/ex32_AStartPathFind.kt)：
 
-![AStartPathFind](./image/AStartPathFind.gif)
+<div align=center>
+<img src="./image/AStartPathFind.gif" />
+</div>
