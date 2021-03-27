@@ -6,7 +6,7 @@ import chapter5.section1.Alphabet
  * Knuth-Morris-Pratt字符串查找算法
  */
 class KMP(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSearch(pat, alphabet) {
-    private val dfa = Array(alphabet.R()) { IntArray(pat.length) }
+    val dfa = Array(alphabet.R()) { IntArray(pat.length) }
 
     init {
         dfa[alphabet.toIndex(pat[0])][0] = 1

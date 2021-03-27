@@ -8,9 +8,5 @@ import chapter5.section1.SpecificAlphabet
 fun main() {
     val pat = "ABRACADABRA"
     val alphabet = SpecificAlphabet("ABCDR")
-    val dfa = ex2(pat, alphabet)
-    println("  ${pat.toCharArray().joinToString(separator = " ")}")
-    for (i in 0 until alphabet.R()) {
-        println("${alphabet.toChar(i)} ${dfa[i].joinToString(separator = " ")}")
-    }
+    ex2(pat, alphabet)
 }

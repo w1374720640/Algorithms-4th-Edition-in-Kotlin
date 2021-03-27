@@ -6,7 +6,7 @@ import chapter5.section1.Alphabet
  * Boyer-Moore字符串匹配算法（启发式地处理不匹配的字符）
  */
 class BoyerMoore(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSearch(pat, alphabet) {
-    private val right = IntArray(alphabet.R()) { -1 }
+    val right = IntArray(alphabet.R()) { -1 }
 
     init {
         for (j in pat.indices) {

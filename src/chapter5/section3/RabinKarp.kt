@@ -8,8 +8,9 @@ import java.util.*
  * Rabin-Karp指纹字符串查找算法
  */
 class RabinKarp(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSearch(pat, alphabet) {
-    private val Q = longRandomPrime()
-    private var RM = 1L
+    val Q = longRandomPrime()
+    var RM = 1L
+        private set
 
     init {
         repeat(pat.length - 1) {
@@ -36,14 +37,14 @@ class RabinKarp(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : Str
         return N
     }
 
-    private fun check(i: Int): Boolean {
+    fun check(i: Int): Boolean {
         return true
     }
 
     /**
      * 计算key[0..M-1]的散列值
      */
-    private fun hash(key: String, M: Int): Long {
+    fun hash(key: String, M: Int): Long {
         require(key.length >= M)
         var hash = 0L
         repeat(M) {
@@ -61,7 +62,7 @@ class RabinKarp(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : Str
      * 但是Long的最大值约等于9.2*10¹⁹，不存在大于10²⁰的Long值
      * 官方给出的代码使用BigInteger实现，参考[edu.princeton.cs.algs4.RabinKarp]
      */
-    private fun longRandomPrime(): Long {
+    fun longRandomPrime(): Long {
         return BigInteger.probablePrime(31, Random()).longValueExact()
     }
 }
