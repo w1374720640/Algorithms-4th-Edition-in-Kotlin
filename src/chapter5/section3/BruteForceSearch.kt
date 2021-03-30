@@ -5,7 +5,7 @@ import chapter5.section1.Alphabet
 /**
  * 暴力子字符串查找算法
  */
-class BruteForceSearch(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSearch(pat, alphabet) {
+open class BruteForceSearch(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSearch(pat, alphabet) {
 
     override fun search(txt: String): Int {
         var i = 0

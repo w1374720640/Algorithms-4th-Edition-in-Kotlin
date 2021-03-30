@@ -11,7 +11,7 @@ fun RabinKarp.searchAll(txt: String): IntArray {
     if (M > N) return intArrayOf()
     val patHash = hash(pat, M)
     var txtHash = hash(txt, M)
-    if (patHash == txtHash && check(0)) {
+    if (patHash == txtHash && check(txt, 0)) {
         list.add(0)
     }
     for (i in 0 until N - M) {
@@ -19,7 +19,7 @@ fun RabinKarp.searchAll(txt: String): IntArray {
         txtHash = (txtHash + Q - RM * alphabet.toIndex(txt[i]) % Q) % Q
         // 再添加新元素重新计算hash值
         txtHash = (txtHash * alphabet.R() + alphabet.toIndex(txt[i + M])) % Q
-        if (txtHash == patHash && check(i + 1)) {
+        if (txtHash == patHash && check(txt, i + 1)) {
             list.add(i + 1)
         }
     }

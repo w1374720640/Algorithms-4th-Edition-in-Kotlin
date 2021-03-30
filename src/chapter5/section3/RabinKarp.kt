@@ -7,7 +7,7 @@ import java.util.*
 /**
  * Rabin-Karp指纹字符串查找算法
  */
-class RabinKarp(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSearch(pat, alphabet) {
+open class RabinKarp(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : StringSearch(pat, alphabet) {
     val Q = longRandomPrime()
     var RM = 1L
         private set
@@ -24,27 +24,27 @@ class RabinKarp(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) : Str
         if (M > N) return N
         val patHash = hash(pat, M)
         var txtHash = hash(txt, M)
-        if (patHash == txtHash && check(0)) return 0
+        if (patHash == txtHash && check(txt, 0)) return 0
         for (i in 0 until N - M) {
             // 先计算旧hash值排除第一个元素后的hash值
             txtHash = (txtHash + Q - RM * alphabet.toIndex(txt[i]) % Q) % Q
             // 再添加新元素重新计算hash值
             txtHash = (txtHash * alphabet.R() + alphabet.toIndex(txt[i + M])) % Q
-            if (txtHash == patHash && check(i + 1)) {
+            if (txtHash == patHash && check(txt, i + 1)) {
                 return i + 1
             }
         }
         return N
     }
 
-    fun check(i: Int): Boolean {
+    open fun check(txt: String, i: Int): Boolean {
         return true
     }
 
     /**
      * 计算key[0..M-1]的散列值
      */
-    fun hash(key: String, M: Int): Long {
+    open fun hash(key: String, M: Int): Long {
         require(key.length >= M)
         var hash = 0L
         repeat(M) {
