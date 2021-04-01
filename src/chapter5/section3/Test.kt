@@ -32,3 +32,23 @@ fun testStringSearch(create: (String) -> StringSearch) {
 
     println("StringSearch check succeed.")
 }
+
+/**
+ * 练习5.3.7~5.3.10中，用于测试searchAll()方法是否正确
+ */
+fun <T> testSearchAll(searchFun: T.(String) -> IntArray, create: (String) -> T) {
+    val pat1 = "AAA"
+    val txt1 = "AABAAAAABABAAAA"
+    val result1 = intArrayOf(3, 4, 5, 11, 12)
+    check(create(pat1).searchFun(txt1).contentEquals(result1))
+
+    val pat2 = "B"
+    val result2 = intArrayOf(2, 8, 10)
+    check(create(pat2).searchFun(txt1).contentEquals(result2))
+
+    val pat3 = "BB"
+    val result3 = intArrayOf()
+    check(create(pat3).searchFun(txt1).contentEquals(result3))
+
+    println("searchAll test succeed.")
+}

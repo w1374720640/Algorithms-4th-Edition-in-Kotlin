@@ -31,10 +31,5 @@ fun RabinKarp.count(txt: String): Int {
 }
 
 fun main() {
-    val pat = "AAA"
-    val txt = "AABAAAAABABAAAA"
-    val rabinKarp = RabinKarp(pat)
-    check(rabinKarp.count(txt) == 5)
-    check(rabinKarp.searchAll(txt).contentEquals(intArrayOf(3, 4, 5, 11, 12)))
-    println("check succeed.")
+    testSearchAll<RabinKarp>(RabinKarp::searchAll) { RabinKarp(it) }
 }

@@ -32,10 +32,5 @@ fun BruteForceSearch.count(txt: String): Int {
 }
 
 fun main() {
-    val pat = "AAA"
-    val txt = "AABAAAAABABAAAA"
-    val bruteForceSearch = BruteForceSearch(pat)
-    check(bruteForceSearch.count(txt) == 5)
-    check(bruteForceSearch.searchAll(txt).contentEquals(intArrayOf(3, 4, 5, 11, 12)))
-    println("check succeed.")
+    testSearchAll<BruteForceSearch>(BruteForceSearch::searchAll) {BruteForceSearch(it)}
 }

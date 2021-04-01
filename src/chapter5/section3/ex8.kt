@@ -26,10 +26,5 @@ fun KMP.count(txt: String): Int {
 }
 
 fun main() {
-    val pat = "AAA"
-    val txt = "AABAAAAABABAAAA"
-    val kmp = KMP(pat)
-    check(kmp.count(txt) == 5)
-    check(kmp.searchAll(txt).contentEquals(intArrayOf(3, 4, 5, 11, 12)))
-    println("check succeed.")
+    testSearchAll<KMP>(KMP::searchAll) { KMP(it) }
 }

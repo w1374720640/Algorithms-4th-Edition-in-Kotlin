@@ -35,10 +35,5 @@ fun BoyerMoore.count(txt: String): Int {
 }
 
 fun main() {
-    val pat = "AAA"
-    val txt = "AABAAAAABABAAAA"
-    val boyerMoore = BoyerMoore(pat)
-    check(boyerMoore.count(txt) == 5)
-    check(boyerMoore.searchAll(txt).contentEquals(intArrayOf(3, 4, 5, 11, 12)))
-    println("check succeed.")
+    testSearchAll<BoyerMoore>(BoyerMoore::searchAll) { BoyerMoore(it) }
 }
