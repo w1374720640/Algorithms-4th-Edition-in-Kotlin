@@ -1,5 +1,7 @@
 package chapter5.section3
 
+import edu.princeton.cs.algs4.In
+
 /**
  * 测试给定的[StringSearch]实现是否正确
  */
@@ -51,4 +53,17 @@ fun <T> testSearchAll(searchFun: T.(String) -> IntArray, create: (String) -> T) 
     check(create(pat3).searchFun(txt1).contentEquals(result3))
 
     println("searchAll test succeed.")
+}
+
+fun getTinyTaleStream() = In("./data/tinyTale.txt")
+
+fun <T> testStreaming(searchFun: T.(In) -> Int, create: (String) -> T) {
+    check(create("it was the best").searchFun(getTinyTaleStream()) == 0)
+    check(create("t was").searchFun(getTinyTaleStream()) == 1)
+    check(create(" ").searchFun(getTinyTaleStream()) == 2)
+    check(create("worst").searchFun(getTinyTaleStream()) == 36)
+    check(create("times\nit").searchFun(getTinyTaleStream()) == 45)
+    check(create("it was the age").searchFun(getTinyTaleStream()) == 51)
+    check(create("despair").searchFun(getTinyTaleStream()) == 269)
+    check(create("it has").searchFun(getTinyTaleStream()) == 277)
 }

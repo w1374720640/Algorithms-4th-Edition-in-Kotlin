@@ -49,19 +49,6 @@ fun RabinKarp.search(input: In): Int {
     return i
 }
 
-private fun getTinyTaleStream() = In("./data/tinyTale.txt")
-
-private fun <T> testStreaming(searchFun: T.(In) -> Int, create: (String) -> T) {
-    check(create("it was the best").searchFun(getTinyTaleStream()) == 0)
-    check(create("t was").searchFun(getTinyTaleStream()) == 1)
-    check(create(" ").searchFun(getTinyTaleStream()) == 2)
-    check(create("worst").searchFun(getTinyTaleStream()) == 36)
-    check(create("times\nit").searchFun(getTinyTaleStream()) == 45)
-    check(create("it was the age").searchFun(getTinyTaleStream()) == 51)
-    check(create("despair").searchFun(getTinyTaleStream()) == 269)
-    check(create("it has").searchFun(getTinyTaleStream()) == 277)
-}
-
 fun main() {
     testStreaming<KMP>(KMP::search) { KMP(it) }
     testStreaming<RabinKarp>(RabinKarp::search) { RabinKarp(it) }
