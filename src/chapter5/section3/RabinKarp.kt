@@ -61,6 +61,7 @@ open class RabinKarp(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_ASCII) 
      * 解：书上说为了保证蒙特卡洛法的正确性，素数应该大于10²⁰
      * 但是Long的最大值约等于9.2*10¹⁹，不存在大于10²⁰的Long值
      * 官方给出的代码使用BigInteger实现，参考[edu.princeton.cs.algs4.RabinKarp]
+     * 生成大素数的原理可以参考：https://bindog.github.io/blog/2014/07/19/how-to-generate-big-primes/
      */
     fun longRandomPrime(): Long {
         return BigInteger.probablePrime(31, Random()).longValueExact()
