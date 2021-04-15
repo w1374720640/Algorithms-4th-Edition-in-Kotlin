@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.Queue
 /**
  * 流输入
  * 为KMP类添加一个search()方法，接受一个In类型的变量作为参数，
- * 在不适用其他任何实例变量的条件下在指定的输入流中查找模式字符串。
+ * 在不使用其他任何实例变量的条件下在指定的输入流中查找模式字符串。
  * 为RabinKarp类也添加一个类似的方法。
  */
 fun KMP.search(input: In): Int {
