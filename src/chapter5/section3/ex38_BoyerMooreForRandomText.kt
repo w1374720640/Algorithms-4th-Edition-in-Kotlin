@@ -49,6 +49,7 @@ class RecordCompareNumBoyerMoore(pat: String, alphabet: Alphabet = Alphabet.EXTE
 }
 
 fun main() {
+    testStringSearch { RecordCompareNumBoyerMoore(it) }
     val M = 10
     var N = 100
     val T = 10

@@ -6,7 +6,7 @@ import extensions.random
 /**
  * 随机文本的KMP算法
  * 编写一个用例，接受整型参数M、N和T并运行以下实验T遍：
- * 随机生成一个长度位M的模式字符串和一段长度为N的文本，记录使用KMP算法在文本中查找该模式时比较字符的次数。
+ * 随机生成一个长度为M的模式字符串和一段长度为N的文本，记录使用KMP算法在文本中查找该模式时比较字符的次数。
  * 修改KMP类的实现来记录比较次数并打印出重复T次之后的平均比较次数。
  */
 fun ex37_KMPforRandomText(M: Int, N: Int, T: Int): Int {
@@ -40,6 +40,7 @@ class RecordCompareNumKMP(pat: String, alphabet: Alphabet = Alphabet.EXTENDED_AS
 }
 
 fun main() {
+    testStringSearch { RecordCompareNumKMP(it) }
     val M = 10
     var N = 100
     val T = 10
