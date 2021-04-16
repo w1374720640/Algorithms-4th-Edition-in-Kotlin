@@ -7,23 +7,53 @@ package chapter5.section3
  * 例如，当b为“abcad”而s为“abcabcababcababcababcab”时，你的程序应该返回3。
  *
  * 解：中文版原文中有翻译错误，给出的示例b应该为“abcab”
- * 将两个b字符拼接，然后以拼接后的字符串为模板，使用RabinKarp算法匹配s
+ * 题目要求返回“最长”串联重复的起始位置，可能有多个串联重复，找到最长的那个
+ * 设字符s中最多有N个不重叠的b字符串，N=s.length/b.length
+ * 将N个b字符串拼接成一个新字符串，以该字符串为模板创建KMP算法的dfa数组，
+ * 在s字符串中查找模板，记录模板到达的最右侧位置，就可以得到最长串联重复
  */
 fun ex27_TandemRepeatSearch(b: String, s: String): Int {
-    val pat = b + b
-    val rabinKarp = RabinKarp(pat)
-    return rabinKarp.search(s)
+    val R = 256
+    val builder = StringBuilder()
+    repeat(s.length / b.length) {
+        builder.append(b)
+    }
+    val pat = builder.toString()
+
+    val dfa = Array(R) { IntArray(pat.length) }
+    var x = 0
+    dfa[pat[0].toInt()][0] = 1
+    for (j in 1 until pat.length) {
+        for (i in 0 until R) {
+            dfa[i][j] = dfa[i][x]
+        }
+        dfa[pat[j].toInt()][j] = j + 1
+        x = dfa[pat[j].toInt()][x]
+    }
+
+    var maxMatchState = b.length //至少重复两遍，所以索引至少要大于b.length
+    var maxIndex = -1
+    var i = 0
+    var j = 0
+    while (i < s.length && j < pat.length) {
+        j = dfa[s[i++].toInt()][j]
+        if (j % b.length == 0 && j > maxMatchState) {
+            maxMatchState = j
+            maxIndex = i - j
+        }
+    }
+    return maxIndex
+}
+
+private fun test(b: String, s: String, expect: Int) {
+    check(ex27_TandemRepeatSearch(b, s) == expect)
 }
 
 fun main() {
-    val s = "abcabcababcababcababcab"
-    check(ex27_TandemRepeatSearch("abcab", s) == 3)
-    check(ex27_TandemRepeatSearch("ab", s) == 6)
-    check(ex27_TandemRepeatSearch("bca", s) == 1)
-    check(ex27_TandemRepeatSearch("abc", s) == 0)
-    check(ex27_TandemRepeatSearch("abca", s) == 23)
-    check(ex27_TandemRepeatSearch("babc", s) == 23)
-    check(ex27_TandemRepeatSearch("abab", s) == 23)
-    check(ex27_TandemRepeatSearch("abcad", s) == 23)
+    test("abc", "abbcabcccbac", -1)
+    test("aaa", "aaaaabbbaaab", -1)
+    test("aaa", "aaaaaabbbaaaaaaaaa", 9)
+    test("abc", "aabcaabcabcabccc", 5)
+    test("abc", "abcabcaaabcabcabcabcabcccccabcabc", 8)
     println("check succeed.")
 }
