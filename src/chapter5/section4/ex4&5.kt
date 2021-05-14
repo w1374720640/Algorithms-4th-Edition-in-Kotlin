@@ -12,5 +12,6 @@ fun main() {
     check(nfa.recognizes("EFGEFG"))
     check(nfa.recognizes("ABABAACCDDEFG"))
     check(nfa.recognizes("EFGCDDBABA"))
+    println(nfa.match.joinToString())
     println(nfa.digraph)
 }

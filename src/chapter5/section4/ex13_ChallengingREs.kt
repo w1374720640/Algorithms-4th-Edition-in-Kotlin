@@ -12,7 +12,7 @@ package chapter5.section4
  */
 fun main() {
     // 除了11和111的所有字符串
-    val nfa1 = NFA("(0|1|10|100|101|110|[10][10][10][10]+)")
+    val nfa1 = NFA("(1|(1*01*|1111[01]*)*)")
     check(nfa1.recognizes("0"))
     check(nfa1.recognizes("1"))
     check(nfa1.recognizes("10"))

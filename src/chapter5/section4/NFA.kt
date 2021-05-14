@@ -34,7 +34,7 @@ import edu.princeton.cs.algs4.Stack
  *     对于集合，还需要考虑闭包运算符，因为集合不能嵌套，所以可以将左中括号同样加入栈中，遇见右中括号时弹出
  * 转义序列：对于模式"A\.B"来说，添加一个从'A'到'\'的匹配转换，从'\'到'B'的匹配转换，同时需要考虑B位置为闭包或其他重复次数的情况
  */
-class NFA(val regex: String) {
+open class NFA(val regex: String) {
     val M = regex.length
     val digraph = Digraph(M + 1)
 
@@ -143,7 +143,7 @@ class NFA(val regex: String) {
         return true
     }
 
-    fun recognizes(txt: String): Boolean {
+    open fun recognizes(txt: String): Boolean {
         val N = txt.length
         var i = 0
         // 存放所有经过ε-转换等价的点，代码保证了所有点不会重复，所以直接用Bag不需要用Set
@@ -217,7 +217,7 @@ class NFA(val regex: String) {
     }
 
     // 将匹配转换的下一个元素添加到背包中，下一个元素不应该为-1
-    private fun addMatch(bag: Bag<Int>, index: Int) {
+    protected open fun addMatch(bag: Bag<Int>, index: Int) {
         check(match[index] != -1) { "Match conversion should not be -1" }
         bag.add(match[index])
     }

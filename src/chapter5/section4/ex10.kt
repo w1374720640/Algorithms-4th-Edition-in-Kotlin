@@ -31,7 +31,9 @@ fun main() {
     check(!nfa2.recognizes("0000"))
 
     // 起止字符相同
-    val nfa3 = NFA("(0[01]*0|1[01]*1)")
+    val nfa3 = NFA("(0|1|0[01]*0|1[01]*1)")
+    check(nfa3.recognizes("0"))
+    check(nfa3.recognizes("1"))
     check(nfa3.recognizes("00"))
     check(nfa3.recognizes("11"))
     check(nfa3.recognizes("01101110"))
