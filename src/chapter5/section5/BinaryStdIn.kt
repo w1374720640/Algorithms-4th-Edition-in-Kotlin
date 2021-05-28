@@ -11,12 +11,10 @@ import java.io.InputStream
  * 有两个构造函数，一个从标准输入（键盘）或其他输入流中读取数据，另一个从文件中读取数据
  * 从标准输入中读取数据时，需要使用回车键将字符存入输入流（回车键也会被存入），<Ctrl-d>或<Ctrl-z>结束输入
  */
-class BinaryStdIn(inputStream: InputStream = System.`in`) {
+class BinaryStdIn(private val inputStream: InputStream = System.`in`) {
 
-    constructor(path: String) : this(FileInputStream(path))
-
-    // 使用带缓存的InputStream装饰原始的InputSteam，提高读取效率
-    private val inputStream = BufferedInputStream(inputStream)
+    // 读取文件时使用带缓存的InputStream
+    constructor(path: String) : this(BufferedInputStream(FileInputStream(path)))
 
     // 缓存的一个字节大小的数据
     private var byte = 0

@@ -39,7 +39,7 @@ class HexDump(private val groupCount: Int) : Dump {
 }
 
 fun main() {
-    val dump = HexDump( 4)
+    val dump = HexDump(4)
     val stdIn = BinaryStdIn("./data/abra.txt")
 //    val stdIn = BinaryStdIn()
     dump.dump(stdIn)

@@ -8,11 +8,11 @@ import java.io.OutputStream
 /**
  * 向输出流中写入比特流的API
  */
-class BinaryStdOut(outputStream: OutputStream = System.out) {
+class BinaryStdOut(private val outputStream: OutputStream = System.out) {
 
-    constructor(path: String) : this(FileOutputStream(path))
+    // 写文件时使用带缓存的OutputStream
+    constructor(path: String) : this(BufferedOutputStream(FileOutputStream(path)))
 
-    private val outputStream = BufferedOutputStream(outputStream)
     private var byte = 0
     private var n = 0
 
