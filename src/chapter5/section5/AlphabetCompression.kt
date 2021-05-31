@@ -37,5 +37,5 @@ fun main() {
     val path = "./data/genomeVirus.txt"
     val compressPath = "./out/output/genomeVirus_compress.txt"
     val expandPath = "./out/output/genomeVirus_expand.txt"
-    compressionTest(path, compressPath, expandPath, 512, 0.5) { AlphabetCompression(Alphabet.DNA) }
+    testCompression(path, compressPath, expandPath, 512, 0.5) { AlphabetCompression(Alphabet.DNA) }
 }

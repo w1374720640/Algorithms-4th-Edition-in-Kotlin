@@ -5,7 +5,7 @@ import chapter2.sleep
 /**
  * 测试压缩算法，使用PictureDump来显示数据
  */
-fun compressionTest(path: String, compressPath: String, expandPath: String, lineCount: Int, radius: Double, create: () -> Compression) {
+fun testCompression(path: String, compressPath: String, expandPath: String, lineCount: Int, radius: Double, create: () -> Compression) {
     // 压缩数据
     val alphabetCompression = create()
     val compressStdIn = BinaryStdIn(path)

@@ -33,6 +33,10 @@ class PictureDump(private val lineCount: Int, private val radius: Double = 1.0) 
         }
         println("$bits bits")
         stdIn.close()
+        // 至少显示一行
+        if (list.isEmpty()) {
+            list.add(BooleanArray(lineCount))
+        }
 
         // 开始绘制图形
         val width = lineCount * radius * 2
