@@ -51,16 +51,14 @@ fun createPiped(): Pair<PipedInputStream, PipedOutputStream> {
     return inputStream to outputStream
 }
 
+// 测试输入输出流的相互转换
 fun main() {
     // 拷贝文件，一边从输入流读，一边向输出流写，不会将所有内容拷贝到内存中，在同一个线程中运行
     val time = spendTimeMillis {
         // largeEWD.txt是一个较大的测试文件，约300M大小
         val inputStream = BufferedInputStream(FileInputStream("./data/largeEWD.txt"))
         convertInputStreamToOutputStream(inputStream) {
-            val file = File("./out/output/largeEWD_copy.txt")
-            if (!file.parentFile.exists()) {
-                file.parentFile.mkdirs()
-            }
+            val file = BinaryStdOut.createFile("./out/output/largeEWD_copy.txt")
             BufferedOutputStream(FileOutputStream(file))
         }
     }

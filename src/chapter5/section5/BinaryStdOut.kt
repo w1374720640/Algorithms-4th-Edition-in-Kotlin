@@ -10,8 +10,24 @@ import java.io.OutputStream
  */
 class BinaryStdOut(private val outputStream: OutputStream = System.out) {
 
+    companion object {
+        /**
+         * 根据路径创建文件，如果文件夹不存在，先创建文件夹
+         */
+        fun createFile(path: String): File {
+            val file = File(path)
+            if (!file.parentFile.exists()) {
+                file.parentFile.mkdirs()
+            }
+            if (!file.exists()) {
+                file.createNewFile()
+            }
+            return file
+        }
+    }
+
     // 写文件时使用带缓存的OutputStream
-    constructor(path: String) : this(BufferedOutputStream(FileOutputStream(path)))
+    constructor(path: String) : this(BufferedOutputStream(FileOutputStream(createFile(path))))
 
     private var byte = 0
     private var n = 0
@@ -144,12 +160,6 @@ class BinaryStdOut(private val outputStream: OutputStream = System.out) {
 fun main() {
     // 测试向指定文件写入数据
     val path = "./out/output/test.txt"
-    val file = File(path)
-    // 需要先判断文件的父目录是否存在，如果不存在需要手动创建文件夹
-    // 不需要手动创建文件，FileOutputStream会自动创建文件（但不会自动创建路径上不存在的文件夹）
-    if (!file.parentFile.exists()) {
-        file.parentFile.mkdirs()
-    }
     val stdOut = BinaryStdOut(path)
     stdOut.write("hello world!")
     stdOut.close()
