@@ -53,5 +53,5 @@ fun main() {
     val compressPath = "./out/output/q64x96_compress.bin"
     val expandPath = "./out/output/q64x96_expand.bin"
 
-    testCompression(path, compressPath, expandPath, 64, 2.0) { RunLengthEncodingCompression() }
+    testCompression(path, compressPath, expandPath, 64, 4.0) { RunLengthEncodingCompression() }
 }

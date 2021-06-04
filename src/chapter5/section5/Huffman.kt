@@ -129,11 +129,11 @@ fun main() {
     val path = "./data/medTale.txt"
     val compressPath = "./out/output/medTale_compress.huffman"
     val expandPath = "./out/output/medTale_expand.txt"
-    testCompression(path, compressPath, expandPath, 512, 0.5) { Huffman() }
+    testCompression(path, compressPath, expandPath, 512, 1.0) { Huffman() }
 
     sleep(3000)
     val qpath = "./data/q64x96.bin"
     val qcompressPath = "./out/output/q64x96_compress.huffman"
     val qexpandPath = "./out/output/q64x96_expand.bin"
-    testCompression(qpath, qcompressPath, qexpandPath, 64, 2.0) { Huffman() }
+    testCompression(qpath, qcompressPath, qexpandPath, 64, 4.0) { Huffman() }
 }

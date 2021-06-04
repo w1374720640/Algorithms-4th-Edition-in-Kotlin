@@ -6,11 +6,12 @@ import edu.princeton.cs.algs4.StdDraw
 /**
  * 将比特流打印成图像，每个比特一像素，白色像素表示0，黑色像素表示1
  *
- * 为了方便显示，可以调整每个比特的显示大小，默认每个比特显示为长宽各两个像素点的正方形
+ * 为了方便显示，可以调整每个比特的显示大小，width代表一个比特的正方形边长所占的像素值
  * 内容较少时，可以适当扩大每个比特的显示大小，内容较多时，缩小每个比特的显示大小
  * 绘制区域会根据内容数量自动调整大小
  */
-class PictureDump(private val lineCount: Int, private val radius: Double = 1.0) : Dump {
+class PictureDump(private val lineCount: Int, width: Double) : Dump {
+    private val radius = width / 2
 
     override fun dump(stdIn: BinaryStdIn) {
         val list = ArrayList<BooleanArray>()
@@ -61,13 +62,13 @@ class PictureDump(private val lineCount: Int, private val radius: Double = 1.0) 
 }
 
 fun main() {
-    val dump = PictureDump(16, 10.0)
+    val dump = PictureDump(16, 20.0)
     val stdIn = BinaryStdIn("./data/abra.txt")
 //    val stdIn = BinaryStdIn()
     dump.dump(stdIn)
     sleep(5000)
 
-    val dump2 = PictureDump(512, 0.5)
+    val dump2 = PictureDump(512, 1.0)
     val stdIn2 = BinaryStdIn("./data/genomeVirus.txt")
     dump2.dump(stdIn2)
 
