@@ -1,5 +1,6 @@
 package chapter5.section5
 
+import chapter5.section1.Alphabet
 import extensions.random
 
 /**
@@ -7,9 +8,11 @@ import extensions.random
  */
 fun main() {
     val N = 40
-    val repeatTimes = 5
-    val stringList = Array(repeatTimes) {
-        String(CharArray(N) { random(128).toChar()})
+    val M = 5
+    val alphabet = Alphabet.ASCII
+    // 生成M个长度为N的随机ASCII字符串
+    val stringList = Array(M) {
+        alphabet.toChars(IntArray(N) { random(alphabet.R()) })
     }
     val compressionList = arrayOf<Compression>(RunLengthEncodingCompression(), Huffman(), LZW())
     ex7(stringList, compressionList)
