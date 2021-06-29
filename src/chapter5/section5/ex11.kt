@@ -1,8 +1,6 @@
 package chapter5.section5
 
 import extensions.randomBoolean
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 
 /**
  * 如果所有字符均来自一个只有两个字符的字母表，该字符串的霍夫曼编码将会是什么？
@@ -23,18 +21,11 @@ fun main() {
     println("count=$count")
 
     val huffman = Huffman()
+    val dump = BinaryDump(8, 8)
     repeat(M) {
         val s = String(CharArray(N) { if (randomBoolean()) 'a' else 'b' })
         println("origin string: $s")
-
-        val inputStream = ByteArrayInputStream(s.toByteArray())
-        val outputStream = ByteArrayOutputStream()
-        huffman.compress(BinaryStdIn(inputStream), BinaryStdOut(outputStream))
-
-        // 将压缩的输出流转换为打印的输入流
-        val dumpInputStream = convertOutputStreamToInputStream(outputStream)
-        val dump = BinaryDump(8, 8)
-        dump.dump(BinaryStdIn(dumpInputStream))
+        compressAndDumpString(s, huffman, dump)
         println()
     }
 }

@@ -2,8 +2,6 @@ package chapter5.section5
 
 import chapter5.section1.Alphabet
 import extensions.random
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import kotlin.math.pow
 
 /**
@@ -30,18 +28,11 @@ fun main() {
     println("expect count: $count")
 
     val huffman = Huffman()
+    val dump = BinaryDump(8, 8)
     repeat(p) {
         val s = alphabet.toChars(IntArray(m) { random(alphabet.R()) })
         println("origin string: $s")
-
-        val inputStream = ByteArrayInputStream(s.toByteArray())
-        val outputStream = ByteArrayOutputStream()
-        huffman.compress(BinaryStdIn(inputStream), BinaryStdOut(outputStream))
-
-        // 将压缩的输出流转换为打印的输入流
-        val dumpInputStream = convertOutputStreamToInputStream(outputStream)
-        val dump = BinaryDump(8, 8)
-        dump.dump(BinaryStdIn(dumpInputStream))
+        compressAndDumpString(s, huffman, dump)
         println()
     }
 }

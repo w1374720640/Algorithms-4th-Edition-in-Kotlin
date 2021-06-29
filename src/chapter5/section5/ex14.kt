@@ -1,8 +1,5 @@
 package chapter5.section5
 
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-
 /**
  * 假设需要编码的所有字符的出现概率均不相同。此时的霍夫曼编码树是唯一的吗？
  *
@@ -21,16 +18,10 @@ fun main() {
             "acbbaabaac"
     )
     val huffman = Huffman()
+    val dump = BinaryDump(8, 8)
     array.forEach { s ->
         println("s: $s")
-        val inputStream = ByteArrayInputStream(s.toByteArray())
-        val outputStream = ByteArrayOutputStream()
-        huffman.compress(BinaryStdIn(inputStream), BinaryStdOut(outputStream))
-
-        // 将压缩的输出流转换为打印的输入流
-        val dumpInputStream = convertOutputStreamToInputStream(outputStream)
-        val dump = BinaryDump(8, 8)
-        dump.dump(BinaryStdIn(dumpInputStream))
+        compressAndDumpString(s, huffman, dump)
         println()
     }
 }
