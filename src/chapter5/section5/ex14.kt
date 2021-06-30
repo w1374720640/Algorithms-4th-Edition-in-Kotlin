@@ -7,19 +7,15 @@ package chapter5.section5
  * 即使合并后的子树和某个字符的概率相同，但由于每次操作的顺序相同，结果也相同
  */
 fun main() {
-    // 每个字符串中a出现的概率为50%，b出现的概率为30%，c出现的概率为20%，比较不同的排列中，霍夫曼编码的前缀是否相同
-    val array = arrayOf(
-            "aaaaabbbcc",
-            "aaaaaccbbb",
-            "bbbaaaaacc",
-            "ccaaaaabbb",
-            "bbbccaaaaa",
-            "ccbbbaaaaa",
-            "acbbaabaac"
-    )
+    // 字符串中a出现的概率为50%，b出现的概率为30%，c出现的概率为20%
+    val string = "aaaaabbbcc"
     val huffman = Huffman()
     val dump = BinaryDump(8, 8)
-    array.forEach { s ->
+    repeat(5) {
+        val array = string.toCharArray()
+        // 随机打乱数组，比较不同的排列中，霍夫曼编码的前缀是否相同
+        array.shuffle()
+        val s = String(array)
         println("s: $s")
         compressAndDumpString(s, huffman, dump)
         println()
