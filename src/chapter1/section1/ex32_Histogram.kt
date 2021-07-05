@@ -20,7 +20,7 @@ fun ex32_Histogram(n: Int, left: Double, right: Double, count: Int) {
     }
     println()
     println("array=${array.joinToString()}")
-    val max = array.max() ?: 0
+    val max = array.maxOrNull() ?: 0
     for (i in array.indices) {
         StdDraw.filledRectangle(
                 1.0 / n * i + 1.0 / n / 2,

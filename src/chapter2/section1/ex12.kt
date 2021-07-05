@@ -33,7 +33,7 @@ fun ex12(array: Array<Double>) {
     println(list.joinToString { pair ->
         "h=${pair.first},ratio=${formatDouble(pair.second, 2)} "
     })
-    println("maxRatio=${formatDouble(list.maxBy { it.second }?.second ?: 0.0, 2)}")
+    println("maxRatio=${formatDouble(list.maxByOrNull { it.second }?.second ?: 0.0, 2)}")
 }
 
 fun main() {
