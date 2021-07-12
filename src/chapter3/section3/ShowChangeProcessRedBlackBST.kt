@@ -25,14 +25,17 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
         //必须和上次图形不同时才绘制绘制图形
         val hashCode = hash()
         if (showProcess && hashCode != lastHashCode) {
+            StdDraw.enableDoubleBuffering()
             drawRedBlackBST(this, showFlatView = showFlatView)
-            sleep(delay)
+            StdDraw.show()
+            StdDraw.pause(delay.toInt())
             lastHashCode = hashCode
         }
     }
 
     fun drawText(text: String) {
         if (showProcess) {
+            StdDraw.enableDoubleBuffering()
             if (showFlatView) {
                 if (RedBlackBSTGraphics.canvasWidth != (RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE * (2 + RedBlackBSTGraphics.FLAT_X_EXPEND_RATIO)).toInt()) {
                     StdDraw.setCanvasSize((RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE * (2 + RedBlackBSTGraphics.FLAT_X_EXPEND_RATIO)).toInt(), RedBlackBSTGraphics.CANVAS_DEFAULT_SIZE)
@@ -48,6 +51,8 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
             }
             StdDraw.setPenColor()
             StdDraw.textLeft(0.02, 0.94, text)
+            StdDraw.show()
+            StdDraw.pause(delay.toInt())
         }
     }
 
@@ -129,7 +134,6 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
     override fun put(key: K, value: V) {
         if (showProcess) {
             drawText("put() key=${key}")
-            sleep(delay)
         }
         if (root == null) {
             root = Node(key, value, color = BLACK)
@@ -191,7 +195,6 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
         if (isEmpty()) throw NoSuchElementException()
         if (showProcess) {
             drawText("deleteMin() min=${min()}")
-            sleep(delay)
         }
         if (!root?.left.isRed() && !root?.right.isRed()) {
             root!!.color = RED
@@ -234,7 +237,6 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
         if (isEmpty()) throw NoSuchElementException()
         if (showProcess) {
             drawText("deleteMax() max=${max()}")
-            sleep(delay)
         }
         if (!root!!.left.isRed() && !root!!.right.isRed()) {
             root!!.color = RED
@@ -281,7 +283,6 @@ class ShowChangeProcessRedBlackBST<K : Comparable<K>, V : Any> : RedBlackBST<K, 
         if (!contains(key)) throw NoSuchElementException()
         if (showProcess) {
             drawText("delete() key=$key")
-            sleep(delay)
         }
         if (!root!!.left.isRed() && !root!!.right.isRed()) {
             root!!.color = RED
