@@ -13,15 +13,15 @@ class CollisionSystem(private val particles: Array<Particle>) {
     /**
      * 互相碰撞的主循环
      */
-    fun simulate(limit: Double, hz: Double) {
+    fun simulate(limit: Double, hz: Int) {
         pq = HeapMinPriorityQueue()
         t = 0.0
         StdDraw.enableDoubleBuffering()
-        redraw()
+        redraw(hz)
         particles.forEach {
             predictCollisions(it, limit)
         }
-        pq.insert(Event(1000 / hz, null, null))
+        pq.insert(Event(1000.0 / hz, null, null))
 
         while (!pq.isEmpty() && t < limit) {
             val event = pq.delMin()
@@ -46,7 +46,7 @@ class CollisionSystem(private val particles: Array<Particle>) {
                     predictCollisions(event.b, limit)
                 }
                 else -> {
-                    redraw()
+                    redraw(hz)
                     pq.insert(Event(t + 1000 / hz, null, null))
                 }
             }
@@ -77,20 +77,20 @@ class CollisionSystem(private val particles: Array<Particle>) {
     /**
      * 重新画出所有粒子
      */
-    private fun redraw() {
+    private fun redraw(hz: Int) {
         StdDraw.clear()
         StdDraw.setPenColor(StdDraw.BLACK)
         particles.forEach {
             it.draw()
         }
         StdDraw.show()
-        StdDraw.pause(30)
+        StdDraw.pause(1000 / hz)
     }
 }
 
 fun main() {
     val N = 5
-    val hz = 30.0
+    val hz = 60
     val limit = 10000.0
     val particles = Array(N) { Particle() }
     val collisionSystem = CollisionSystem(particles)
