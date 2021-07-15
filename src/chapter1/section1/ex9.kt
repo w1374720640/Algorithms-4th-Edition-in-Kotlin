@@ -1,34 +1,25 @@
 package chapter1.section1
 
+import extensions.formatStringLength
 import extensions.inputPrompt
 import extensions.readInt
 
-//将整数的二进制用String表示
+/**
+ * 编写一段代码，将一个正整数N用二进制表示并转换为一个String类型的值s
+ */
 fun ex9(num: Int): String {
-    var result = ""
-    if (num == 0) {
-        result = "0"
-    } else {
-        //不能用CharArray，1.toChar()不等于'1'，无法打印
-        val array = IntArray(32)
-        var index = array.size
-        var value = num
-        do {
-            --index
-            //与1按位与
-            array[index] = value and 1
-            //无符号右移一位
-            value = value ushr 1
-            //省略二进制前面的0
-        } while (value != 0)
-        for (i in index until array.size) {
-            result += array[i]
-        }
+    var s = ""
+    repeat(32) {
+        // 先左移指定位数，再与1按位与，判断结果是否为0，为0则表示指定位的二进制数为0
+        s += (if ((num shr (31 - it) and 1) == 0) "0" else "1")
     }
-    return result
+    return s
 }
 
 fun main() {
     inputPrompt()
-    println(ex9(readInt()))
+    val num = readInt()
+    println(ex9(num))
+    // 将Integer.toBinaryString转换的字符串补齐32位长度
+    println(formatStringLength(Integer.toBinaryString(num), 32))
 }
