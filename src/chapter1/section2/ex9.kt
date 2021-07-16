@@ -1,6 +1,6 @@
 package chapter1.section2
 
-import chapter1.section1.ex14
+import chapter1.section1.lg
 import edu.princeton.cs.algs4.Counter
 import edu.princeton.cs.algs4.In
 import extensions.inputPrompt
@@ -30,5 +30,5 @@ fun main() {
     ex9(key, array, counter)
     println(counter.toString())
     //二分查找理论上的平均查找次数为logN（底为2）
-    println("log${array.size}=${ex14(array.size)}")
+    println("log${array.size}=${lg(array.size)}")
 }

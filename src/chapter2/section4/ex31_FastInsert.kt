@@ -1,5 +1,7 @@
 package chapter2.section4
 
+import chapter1.section1.lg
+
 /**
  * 用基于比较的方式实现MinPriorityQueue的API，使得插入元素需要~loglogN次比较，删除最小元素需要~2logN次比较
  * 提示：在swim()方法中用二分查找来寻找祖先结点
@@ -12,7 +14,7 @@ package chapter2.section4
  */
 class FastInsertHeapMinPriorityQueue<T: Comparable<T>> : HeapMinPriorityQueue<T>() {
     override fun swim(k: Int) {
-        val t = binarySearchLargeThan(k, 1, chapter1.section1.ex14(k))
+        val t = binarySearchLargeThan(k, 1, lg(k))
         if (t == -1) return
         val value = this[k]
         swap(k, getIndex(k, 1))
