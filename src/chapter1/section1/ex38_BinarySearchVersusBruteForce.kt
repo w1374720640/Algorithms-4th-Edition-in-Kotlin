@@ -3,45 +3,44 @@ package chapter1.section1
 import edu.princeton.cs.algs4.In
 import extensions.inputPrompt
 import extensions.readInt
+import extensions.spendTimeMillis
 
-//从largeT.txt中读取数据，分别用暴力查找和二分查找来查找数据
-//为了让效果更明显，可设置同一个key的查找次数
+/**
+ * 二分查找与暴力查找
+ * 根据1.1.10.4节给出的暴力查找法编写一个程序BruteForceSearch，
+ * 在你的计算机上比较它和BinarySearch处理largeW.txt和largeT.txt所需的时间
+ */
 fun ex38_BinarySearchVersusBruteForce(array: IntArray, key: Int, times: Int) {
     var hasFound = false
-    var startTime = 0L
-    var endTime = 0L
-    //暴力查找
-    startTime = System.currentTimeMillis()
-    repeat(times) {
-        for (i in array.indices) {
-            if (array[i] == key) {
-                hasFound = true
-                break
+    val bruteForceTime = spendTimeMillis {
+        repeat(times) {
+            for (i in array.indices) {
+                if (array[i] == key) {
+                    hasFound = true
+                    break
+                }
             }
         }
     }
-    endTime = System.currentTimeMillis()
-    println("brute force search ${if (hasFound) "has found" else "not found"} ${key}, spend time ${endTime - startTime}ms")
+    println("brute force search ${if (hasFound) "has found" else "not found"} ${key}, spend time $bruteForceTime ms")
 
-    //排序
-    startTime = System.currentTimeMillis()
-    array.sort()
-    endTime = System.currentTimeMillis()
-    println("sort time=${endTime - startTime}ms")
-
-    //二分查找
-    startTime = System.currentTimeMillis()
-    repeat(times) {
-        hasFound = binarySearch(key, array) != -1
+    val sortTime = spendTimeMillis {
+        array.sort()
     }
-    endTime = System.currentTimeMillis()
-    println("binary search ${if (hasFound) "has found" else "not found"} ${key}, spend time ${endTime - startTime}ms")
+    println("sort time=$sortTime ms")
+
+    val binarySearchTime = spendTimeMillis {
+        repeat(times) {
+            hasFound = binarySearch(key, array) != -1
+        }
+    }
+    println("binary search ${if (hasFound) "has found" else "not found"} ${key}, spend time $binarySearchTime ms")
 }
 
 fun main() {
     inputPrompt()
-    val key = readInt()
-    val times = readInt()
+    val key = readInt("key: ")
+    val times = readInt("times: ") // 为了让效果更明显，重复一定次数
     val array = In("./data/largeT.txt").readAllInts()
     ex38_BinarySearchVersusBruteForce(array, key, times)
 }

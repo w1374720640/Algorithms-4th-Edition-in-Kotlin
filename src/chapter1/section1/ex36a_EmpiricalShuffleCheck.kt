@@ -5,10 +5,12 @@ import extensions.inputPrompt
 import extensions.random
 import extensions.readInt
 
-//使用kotlin重新实现表1.1.10中的代码
-//根据给定概率返回对应的索引
-//array[i]的值在0~1之间，总和为1，根据array[i]对应的概率返回i的值
-//例如array[2]的值为0.5，则每次调用函数，有50%概率返回2
+/**
+ * 使用kotlin重新实现表1.1.10中的代码
+ * 根据给定概率返回对应的索引
+ * array[i]的值在0~1之间，总和为1，根据array[i]对应的概率返回i的值
+ * 例如array[2]的值为0.5，则每次调用函数，有50%概率返回2
+ */
 fun ex36a_EmpiricalShuffleCheck(array: Array<Double>, times: Int): Array<Double> {
     //根据给定概率返回索引
     fun discrete(array: Array<Double>): Int {
@@ -43,7 +45,7 @@ fun ex36a_EmpiricalShuffleCheck(array: Array<Double>, times: Int): Array<Double>
 fun main() {
     inputPrompt()
     val array = arrayOf(0.1, 0.3, 0.05, 0.1, 0.3, 0.15)
-    val times = readInt()
+    val times = readInt("times: ")
     println("array =${array.joinToString { formatDouble(it, 3) }}")
     val result = ex36a_EmpiricalShuffleCheck(array, times)
     println("result=${result.joinToString { formatDouble(it, 3) }}")
