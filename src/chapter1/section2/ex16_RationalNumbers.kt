@@ -2,25 +2,12 @@ package chapter1.section2
 
 import kotlin.math.abs
 
-//使用欧几里得算法计算最大公约数
-//因为需要支持所有理数，所以添加负数支持
-//正常情况下只讨论自然数的最大公约数，这里可以支持负数，但最大公约数一直为正
-//参考练习1.1.24
-fun commonDivisor(a: Long, b: Long): Long {
-    if (a == 0L || b == 0L) return 1L
-    val absA = abs(a)
-    val absB = abs(b)
-    //两个整数的最大公约数等于其中较小的那个数和两数相除余数的最大公约数
-    val large = if (absA > absB) absA else absB
-    val small = if (absA > absB) absB else absA
-    //余数
-    val remainder = large % small
-    if (remainder == 0L) return small
-    return commonDivisor(small, remainder)
-}
-
 /**
- * 实现一个有理数
+ * 有理数
+ * 为有理数实现一个不可变数据类型Rational，支持加减乘除操作。
+ * 无需测试溢出（请柬练习1.2.17），只需要使用两个long型实例变量表示分子和分母来控制溢出的可能。
+ * 使用欧几里得算法来保证分子和分母没有公因子。
+ * 编写一个测试用例检测你实现的所有方法。
  */
 class Rational {
     //分子
@@ -84,6 +71,25 @@ class Rational {
 
     override fun toString(): String = "[numerator=${numerator} denominator=${denominator}]"
 
+}
+
+/**
+ * 使用欧几里得算法计算最大公约数
+ * 因为需要支持所有理数，所以添加负数支持
+ * 正常情况下只讨论自然数的最大公约数，这里可以支持负数，但最大公约数一直为正
+ * 参考练习1.1.24
+ */
+fun commonDivisor(a: Long, b: Long): Long {
+    if (a == 0L || b == 0L) return 1L
+    val absA = abs(a)
+    val absB = abs(b)
+    //两个整数的最大公约数等于其中较小的那个数和两数相除余数的最大公约数
+    val large = if (absA > absB) absA else absB
+    val small = if (absA > absB) absB else absA
+    //余数
+    val remainder = large % small
+    if (remainder == 0L) return small
+    return commonDivisor(small, remainder)
 }
 
 fun main() {

@@ -6,8 +6,9 @@ import java.awt.Color
 import kotlin.math.abs
 
 /**
- * 支持加一和减一的操作，最大操作次数为N，计数器绝对值最大值为max
- * 绘制出每次计数器变化后的值
+ * 编写一个类VisualCounter，支持加一和减一的操作。
+ * 它的构造函数接受两个参数N和max，其中N指定了操作的最大次数，max指定了计数器的额最大绝对值。
+ * 作为副作用，用图像显示每次计数器变化后的值。
  */
 class VisualCounter(private val N: Int, private val max: Int) {
     var count = 0
@@ -63,10 +64,10 @@ class VisualCounter(private val N: Int, private val max: Int) {
 
 fun main() {
     inputPrompt()
-    val N = readInt()
-    val max = readInt()
+    val N = readInt("N: ")
+    val max = readInt("max: ")
     //随机加一的概率为probability，减一的概率为 1 - probability
-    val probability = readDouble()
+    val probability = readDouble("probability: ")
     require(N > 0 && max > 0 && probability in 0.0..1.0)
     val counter = VisualCounter(N, max)
     do {
