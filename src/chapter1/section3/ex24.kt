@@ -4,13 +4,15 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 import extensions.readInt
 
-//删除某个节点的所有后续节点
+/**
+ * 删除某个节点的所有后续节点
+ */
 fun <T> SinglyLinkedList<T>.removeAfter(removeNode: SinglyLinkedList.Node<T>) {
     var node = first
     size = 0
     while (node != null) {
         size++
-        if (node == removeNode) {
+        if (node === removeNode) {
             node.next = null
             return
         } else {

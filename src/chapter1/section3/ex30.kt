@@ -4,9 +4,9 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 
 /**
- * 接受一条链表的首结点作为参数，破坏性地将链表反转并返回结果链表的首结点
- * 原链表只剩一个头结点，其他节点丢失
- * 每次操作保存三个结点，将中间结点的next指针指向第一个结点，
+ * 编写一个函数，接受一条链表的首结点作为参数，（破坏性地）将链表反转并返回结果链表的首结点。
+ *
+ * 解：每次操作保存三个结点，将中间结点的next指针指向第一个结点，
  * 然后将三个结点同步后移一位，依次循环直到最后一个结点
  */
 fun <T> reverse(node: SinglyLinkedList.Node<T>): SinglyLinkedList.Node<T> {

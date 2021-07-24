@@ -4,6 +4,9 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 import extensions.readString
 
+/**
+ * 返回链表中某个键的索引，类似于index()方法
+ */
 fun <T> SinglyLinkedList<T>.find(key: T): Int {
     var index = 0
     forEach {

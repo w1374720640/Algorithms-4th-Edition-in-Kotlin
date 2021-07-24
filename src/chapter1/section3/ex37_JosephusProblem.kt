@@ -5,16 +5,18 @@ import extensions.inputPrompt
 import extensions.readInt
 
 /**
- * 一共有N个人，编号从0~N-1，编号为0的人从1开始报数，报到M的整数倍的人会被杀死，
- * 一圈结束后从第一位继续报数，直到最后一个人留下来
- * 使用Queue找出不同N和M中，不会被杀死的人
+ * Josephus问题。
+ * 在这个古老的问题中，N个身陷绝境的人一致同意通过以下方式减少生存人数。
+ * 他们围坐成一圈（位置记为0到N-1）并从第一个人开始报数，报到M的人会被杀死，直到最后一个人留下来。
+ * 传说中Josephus找到了不会被杀死的位置。
+ * 编写一个Queue的用例Josephus，从命令行接受N和M并打印出人们被杀死的顺序（这也将显示Josephus在圈中的位置）。
  */
 fun main() {
     inputPrompt()
     val result = Queue<Int>()
     var origin = Queue<Int>()
-    val N = readInt()
-    val M = readInt()
+    val N = readInt("N: ")
+    val M = readInt("M: ")
     require(N > 1 && M > 1) { "N and M should greater than 1" }
     (0 until N).forEach { origin.enqueue(it) }
     var count = 1

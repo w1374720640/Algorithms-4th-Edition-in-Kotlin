@@ -4,6 +4,9 @@ import extensions.readInt
 import extensions.readString
 import extensions.safeCall
 
+/**
+ * 从双向链表头部添加值
+ */
 fun <T> DoublyLinkedList<T>.addHeader(value: T) {
     val node = DoublyLinkedList.Node(value, next = first)
     if (first == null) {
@@ -16,6 +19,9 @@ fun <T> DoublyLinkedList<T>.addHeader(value: T) {
     size++
 }
 
+/**
+ * 从双向链表尾部添加值
+ */
 fun <T> DoublyLinkedList<T>.addTail(value: T) {
     val node = DoublyLinkedList.Node(value, previous = last)
     if (last == null) {

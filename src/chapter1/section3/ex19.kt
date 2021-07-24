@@ -20,7 +20,9 @@ fun <T> SinglyLinkedList<T>.deleteLast() {
     size--
 }
 
-//向单向链表中添加数据
+/**
+ * 向单向链表中添加数据
+ */
 fun <T> SinglyLinkedList<T>.add(value: T) {
     if (first == null) {
         first = SinglyLinkedList.Node(value)

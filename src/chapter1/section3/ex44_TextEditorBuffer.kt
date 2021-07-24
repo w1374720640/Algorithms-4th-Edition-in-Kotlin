@@ -4,21 +4,21 @@ import edu.princeton.cs.algs4.Stack
 import extensions.readInt
 import extensions.readString
 import extensions.safeCall
-import java.security.InvalidParameterException
 
+/**
+ * 文本编辑器的缓冲区
+ * 为文本编辑器的缓冲区设计一种数据类型并实现表1.3.13中的API。
+ * 提示：使用两个栈
+ */
 class Buffer {
-    //控制台无法打印Char，所以用一个字符长度的String代替
-    private val firstHalfStack = Stack<String>()
-    private val secondHalfStack = Stack<String>()
+    private val firstHalfStack = Stack<Char>()
+    private val secondHalfStack = Stack<Char>()
 
-    fun insert(char: String) {
-        if (char.length > 1) {
-            throw InvalidParameterException("Not a character")
-        }
+    fun insert(char: Char) {
         firstHalfStack.push(char)
     }
 
-    fun delete(): String {
+    fun delete(): Char {
         return firstHalfStack.pop()
     }
 
@@ -38,7 +38,7 @@ class Buffer {
 
     fun site() = firstHalfStack.size()
 
-    fun output(): Iterator<String> {
+    fun output(): Iterator<Char> {
         left(site())
         return secondHalfStack.iterator()
     }
@@ -54,11 +54,10 @@ fun main() {
             when (command) {
                 0 -> return
                 1 -> {
-                    val value = readString("insert value: ")
-                    if (value.length > 1) {
-                        println("Please enter a character")
-                    } else {
-                        buffer.insert(value)
+                    // 可以一次性读取一个字符串，再将每个字符依次插入缓冲区中
+                    val s = readString("insert value: ")
+                    s.forEach {
+                        buffer.insert(it)
                     }
                 }
                 2 -> {

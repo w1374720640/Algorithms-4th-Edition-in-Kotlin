@@ -4,7 +4,9 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 import extensions.readString
 
-//删除链表中所有值为key的节点
+/**
+ * 删除链表中所有值为key的节点
+ */
 fun <T> SinglyLinkedList<T>.remove(key: T) {
     var node = first
     while (node != null) {

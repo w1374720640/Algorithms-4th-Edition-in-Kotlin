@@ -5,11 +5,13 @@ import extensions.readAllStrings
 import extensions.readInt
 import extensions.readString
 
-//在指定节点后面插入一个节点
+/**
+ * 在指定节点后面插入一个节点
+ */
 fun <T> SinglyLinkedList<T>.insertAfter(afterNode: SinglyLinkedList.Node<T>, insertNode: SinglyLinkedList.Node<T>) {
     var node = first
     while (node != null) {
-        if (node == afterNode) {
+        if (node === afterNode) {
             insertNode.next = node.next
             node.next = insertNode
             size++

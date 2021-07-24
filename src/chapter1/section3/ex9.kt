@@ -5,8 +5,11 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 
 /**
- * 从一个缺少左括号的表达式获取补全括号后的中序表达式
- * 如：输入1 + 2 ) * 3 - 4 ) * 5 - 6 ) ) ) 返回 ( 1 + 2 ) * ( ( 3 - 4 ) * ( 5 - 6 ) ) )
+ * 编写一段程序，从标准输入中得到一个缺少左括号的表达式并打印出补全括号之后的中序表达式。
+ * 例如，在给定输入：
+ * 1 + 2 ) * 3 - 4 ) * 5 - 6 ) ) )
+ * 你的程序应该输出：
+ * ( ( 1 + 2 ) * ( ( 3 - 4 ) * ( 5 - 6 ) ) )
  */
 fun ex9(array: Array<String>): String {
     val valueStack = Stack<String>()
