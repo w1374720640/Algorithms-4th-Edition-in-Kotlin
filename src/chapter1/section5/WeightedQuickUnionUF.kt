@@ -1,5 +1,8 @@
 package chapter1.section5
 
+/**
+ * 加权quick-union算法
+ */
 open class WeightedQuickUnionUF(N: Int) : QuickUnionUF(N) {
     val treeSize = IntArray(N) { 1 }
 

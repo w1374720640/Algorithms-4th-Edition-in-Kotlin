@@ -1,5 +1,8 @@
 package chapter1.section5
 
+/**
+ * quick-union算法
+ */
 open class QuickUnionUF(N: Int) : UF {
     protected val ids = IntArray(N) { it }
     protected var count = N

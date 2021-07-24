@@ -3,7 +3,8 @@ package chapter1.section4
 import chapter1.section1.binarySearch
 
 /**
- * 求一个数组中四个数的和为0的组合数量
+ * 4-sum
+ * 为4-sum设计一个算法。
  */
 fun ex14(array: IntArray): Long {
     array.sort()
