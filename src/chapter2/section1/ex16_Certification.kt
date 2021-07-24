@@ -5,8 +5,12 @@ import extensions.formatDouble
 import java.util.*
 
 /**
- * 在方法内用排序方法对数组排序，如果排序成功且原数组中没有被添加或删除过数据，则返回true，否则返回false
- * 不要假设排序方法一定用swap()方法排序，适用于任何排序方法
+ * 验证
+ * 编写一个check()方法，调用sort()对任意数组排序。
+ * 如果排序成功而且数组中的所有对象均没有被修改则返回true，否则返回false。
+ * 不要假设sort()只能通过exch()来一栋数据，可以信任并使用Array.sort()。
+ *
+ * 解：排序前先统计每个元素出现的次数，排序后再对于每个元素出现的次数是否发生变化，无变化则所有对象均没有被修改。
  */
 fun <T : Comparable<T>> ex16_Certification(array: Array<T>, sortFun: (Array<T>) -> Unit): Boolean {
     val map = mutableMapOf<T, Int>()

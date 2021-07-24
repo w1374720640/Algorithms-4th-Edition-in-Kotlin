@@ -8,6 +8,7 @@ import chapter2.section1.insertionSort
 import chapter2.sortMethodsCompare
 
 /**
+ * 改进
  * 实现2.2.2节所述的对归并排序的三项改进：
  * 加快小数组的排序速度，检测数组是否已经有序，以及通过在递归中交换参数来避免数组的复制
  *

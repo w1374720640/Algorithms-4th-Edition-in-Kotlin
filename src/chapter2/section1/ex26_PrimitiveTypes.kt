@@ -6,7 +6,8 @@ import extensions.readInt
 import extensions.spendTimeMillis
 
 /**
- * 比较使用原始类型Int数组的插入排序和自动装箱、拆箱的Integer版本的性能差距
+ * 原始数据类型
+ * 编写一个能够处理int值的插入排序的新版本，比较它和正文中所给出的实现（能够隐式地用自动装箱和拆箱转换Integer值并排序）的性能。
  */
 fun ex26_PrimitiveTypes(array: IntArray) {
     for (i in 1 until array.size) {

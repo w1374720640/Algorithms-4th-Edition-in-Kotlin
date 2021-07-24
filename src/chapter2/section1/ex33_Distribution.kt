@@ -9,7 +9,8 @@ import extensions.spendTimeMillis
 
 /**
  * 分布图
- * 在无穷循环中，调用sort方法对指定大小的数组排序，用StdDraw画出每次运行的时间，得到一张运行时间的分布图
+ * 对于你为练习2.1.33给出的测试用例，在一个无穷循环中调用sort()方法将由第三个命令行参数指定大小的数组排序，
+ * 记录每次排序的用时并使用StdDraw在图上画出所有平均运行时间，应该能够得到一张运行时间的分布图。
  */
 fun distribution(size: Int, sortMethod: (Array<Double>) -> Unit) {
     val pointList = mutableListOf<Point2D>()
