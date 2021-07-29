@@ -7,8 +7,9 @@ import extensions.random
 import extensions.readInt
 
 /**
- * 选择排序中一个元素最多被交换多少次
- * 当最大值在第一位，其余值按升序排列时，会被交换N-1次
+ * 在选择排序中，一个元素最多可能会被交换多少次？平均可能会被交换多少次？
+ *
+ * 解：当最大值在第一位，其余值按升序排列时，会被交换N-1次
  */
 fun ex2a(size: Int): Int {
     val array = Array(size) { if (it == 0) size.toDouble() else it.toDouble() }

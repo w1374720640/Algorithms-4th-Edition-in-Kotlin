@@ -4,8 +4,9 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 
 /**
- * 链表实现的环形Queue
- * 只要链表非空，则last.next的值为first，只能使用一个Node类型的实例变量（last）
+ * 用环形链表实现Queue。
+ * 环形链表也是一条链表，只是没有任何结点的链接为空，且只要链表非空则last.next的值为first。
+ * 只能使用一个Node类型的实例变量（last）。
  */
 class RingLinkedQueue<T> {
     private var last: SinglyLinkedList.Node<T>? = null

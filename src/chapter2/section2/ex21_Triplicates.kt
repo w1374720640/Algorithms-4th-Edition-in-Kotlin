@@ -4,6 +4,7 @@ import chapter1.section1.binarySearch
 import extensions.random
 
 /**
+ * 一式三份
  * 给定三个列表，每个列表包含N个名字，编写一个线性对数级别的算法来判定三份列表中是否含有公共的名字
  * 如果有，返回第一个被找到的这种名字
  *

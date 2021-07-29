@@ -5,7 +5,10 @@ import extensions.inputPrompt
 import extensions.readInt
 
 /**
- * 在插入排序中，先找到最小元素放到最左边，可以规避内层循环的边界判断
+ * 插入排序的哨兵
+ * 在插入排序的实现中先找出最小的元素并将其置于数组的最左边，这样就能去掉内循环的判断条件j>0。
+ * 使用SortCompare来评估这种做法的效果。
+ * 注意：这是一种常见的规避边界测试的方法，能够省略判断条件的元素通常被称为哨兵。
  */
 fun <T : Comparable<T>> ex24_InsertionSortWithSentinel(array: Array<T>) {
     if (array.isEmpty()) return

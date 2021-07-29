@@ -6,9 +6,14 @@ import extensions.random
 import extensions.readInt
 import kotlin.math.abs
 
-//计算掷骰子时，两个骰子之和理论上的概率分布
-//并模拟投掷N次骰子，比较实际概率和理论概率的区别，当N多大时，理论值和实际值误差小于0.001
-//经测试，当N为一百万时可以保证多次运行的理论值和实际值最大误差小于0.001
+/**
+ * 模拟掷骰子
+ * 以下代码能够计算每种两个骰子之和的准确概率分布，dist[i]的值就是两个骰子之和为i的概率。
+ * 用实验模拟N次掷骰子，并在计算两个1到6之间的随机整数之和时记录每个值的出现频率以验证它们的概率。
+ * N要多大才能够保证你的经验数据和准确数据的吻合程度达到小数点后三位？
+ *
+ * 解：经测试，当N为一百万时可以保证多次运行的理论值和实际值最大误差小于0.001
+ */
 fun ex35_DiceSimulation(N: Int) {
     val sides = 6
     //理论上的概率分布
@@ -48,5 +53,5 @@ fun ex35_DiceSimulation(N: Int) {
 
 fun main() {
     inputPrompt()
-    ex35_DiceSimulation(readInt())
+    ex35_DiceSimulation(readInt("N: "))
 }

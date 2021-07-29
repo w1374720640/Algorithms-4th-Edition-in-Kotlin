@@ -4,10 +4,17 @@ import extensions.inputPrompt
 import extensions.readAllInts
 import extensions.readInt
 
-//在一个有序数组中分别查找大于、小于、等于key值的数量
-//因为是有序数组，所以二分法是最快的（在数据量比较大的情况下）
-//查找小于key的值时，即使已经找到等于key的值，继续在左侧查找，直到找到左侧第一个不等于key的值
-//也可以在找到等于key的值时，向左右两侧遍历数组，但是当一个值重复多次时可能会很慢
+/**
+ * 等值键
+ * 为BinarySearch类添加一个静态方法rank()，它接受一个键和一个整型有序数组（可能存在重复键）
+ * 作为参数并返回数组中小于该键的元素数量，以及一个类似的方法count()来返回数组中等于该键的元素的数量。
+ * 注意：如果i和j分别是rank(key, a)和count(key, a)的返回值，那么a[i..i+j-1]就是数组中所有和key相等的元素。
+ *
+ * 解：在一个有序数组中分别查找大于、小于、等于key值的数量
+ * 因为是有序数组，所以二分法是最快的（在数据量比较大的情况下）
+ * 查找小于key的值时，即使已经找到等于key的值，继续在左侧查找，直到找到左侧第一个不等于key的值
+ * 也可以在找到等于key的值时，向左右两侧遍历数组，但是当一个值重复多次时可能会很慢
+ */
 fun ex29_EqualKeys(key: Int, array: IntArray) {
     array.sort()
     fun numberLessThanKey(key: Int, array: IntArray): Int {
@@ -47,5 +54,5 @@ fun ex29_EqualKeys(key: Int, array: IntArray) {
 
 fun main() {
     inputPrompt()
-    ex29_EqualKeys(readInt(), readAllInts())
+    ex29_EqualKeys(readInt("key: "), readAllInts("array: "))
 }

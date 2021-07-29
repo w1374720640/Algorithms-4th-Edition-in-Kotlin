@@ -7,10 +7,12 @@ import extensions.formatDouble
 import extensions.spendTimeMillis
 
 /**
- * 通过实验，找到一个t，使得对于大小为10⁶的任意数组，
+ * 几何级数递增序列。
+ * 通过实验找到一个t，使得对于大小为10⁶的任意随机数组，
  * 使用递增序列1、t、t²、t³、t⁴、t⁵...的希尔排序运行时间最短。
- * 给出你能找到的三个最佳t值以及相应的递增序列
- * 因为题目中使用了向下取整符号，所以可以认为参数t可能为小数
+ * 给出你能找到的三个最佳t值以及相应的递增序列。
+ *
+ * 解：因为题目中使用了向下取整符号，所以可以认为参数t可能为小数
  */
 fun ex30_GeometricIncrements(t: Double): Long {
     require(t > 1)

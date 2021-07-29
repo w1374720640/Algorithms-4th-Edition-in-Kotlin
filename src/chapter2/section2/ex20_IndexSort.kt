@@ -6,6 +6,7 @@ import extensions.readInt
 import kotlin.math.min
 
 /**
+ * 间接排序
  * 编写一个不改变数组的归并排序，它返回一个Int类型的数组perm
  * perm[i]的值是原数组中第i小的元素的位置
  *

@@ -8,13 +8,21 @@ import extensions.random
 import extensions.readDouble
 import extensions.readInt
 
-//随机生成n个2D间隔，它们的宽高都在min和max之间（min和max在[0,1]中）
-//画出它们并打印相交的间隔对数及有包含关系的间隔对数
+/**
+ * 编写一个Interval2D的用例，从命令行接受参数N、min和max。
+ * 生成N个随机的2D间隔，其宽和高均匀地分布在单位正方形中的min和max之间。
+ * 用StdDraw画出它们并打印出相交的间隔对的数量以及有包含关系的间隔对数量。
+ *
+ * 解：这题要求宽和高均匀地分布在单位正方形中的min和max之间，
+ * 意思是间隔的宽度在min和max之间，具体位置任意，只要不超出正方形范围就行，高度同理，
+ * 需要先用随机函数分别获取间隔的宽高，然后在保证不超出正方形范围的情况下，随机生成间隔的位置，
+ * 不能先获取位置再获取宽高。
+ */
 fun main() {
     inputPrompt()
-    val n = readInt()
-    val min = readDouble()
-    val max = readDouble()
+    val N = readInt("N: ")
+    val min = readDouble("min: ")
+    val max = readDouble("max: ")
     require(min < max)
     //题目中说min和max在单位正方形中
     require(min in 0.0..1.0 && max in 0.0..1.0) { "The values of min and max should be between [0,1]" }
@@ -26,10 +34,7 @@ fun main() {
     //所以只能用额外列表保存左上角和右下角点的坐标
     val leftTopPointList = mutableListOf<Point2D>()
     val rightBottomPointList = mutableListOf<Point2D>()
-    repeat(n) {
-        //题目要求宽和高均匀的分布在min和max之间，不能先获取left再获取width
-        //关于概率均匀分布的问题可以参考练习1.1.36、1.1.37
-        //实际上我也无法在数学上证明练习1.1.37的概率为什么不均匀分布，但事实如此
+    repeat(N) {
         val width = random(min, max)
         val height = random(min, max)
         val left = random(0.0, 1.0 - width)

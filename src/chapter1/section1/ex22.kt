@@ -4,7 +4,11 @@ import extensions.inputPrompt
 import extensions.readAllInts
 import extensions.readInt
 
-//使用递归实现二分查找，并按照递归深度缩进
+/**
+ * 使用1.1.6.4节中的rank()递归方法重新实现BinarySearch并跟踪该方法的调用。
+ * 每当方法被调用时，打印出它的参数lo和hi并按照递归的深度缩进。
+ * 提示：为递归方法添加一个参数来保存递归的深度。
+ */
 fun ex22(key: Int, array: IntArray) {
     fun rank(key: Int, array: IntArray, low: Int, high: Int, depth: Int): Int {
         println("    ".repeat(depth) + "low=${low} high=${high}")
@@ -30,5 +34,5 @@ fun ex22(key: Int, array: IntArray) {
 
 fun main() {
     inputPrompt()
-    ex22(readInt(), readAllInts())
+    ex22(readInt("key: "), readAllInts("array: "))
 }

@@ -7,7 +7,8 @@ import extensions.readInt
 
 /**
  * 不需要交换的插入排序
- * 在插入排序中，只有较大元素向右移动一位，不需要交换两个元素
+ * 在插入排序的实现中使较大元素右移一位只需要访问一次数组（而不使用exch()）。
+ * 使用SortCompare来评估这种做法的效果。
  */
 fun <T : Comparable<T>> ex25_InsertionSortWithoutExchanges(array: Array<T>) {
     for (i in 1 until array.size) {

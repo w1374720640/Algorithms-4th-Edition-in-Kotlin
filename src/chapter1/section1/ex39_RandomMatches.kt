@@ -4,9 +4,12 @@ import extensions.inputPrompt
 import extensions.random
 import extensions.readInt
 
-//分别在N=1000,1_0000,10_0000,100_0000时，将以下实验运行T遍：
-//生成两个大小为N的数组，数组值为随机6位正整数，使用二分查找找出同时存在与两个数组中的整数的数量
-//打印出在不同的N中，T次实验该数量的平均值
+/**
+ * 随机匹配
+ * 编写一个使用BinarySearch的程序，它从命令行接受一个整型参数T，并会分别针对N=10³、10⁴、10⁵和10⁶将以下实验运行T遍：
+ * 生成两个大小为N的随机6位正整数数组并找出同时存在于两个数组中的整数的数量。
+ * 打印一个表格，对于每个N，给出T次实验中该数量的平均值。
+ */
 fun ex39_RandomMatches(T: Int) {
     fun setArrayToRandomValue(array: IntArray) {
         for (i in array.indices) {
@@ -35,6 +38,6 @@ fun ex39_RandomMatches(T: Int) {
 
 fun main() {
     inputPrompt()
-    val times = readInt()
-    ex39_RandomMatches(times)
+    val T = readInt("T: ")
+    ex39_RandomMatches(T)
 }

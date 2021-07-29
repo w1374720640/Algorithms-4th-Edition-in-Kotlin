@@ -5,7 +5,11 @@ import extensions.inputPrompt
 import extensions.readInt
 
 /**
- * 使用不同的递增序列和原来的希尔函数对比
+ * 希尔排序的递增序列
+ * 通过实验比较算法2.3中所使用的递增序列和递增序列
+ * 1, 5, 19, 41, 109, 209, 505, 929, 2161, 3905, 8929, 16001, 36289, 64769, 146305, 260609
+ * （这是通过序列9*4^k-9*2^k+1和4^k-3*2^k+1综合得到的）。
+ * 可以参考练习2.1.11.
  */
 fun <T : Comparable<T>> ex29_ShellsortIncrements(array: Array<T>) {
     val increasingSequence = arrayOf(1, 5, 19, 41, 109, 209, 505, 929, 2161, 3905, 8929, 16001, 36289, 64769, 146305, 260609)

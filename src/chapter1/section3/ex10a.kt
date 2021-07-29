@@ -21,7 +21,7 @@ fun String.isLeftBracket() = "(" == this
 fun String.isRightBracket() = ")" == this
 
 //是否是数值
-fun String.isNum() = Pattern.matches("^-?[1-9]\\d*\$", this)
+fun String.isNum() = Pattern.matches("^(?:-?[1-9]\\d*|0)$", this)
 
 //比较两个操作符的优先级
 fun String.largePrecedence(topOperator: String): Boolean {
@@ -43,9 +43,10 @@ fun calculate(operator: String, first: String, second: String): String {
 }
 
 /**
- * 将算术表达式由中序表达式转为后序表达式
+ * 编写一个过滤器InfixToPostFix，将算术表达式由中序表达式转为后序表达式
+ *
+ * 解： 关于前序、中序、后序参考这里：https://juejin.cn/post/6844903463667630087
  * 如：中序 2 * 3 / ( 2 - 1 ) + 3 * ( 4 - 1 ) 对应后序 2 3 * 2 1 - / 3 4 1 - * +
- * 关于前序、中序、后序参考这里：https://www.jianshu.com/p/a052eb2806a1
  * 1、创建两个栈，一个放值，一个放操作符和左括号
  * 2、规定每个操作符优先级
  * 3、遍历表达式，

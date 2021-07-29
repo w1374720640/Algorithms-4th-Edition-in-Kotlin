@@ -4,7 +4,11 @@ import extensions.inputPrompt
 import extensions.readDouble
 import extensions.readInt
 
-//估算binomial(100, 50, 0.25)产生的递归调用次数
+/**
+ * 二项分布
+ * 估计用以下代码计算binomial(100, 50, 0.25)将会产生的递归调用次数：
+ * 将已经计算过的值保存在数组中并给出一个更好的实现。
+ */
 fun ex27a_BinomialDistribution(N: Int, k: Int, p: Double): Int {
     var count = 0
     fun binomial(N: Int, k: Int, p: Double): Double {
@@ -17,8 +21,7 @@ fun ex27a_BinomialDistribution(N: Int, k: Int, p: Double): Int {
     return count
 }
 
-//练习1.1.27优化后的函数
-//这是练习1.1中我觉得最难理解的一题了
+//优化后的函数
 fun ex27b_BinomialDistribution(N: Int, k: Int, p: Double): Int {
     val array = Array(N + 1) { Array(k + 1) { -1.0 } }
     var count = 0
@@ -39,6 +42,6 @@ fun ex27b_BinomialDistribution(N: Int, k: Int, p: Double): Int {
 
 fun main() {
     inputPrompt()
-    val count = ex27b_BinomialDistribution(readInt(), readInt(), readDouble())
+    val count = ex27b_BinomialDistribution(readInt("N: "), readInt("k: "), readDouble("p: "))
     println("count=${count}")
 }

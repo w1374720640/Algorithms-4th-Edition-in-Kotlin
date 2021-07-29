@@ -1,7 +1,9 @@
 package chapter1.section4
 
 /**
- * 找出数组中两者之差的绝对值最小的两个数，要求最坏情况下所需时间应该是线性对数级别的
+ * 最接近的一对（一维）
+ * 编写一个程序，给定一个含有N个double值的数组a[]，在其中找到一对最接近的值：两者之差（绝对值）最小的两个数。
+ * 程序在最坏情况下所需的运行时间应该是线性对数级别的。
  */
 fun ex16_ClosestPair(array: IntArray): Pair<Int, Int> {
     array.sort()

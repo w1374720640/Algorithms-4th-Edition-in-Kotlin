@@ -11,7 +11,11 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-//在圆上画N个点，再将每对点按概率p用灰线连接
+/**
+ * 随机连接
+ * 编写一段程序，从命令行接受一个整数N和double值p（0到1之间）作为参数，
+ * 在一个圆上画出大小为0.05且间距相等的N个点，然后将每对点按照概率p用灰线连接。
+ */
 fun ex31_RandomConnections(N: Int, p: Double) {
     require(N > 0 && p >= 0.0 && p <= 1.0)
     //根据角度值计算x的坐标
@@ -23,25 +27,30 @@ fun ex31_RandomConnections(N: Int, p: Double) {
     fun getYPosition(centerY: Double, radius: Double, angle: Double): Double {
         return centerY + radius * sin(angle * PI / 180)
     }
+
     val centerX = 0.5
     val centerY = 0.5
     val radius = 0.4
-    val points = Array(N) { Array(2) { 0.0 } }
+    val points = Array(N) { Point2D(0.0, 0.0) }
     for (i in 0 until N) {
-        points[i][0] = getXPosition(centerX, radius, 360.0 / N * i)
-        points[i][1] = getYPosition(centerY, radius, 360.0 / N * i)
+        points[i] = Point2D(
+                getXPosition(centerX, radius, 360.0 / N * i),
+                getYPosition(centerY, radius, 360.0 / N * i)
+        )
     }
+    StdDraw.setPenColor(Color.LIGHT_GRAY)
+    StdDraw.circle(centerX, centerY, radius)
     StdDraw.setPenColor(Color.BLACK)
-    StdDraw.setPenRadius(0.03)
+    StdDraw.setPenRadius(0.01)
     points.forEach {
-        Point2D(it[0], it[1]).draw()
+        it.draw()
     }
     StdDraw.setPenColor(Color.GRAY)
-    StdDraw.setPenRadius(0.005)
+    StdDraw.setPenRadius(0.002)
     for (i in 0 until N - 1) {
         for (j in i + 1 until N) {
             if (randomBoolean(p)) {
-                StdDraw.line(points[i][0], points[i][1], points[j][0], points[j][1])
+                StdDraw.line(points[i].x(), points[i].y(), points[j].x(), points[j].y())
             }
         }
     }
@@ -49,5 +58,5 @@ fun ex31_RandomConnections(N: Int, p: Double) {
 
 fun main() {
     inputPrompt()
-    ex31_RandomConnections(readInt(), readDouble())
+    ex31_RandomConnections(readInt("N: "), readDouble("p: "))
 }

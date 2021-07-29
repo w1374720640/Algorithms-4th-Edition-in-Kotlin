@@ -1,7 +1,7 @@
 package chapter1.section4
 
 /**
- * 打印两个有序数组中的所有公共元素
+ * 编写一个程序，有序打印给定的两个有序数组（含有N个int值）中的所有公共元素，程序在最坏情况下所需的运行时间应该和N成正比。
  */
 fun ex12(array1: IntArray, array2: IntArray) {
     var index1 = 0

@@ -4,7 +4,9 @@ import extensions.inputPrompt
 import extensions.readAllStrings
 
 /**
- * 基于数组的自动缩容/扩容的队列
+ * 编写一个类ResizingArrayQueueOfStrings，使用定长数组实现队列的抽象，然后扩展实现，使用调整数组的方法突破大小限制。
+ *
+ * 解：基于数组的自动缩容/扩容的队列
  * 当移除数据时，只改变队列头部的索引位置，使用 (first + size) % array.size 确定下一条数据的位置
  */
 class ResizingArrayQueue<T> : Iterable<T> {

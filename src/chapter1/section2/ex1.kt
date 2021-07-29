@@ -1,17 +1,21 @@
 package chapter1.section2
 
 import edu.princeton.cs.algs4.Point2D
+import edu.princeton.cs.algs4.StdDraw
 import extensions.formatDouble
 import extensions.inputPrompt
 import extensions.random
 import extensions.readInt
 
-//在单位正方形中生成n个随机点，计算两个点之间的最近距离
+/**
+ * 编写一个Point2D的用例，从命令行接受一个整数N。
+ * 在单位正方形中生成N个随机点，然后计算两个点之间的最近距离
+ */
 fun main() {
     inputPrompt()
-    val n = readInt()
+    val N = readInt("N: ")
     val pointList = mutableListOf<Point2D>()
-    repeat(n) {
+    repeat(N) {
         pointList.add(Point2D(random(), random()))
     }
     var minDistance = 2.0
@@ -27,7 +31,9 @@ fun main() {
             }
         }
     }
+    StdDraw.setPenRadius(0.01)
     pointList.forEach { it.draw() }
+    StdDraw.setPenRadius(0.005)
     if (index1 >= 0 && index2 >= 0) {
         pointList[index1].drawTo(pointList[index2])
     }

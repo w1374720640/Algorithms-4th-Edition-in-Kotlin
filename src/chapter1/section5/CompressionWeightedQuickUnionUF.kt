@@ -1,5 +1,8 @@
 package chapter1.section5
 
+/**
+ * 使用路径压缩的加权quick-union算法
+ */
 class CompressionWeightedQuickUnionUF(N: Int) : WeightedQuickUnionUF(N) {
 
     override fun find(p: Int): Int {

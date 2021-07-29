@@ -4,8 +4,9 @@ import chapter2.ArrayInitialState
 import chapter2.sortMethodsCompare
 
 /**
- * 实验证明希尔排序是次平方级的
- * 对比希尔排序、插入排序、以及选择排序的性能，数组大小以2的幂次递增，从128开始
+ * 希尔排序的用时是次平方级的
+ * 在你的计算机上用SortCompare比较希尔排序和插入排序以及选择排序。
+ * 测试数组的大小按照2的幂次递增，从128开始。
  */
 fun main() {
     val sortMethods: Array<Pair<String, (Array<Double>) -> Unit>> = arrayOf(

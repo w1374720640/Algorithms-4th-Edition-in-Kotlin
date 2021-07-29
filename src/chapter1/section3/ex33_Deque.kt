@@ -5,7 +5,10 @@ import extensions.readString
 import extensions.safeCall
 
 /**
- * 双向链表实现的双向队列
+ * Deque
+ * 一个双向队列（或称为deque)和栈或队列类似，但它同时支持在两端添加或删除元素。
+ * Deque能够存储一组元素并支持表1.3.9中的API。
+ * 编写一个使用双向链表实现这份API的Deque类，以及一个使用动态数组调整实现这份API的ResizingArrayDeque类。
  */
 class DoublyLinkedDeque<T> : Deque<T> {
     private val list = DoublyLinkedList<T>()

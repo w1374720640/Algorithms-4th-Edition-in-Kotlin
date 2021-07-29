@@ -6,6 +6,7 @@ import chapter2.section1.insertionSort
 import chapter2.swapCallbackList
 
 /**
+ * 倒置
  * 编写一个线性对数级别的算法，统计给定数组中的“倒置”数量（即插入排序所需的交换次数）
  *
  * 解：使用归并排序对数组排序

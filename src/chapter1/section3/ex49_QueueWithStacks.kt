@@ -7,7 +7,11 @@ import extensions.safeCall
 import kotlin.NoSuchElementException
 
 /**
- * 使用两个栈实现队列
+ * 栈与队列
+ * 用有限个栈实现一个队列，保证每个队列操作（在最坏情况下）都只需要常数次的栈操作。
+ * 警告：非常难。
+ *
+ * 解：使用两个栈实现队列
  * 平均复杂度为O(2)，但在最坏情况下单次操作复杂度为O(n)
  * 如果需要保证每次操作在最坏情况下都只需要常数次栈操作，需要使用6个栈，可以参考：
  * https://corresponding.github.io/2018/02/06/20180206-stack-become-queue/

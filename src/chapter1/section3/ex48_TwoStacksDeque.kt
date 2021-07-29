@@ -5,7 +5,8 @@ import extensions.readString
 import extensions.safeCall
 
 /**
- * 用双向队列实现两个栈，保证每个栈的操作只需要常数次的双向队列操作
+ * 双向队列与栈
+ * 用一个双向队列实现两个栈，保证每个栈操作只需要常数次的双向队列操作（请见练习1.3.33）。
  */
 class DoublyDequeStack<T> {
     private val deque = DoublyLinkedDeque<T>()

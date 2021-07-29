@@ -1,5 +1,8 @@
 package chapter1.section5
 
+/**
+ * quick-find算法
+ */
 class QuickFindUF(N: Int) : UF {
     private val ids: IntArray = IntArray(N) { it }
     private var count = N

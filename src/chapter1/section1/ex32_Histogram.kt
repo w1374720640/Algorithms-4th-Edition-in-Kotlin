@@ -6,8 +6,14 @@ import extensions.random
 import extensions.readDouble
 import extensions.readInt
 
-//将[left,right)分为n段，从标准输入中读取一些列值，判断值落在每段范围内的数量，并画出直方图
-//这里用随机函数生成count数量的随机值替代标准输入
+/**
+ * 直方图
+ * 假设标准输入流中含有一系列double值。
+ * 编写一段程序，从命令行接受一个整数N和两个double值l和r。
+ * 将(l, r)分为N段并使用StdDraw画出输入流中的值落入每段的数量的直方图。
+ *
+ * 解：这里用随机函数生成count数量的随机值替代标准输入
+ */
 fun ex32_Histogram(n: Int, left: Double, right: Double, count: Int) {
     require(n > 0 && right > left && count > 0)
     val array = IntArray(n)
@@ -27,15 +33,15 @@ fun ex32_Histogram(n: Int, left: Double, right: Double, count: Int) {
                 0.9 / max * array[i] / 2,
                 0.9 / n / 2,
                 0.9 / max * array[i] / 2
-                )
+        )
     }
 }
 
 fun main() {
     inputPrompt()
-    val n = readInt()
-    val left = readDouble()
-    val right = readDouble()
-    val count = readInt()
+    val n = readInt("n: ")
+    val left = readDouble("left: ")
+    val right = readDouble("right: ")
+    val count = readInt("count: ")
     ex32_Histogram(n, left, right, count)
 }
